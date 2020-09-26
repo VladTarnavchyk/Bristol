@@ -1,0 +1,147 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Address\Book $block */
+?>
+<div class="block block-addresses-default hidden">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Default Addresses')) ?></strong></div>
+    <div class="block-content">
+        <?php if ($_pAddsses = $block->getDefaultBilling()) : ?>
+            <div class="box box-address-billing">
+                <strong class="box-title">
+                    <span><?= $block->escapeHtml(__('Default Billing Address')) ?></span>
+                </strong>
+                <div class="box-content">
+                    <address>
+                        <?= $block->getAddressHtml($block->getAddressById($_pAddsses)) ?>
+                    </address>
+                </div>
+                <div class="box-actions">
+                    <a class="action edit" href="<?= $block->escapeUrl($block->getAddressEditUrl($_pAddsses)) ?>">
+                        <span><?= $block->escapeHtml(__('Change Billing Address')) ?></span>
+                    </a>
+                </div>
+            </div>
+        <?php else : ?>
+            <div class="box box-billing-address">
+                <strong class="box-title"><span><?= $block->escapeHtml(__('Default Billing Address')) ?></span></strong>
+                <div class="box-content">
+                    <p><?= $block->escapeHtml(__('You have no default billing address in your address book.')) ?></p>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <?php if ($_pAddsses = $block->getDefaultShipping()) : ?>
+            <div class="box box-address-shipping">
+                <strong class="box-title">
+                    <span><?= $block->escapeHtml(__('Default Shipping Address')) ?></span>
+                </strong>
+                <div class="box-content">
+                    <address>
+                        <?= $block->getAddressHtml($block->getAddressById($_pAddsses)) ?>
+                    </address>
+                </div>
+                <div class="box-actions">
+                    <a class="action edit" href="<?= $block->escapeUrl($block->getAddressEditUrl($_pAddsses)) ?>">
+                        <span><?= $block->escapeHtml(__('Change Shipping Address')) ?></span>
+                    </a>
+                </div>
+            </div>
+        <?php else : ?>
+            <div class="box box-shipping-address">
+                <strong class="box-title"><span><?= $block->escapeHtml(__('Default Shipping Address')) ?></span></strong>
+                <div class="box-content">
+                    <p><?= $block->escapeHtml(__('You have no default shipping address in your address book.')) ?></p>
+                </div>
+            </div>
+        <?php endif ?>
+    </div>
+</div>
+<div class="block block-addresses-list">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Delivery address')) ?></strong></div>
+    <div class="block-content">
+            <div class="table-wrapper additional-addresses">
+                <table class="data table table-additional-addresses-items history" id="additional-addresses-table">
+                    <caption class="table-caption"><?= $block->escapeHtml(__('Additional addresses')) ?></caption>
+                    <thead>
+                    <tr>
+                        <th scope="col" class="col firstname"><?= $block->escapeHtml(__('Address')) ?></th>
+                        <th scope="col" class="col actions edit"><?= $block->escapeHtml(__('Edit')) ?> </th>
+                        <th scope="col" class="col actions select-default"><?= $block->escapeHtml(__('Primary address')) ?> </th>
+                        <th scope="col" class="col actions delete"><?= $block->escapeHtml(__('Delete')) ?> </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php if ($_shipAddssesId = $block->getDefaultShipping()) : ?>
+                        <?php $_shipAddsses = $block->getAddressById($_pAddsses); ?>
+                        <tr>
+                            <td data-th="<?= $block->escapeHtml(__('Address')) ?>" class="col firstname">
+                                <span> <?= $block->escapeHtml($_shipAddsses->getFirstname()) ?></span>
+                               <span><?= $block->escapeHtml($_shipAddsses->getLastname()) ?></span>,
+                                <span><?= $block->escapeHtml($block->getStreetAddress($_shipAddsses)) ?></span>,
+                                <span><?= $block->escapeHtml($_shipAddsses->getCity()) ?></span>,
+                                <span><?= $block->escapeHtml($block->getCountryByCode($_shipAddsses->getCountryId())) ?></span>,
+                                <span><?= $block->escapeHtml($_shipAddsses->getRegion()->getRegion()) ?></span>,
+                                <span><?= $block->escapeHtml($_shipAddsses->getPostcode()) ?></span>,
+                                <span><?= $block->escapeHtml($_shipAddsses->getTelephone()) ?></span>
+                            </td>
+                            <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/address/edit', ['id' => $_shipAddsses->getId()])) ?>"><span><?= $block->escapeHtml(__('Edit')) ?></span></a>
+                            </td>
+                            <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                <div class="field choice set shipping">
+                                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox" checked="checked">
+                                    <label class="label" for="primary_shipping">
+                                        <span><?= $block->escapeHtml(__('')) ?></span>
+                                    </label>
+                                </div>
+
+                            </td>
+                            <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                <a class="action delete" href="#" role="delete-address" data-address="<?= $block->escapeHtmlAttr($_shipAddsses->getId()) ?>"><span><?= $block->escapeHtml(__('Delete')) ?></span></a>
+                            </td>
+                        </tr>
+                    <?php endif ?>
+                    <?php if ($_OtherAddsses = $block->getAdditionalAddresses()) : ?>
+                        <?php foreach ($_OtherAddsses as $address) : ?>
+                            <tr>
+                                <td data-th="<?= $block->escapeHtml(__('First Name')) ?>" class="col firstname">
+                                    <span> <?= $block->escapeHtml($address->getFirstname()) ?></span>
+                                    <span><?= $block->escapeHtml($address->getLastname()) ?></span>,
+                                    <span><?= $block->escapeHtml($block->getStreetAddress($address)) ?></span>,
+                                    <span><?= $block->escapeHtml($address->getCity()) ?></span>,
+                                    <span><?= $block->escapeHtml($block->getCountryByCode($address->getCountryId())) ?></span>,
+                                    <span><?= $block->escapeHtml($address->getRegion()->getRegion()) ?></span>,
+                                    <span><?= $block->escapeHtml($address->getPostcode()) ?></span>,
+                                    <span><?= $block->escapeHtml($address->getTelephone()) ?></span>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                    <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/address/edit', ['id' => $address->getId()])) ?>"><span><?= $block->escapeHtml(__('Edit')) ?></span></a>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                    <div class="field choice set shipping">
+                                        <input type="checkbox" id="address-<?php echo $address->getId();?>" name="default_shipping" value="1" class="checkbox" >
+                                        <label class="label" for="address-<?php echo $address->getId();?>">
+                                            <span><?= $block->escapeHtml(__('')) ?></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                    <a class="action delete" href="#" role="delete-address" data-address="<?= $block->escapeHtmlAttr($address->getId()) ?>"><span><?= $block->escapeHtml(__('Delete')) ?></span></a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php if ($block->getChildHtml('pager')) : ?>
+                <div class="customer-addresses-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
+            <?php endif ?>
+    </div>
+</div>

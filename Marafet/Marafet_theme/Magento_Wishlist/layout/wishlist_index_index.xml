@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock class="Magento\Wishlist\Block\Customer\Wishlist" name="customer.wishlist" template="Magento_Wishlist::view.phtml" cacheable="false">
+                <referenceBlock class="Magento\Wishlist\Block\Customer\Wishlist\Items" name="customer.wishlist.items" as="items" template="Magento_Wishlist::item/list.phtml" cacheable="false">
+                    <container name="customer.wishlist.list.buttons" as="list_control_buttons" label="Wishlist List Control Buttons">
+                        <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.list.button.toCart" template="Magento_Wishlist::button/tocart.phtml" cacheable="false"/>
+                    </container>
+                </referenceBlock>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

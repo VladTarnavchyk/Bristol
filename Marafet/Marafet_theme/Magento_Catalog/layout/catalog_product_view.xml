@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="product.attributes" remove="true" />
+
+    <body>
+        <move element="product.info.stock.sku" destination="product.info.price"  before="-"/>
+        <move element="product.info.review" destination="product.info.price"  after="product.info.stock.sku"/>
+        <move element="product.info.addto" destination="product.info.price"  after="-"/>
+        <referenceContainer name="content">
+            <referenceContainer name='product.info.main'>
+                <referenceContainer name='product.info.price'>
+                    <container name="product.prices.piece.packing.container" htmlClass="prices_piece_packing_wrapper" htmlTag="div"   after="product.info.review">
+                        <block class="Magento\Catalog\Block\Product\View" name="product.prices.piece.packing" template="Magento_Catalog::product/view/prices_piece_packing.phtml"/>
+                    </container>
+                </referenceContainer>
+                <referenceBlock  name="product.info.overview">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getDescription</argument>
+                        <argument name="at_code" xsi:type="string">description</argument>
+                        <argument name="css_class" xsi:type="string">overview</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">Overview</argument>
+                        <argument name="add_attribute" xsi:type="string">itemprop="description"</argument>
+                    </arguments>
+                </referenceBlock>
+            </referenceContainer>
+        </referenceContainer>
+        <referenceBlock name="product.info.details">
+            <referenceBlock name="product.info.description">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Product description</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                </arguments>
+            </referenceBlock>
+            <block class="Magento\Catalog\Block\Product\View\Attributes" name="product.attributes.custom" as="additional_custom" template="Magento_Catalog::product/view/attributes.phtml" group="detailed_info">
+                <arguments>
+                    <argument translate="true" name="title" xsi:type="string">Characteristic</argument>
+                    <argument name="sort_order" xsi:type="string">10</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="delivery_and_payment" template="Magento_Catalog::product/view/delivery_and_payment.phtml" group="detailed_info">
+                <arguments>
+                    <argument translate="true" name="title" xsi:type="string">Delivery and payment</argument>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="content.aside">
+            <block class="Magento\Catalog\Block\Product\View" name="catalog.product.related.category"  template="Magento_Catalog::product/list/related_category_products.phtml"></block>
+            <block class="Magento\Cms\Block\Block" name="rewrating_rules">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">rewrating_rules</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+    </body>
+</page>

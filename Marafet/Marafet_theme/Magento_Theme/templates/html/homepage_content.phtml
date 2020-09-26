@@ -1,0 +1,30 @@
+<div class="homepage_wrapper">
+    <div class="homepage_container">
+        <div class="main_slider_wrapper">
+            <?php echo $this->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Slider')->setTemplate('Mageplaza_BannerSlider::homepage_slider.phtml')->toHtml(); ?>
+        </div>
+        <div class="top_products_wrapper">
+            <div class="title"><?php echo __('Top sale'); ?></div>
+            <?php echo $this->getLayout()->createBlock('Magento\Catalog\Block\Product\ListProduct')->setTemplate('Magento_Catalog::catalog/product/HomeTopProducts.phtml')->toHtml(); ?>
+        </div>
+        <div class="actins_products_wrapper">
+            <div class="title"><?php echo __('Actions'); ?></div>
+            <?php echo $this->getLayout()->createBlock('Magento\Catalog\Block\Product\ListProduct')->setTemplate('Magento_Catalog::catalog/product/HomeActionProducts.phtml')->toHtml(); ?>
+        </div>
+        <div class="news-wrapper">
+            <?php echo $this->getLayout()->createBlock('Mageplaza\Blog\Block\Listpost')->setTemplate('Mageplaza_Blog::post/homepage_list.phtml')->toHtml(); ?>
+        </div>
+        <div class="baners-wrapper">
+            <?php echo $this->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Slider')->setTemplate('Mageplaza_BannerSlider::homepage_banners.phtml')->toHtml(); ?>
+        </div>
+    </div>
+    <?php echo $this->getLayout()->createBlock('\Magento\Cms\Block\Block')->setBlockId('home_page_info_block')->toHtml();?>
+</div>
+
+
+
+
+
+
+
+

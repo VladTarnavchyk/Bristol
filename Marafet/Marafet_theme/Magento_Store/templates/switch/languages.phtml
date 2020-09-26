@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Store\Block\Switcher $block */
+
+if (count($block->getStores()) > 1) {
+	echo "<a href=\"#\" class=\"active\">" . $block->escapeHtml($block->getStoreName()) . "</a>"." /";
+	foreach ($block->getStores() as $_lang) {
+    	if ($_lang->getId() != $block->getCurrentStoreId()) {
+        	echo "<a href=\"" . $block->escapeUrl($block->getViewModel()->getTargetStoreRedirectUrl($_lang)) . "\">
+           		" . $block->escapeHtml($_lang->getName()) . "
+        	</a>";
+    	}
+	}
+}
+ ?>

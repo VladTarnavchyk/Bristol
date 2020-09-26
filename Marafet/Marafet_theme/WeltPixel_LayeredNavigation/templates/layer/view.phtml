@@ -1,0 +1,199 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @var $block WeltPixel\LayeredNavigation\Block\Navigation
+ */
+$isAjaxMode = $block->isAjaxMode();
+$jsClass = ($isAjaxMode) ? 'WeltPixel_LayeredNavigation/js/product/list/toolbar' : false;
+?>
+<div class="wp-filters <?php if ($isAjaxMode) echo 'wp-filters-ajax' ?>">
+    <?= /* @escapeNotVerified */
+    $block->getFilterButtonHtml() ?>
+</div>
+<?php
+    $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+    $category_model = $objectManager->get('Magento\Catalog\Model\Category');
+    $category_id = 51;//default category
+    $category = $category_model->load($category_id);
+    $subcategories0 = $category->getChildrenCategories();
+?>
+<?php if (count($subcategories0) > 0): ?>
+<div class="categories_nav_wrapper">
+    <div  class="block-subtitle filter-subtitle"><?= /* @escapeNotVerified */__('Category') ?></div>
+    <div data-role="collapsible" class="filter-options-item category-filter">
+
+        <ol class="items level0" id="categories_nav_items" >
+            <?php foreach ( $subcategories0 as $subcategory0):?>
+                <li class="item level0"  >
+                    <a href="<?php echo $subcategory0->getUrl(); ?>">
+                        <?php echo $subcategory0->getName(); ?>
+                    </a>
+                    <?php $_subcategory0Id = $subcategory0->getId(); ?>
+                    <?php $_subcategory0 = $category_model->load($_subcategory0Id); ?>
+                    <?php $_subcategories1 = $_subcategory0->getChildrenCategories() ?>
+                    <?php if (count($_subcategories1) > 0): ?>
+                        <span class="toogle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.599 0.600037L5.99902 5.20006L1.39902 0.600037L-0.000976562 2.00004L5.99902 8.00008L11.999 2.00004L10.599 0.600037Z" fill="#E0E0E0"/>
+                            </svg>
+                        </span>
+                        <ul class="level1 submenu">
+                            <?php foreach($_subcategories1 as $subcategory1): ?>
+                                <li  class="level1">
+                                    <a href="<?php  echo $subcategory1->getUrl(); ?>">
+                                        <?php  echo $subcategory1->getName() ?>
+                                    </a>
+                                    <?php $_subcategory1Id = $subcategory1->getId(); ?>
+                                    <?php $_subcategory1 = $category_model->load($_subcategory1Id); ?>
+                                    <?php $_subcategories2 = $_subcategory1->getChildrenCategories() ?>
+                                    <?php if (count($_subcategories2) > 0): ?>
+                                        <span class="toogle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.599 0.600037L5.99902 5.20006L1.39902 0.600037L-0.000976562 2.00004L5.99902 8.00008L11.999 2.00004L10.599 0.600037Z" fill="#E0E0E0"/>
+                                            </svg>
+                                        </span>
+                                        <ul class="level2 submenu">
+                                            <?php foreach($_subcategories2 as $subcategory2): ?>
+                                                <li class="level2">
+                                                    <a href="<?php  echo $subcategory2->getUrl(); ?>">
+                                                        <?php  echo $subcategory2->getName() ?>
+                                                    </a>
+                                                    <?php $_subcategory2Id = $subcategory2->getId(); ?>
+                                                    <?php $_subcategory2 = $category_model->load($_subcategory2Id); ?>
+                                                    <?php $_subcategories3 = $_subcategory2->getChildrenCategories() ?>
+                                                    <?php if (count($_subcategories3) > 0): ?>
+                                                        <span class="toogle">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.599 0.600037L5.99902 5.20006L1.39902 0.600037L-0.000976562 2.00004L5.99902 8.00008L11.999 2.00004L10.599 0.600037Z" fill="#E0E0E0"/>
+                                                            </svg>
+                                                        </span>
+                                                        <ul class="level3 submenu">
+                                                            <?php foreach($_subcategories3 as $subcategory3): ?>
+                                                                <li class="level3">
+                                                                    <a href="<?php  echo $subcategory3->getUrl(); ?>">
+                                                                        <?php  echo $subcategory3->getName() ?>
+                                                                    </a>
+
+                                                                </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    <?php endif; ?>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach;?>
+        </ol>
+
+    </div>
+</div>
+<?php endif; ?>
+
+
+
+<?php if ($block->canShowBlock()): ?>
+    <div class="block filter" id="layered-filter-block"
+         data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+        <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>
+        <div class="block-title filter-title" data-count="<?= /* @escapeNotVerified */
+        $filtered ?>">
+            <strong data-role="title"><?= /* @escapeNotVerified */
+                __('Shop By') ?></strong>
+        </div>
+        <div class="block-content filter-content">
+            <?= $block->getChildHtml('state') ?>
+
+            <?php if ($block->getLayer()->getState()->getFilters()): ?>
+                <div class="block-actions filter-actions">
+                    <a href="<?= /* @escapeNotVerified */
+                    $block->getClearUrl() ?>" class="action clear filter-clear"><span><?= /* @escapeNotVerified */
+                            __('Clear All') ?></span></a>
+                </div>
+            <?php endif; ?>
+            <?php $activeFilters = $block->getActiveFilters(); ?>
+            <?php $activeFilters_open = implode(' ', range(5, count($activeFilters)-1)); ?>
+            <?php $wrapOptions = false; ?>
+            <?php $i = 1; ?>
+            <?php foreach ($block->getFilters() as $k => $filter): ?>
+        <?php $attributeId = (!$block->isCategoryFilter($filter)) ? $filter->getData('attribute_model')->getAttributeId() : 0; ?>
+        <?php if ($filter->getItemsCount()): ?>
+        <?php if (!$wrapOptions): ?>
+            <div role="heading" aria-level="2" class="block-subtitle filter-subtitle hidden"><?= /* @escapeNotVerified */__('Shop by') ?></div>
+            <div class="filter-options" id="narrow-by-list" data-role="content"
+                 data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": "<?php echo $activeFilters_open; ?>", "multipleCollapsible": true}}'>
+                <?php $wrapOptions = true; ?>
+                <?php endif; ?>
+                <?php $block->getChildBlock('renderer')->setAttributeId($filter) ?>
+                <?php if ($attributeId == 0): ?>
+
+
+                <?php else: ?>
+                    <?php if ($i == 1 && $attributeId !== 0 ): ?>
+                        <div  class="block-subtitle filter-subtitle"><?= /* @escapeNotVerified */__('Filter') ?></div>
+                    <?php endif; ?>
+                    <?php $i = $i + 1; ?>
+                    <div data-role="collapsible" class="filter-options-item other-filter">
+                        <div data-role="title" class="filter-options-title">
+                            <?= /* @escapeNotVerified */ __($filter->getName()) ?></div>
+                        <div id="attr_<?php echo $attributeId ?>" data-role="content"
+                             class="filter-options-content"><?= /* @escapeNotVerified */
+                            $block->getChildBlock('renderer')->render($filter) ?></div>
+                    </div>
+                <?php endif; ?>
+
+
+
+                <?php endif; ?>
+
+                <?php endforeach; ?>
+                <?php if ($wrapOptions): ?>
+            </div>
+        <?php else: ?>
+            <script>
+                require([
+                    'jquery'
+                ], function ($) {
+                    $('#layered-filter-block').addClass('filter-no-options');
+
+                });
+            </script>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+<div class="wp-ln-overlay"></div>
+<div class="wp-ln-slider-js" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
+    <script>
+        <?php if ($jsClass): ?>
+        require.config({
+            map: {
+                '*': {
+                    "productListToolbarForm": "<?= $jsClass?>"
+                }
+            }
+        });
+        <?php endif; ?>
+
+        require(['wpFilterSelect'], function(){
+            wpFilterSelect.markSelected();
+        });
+    </script>
+
+</div>
+
+
+

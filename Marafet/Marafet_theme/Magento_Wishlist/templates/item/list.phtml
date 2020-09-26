@@ -1,0 +1,80 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
+$columns = $block->getColumns();
+?>
+
+<div class="products-grid wishlist">
+    <?php if (count($block->getItems())) : ?>
+        <ol class="product-items">
+            <?php foreach ($block->getItems() as $item) : ?>
+                <li data-row="product-item" class="product-item" id="item_<?= $block->escapeHtmlAttr($item->getId()) ?>">
+                    <div class="product-item-info" data-container="product-grid">
+                        <?php foreach ($columns as $column) : ?>
+                            <?= $column->setItem($item)->toHtml();?>
+                        <?php endforeach; ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+            <li data-row="product-item" class="product-item" id="add_to_cart">
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <?= $block->getChildHtml('list_control_buttons') ?>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    <?php else : ?>
+        <div class="message info empty">
+            <span><?= $block->escapeHtml(__('This Wish List has no Items')) ?></span>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php foreach ($columns as $column) : ?>
+    <?= $column->getAdditionalHtml() ?>
+<?php endforeach; ?>
+<script type="text/javascript">
+    require(['jquery'], function ($){
+        $(document).ready(function(){
+            $('.increment_btn').click(function() {
+                var oldVal = $(this).siblings(".qty").val();
+                oldVal = parseFloat(oldVal.replace(',', '.'));
+                if ( parseFloat(oldVal) >= 0 ) {
+                    var newVal = Math.round((oldVal + parseInt($(this).siblings(".qty").attr('data-multiplicity')))* 10, -1) / 10;
+                    if($(this).siblings(".qty").hasClass('weight_product')) {
+                        if(newVal.toString().indexOf('.') == -1) {
+                            newVal = newVal + '.0';
+                        }
+                    }
+                    $(this).siblings(".qty").val(newVal);
+
+
+                }
+            });
+
+            $('.decrement_btn').click(function() {
+                var oldVal = $(this).siblings(".qty").val();
+                oldVal = parseFloat(oldVal.replace(',', '.'));
+                if ( parseFloat(oldVal) > parseInt($(this).siblings(".qty").attr('data-multiplicity')) ) {
+                    var newVal = Math.round((oldVal - parseInt($(this).siblings(".qty").attr('data-multiplicity')))* 10, -1) / 10;
+                    if($(this).siblings(".qty").hasClass('weight_product')) {
+                        if(newVal.toString().indexOf('.') == -1) {
+                            newVal = newVal + '.0';
+                        }
+                    }
+                    $(this).siblings(".qty").val(newVal);
+
+
+                }
+            });
+
+
+        });
+    })
+</script>

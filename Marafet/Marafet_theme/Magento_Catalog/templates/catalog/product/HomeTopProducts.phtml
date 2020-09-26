@@ -1,0 +1,334 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+<?php
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+
+$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+
+$cat_id = 9;
+$category = $categoryFactory->create()->load($cat_id);
+$categoryName = $category->getName();
+$categoryUrl = $category->getUrl();
+$categoryProducts = $category->getProductCollection()->addAttributeToSelect('*')->addAttributeToFilter('status',1);
+$categoryProducts->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(6);
+$_productCollection = $categoryProducts;
+?>
+<?php if (!$_productCollection->count()): ?>
+    <div class="message info empty"><div><?= /* @escapeNotVerified */ __('We can\'t find products matching the selection.') ?></div></div>
+<?php else: ?>
+    <?php
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $showBuyButton = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+
+    ?>
+    <div class="products wrapper <?= /* @escapeNotVerified */ $viewMode ?> products-<?= /* @escapeNotVerified */ $viewMode ?>">
+        <ol class="products list items product-items home-new-products owl-carousel">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($categoryProducts as $_product): ?>
+                <?php $catIds = $_product->getCategoryIds(); ?>
+                <?php if ($_product->getFinalPrice() < $_product->getPrice()) {
+                    $hasSpecialPrice = true;
+                    $percents_price = round(100 - (($_product->getFinalPrice() * 100) / $_product->getPrice()));
+                } else {
+                    $hasSpecialPrice = false;
+                }
+                ?>
+                <li class="item product product-item">
+                    <div class="product-item-info" data-container="product-<?= /* @escapeNotVerified */ $viewMode ?>">
+                        <?php
+                        $block = $block->getLayout()->createBlock('Magento\Catalog\Block\Product\ListProduct');
+                        $productImage = $block->getImage($_product, $imageDisplayArea);
+                        ?>
+                        <?php // Product Image ?>
+                        <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                            <?php if(in_array(9, $catIds)) {
+                                $isTop= true;
+                            } else {
+                                $isTop= false;
+                            }
+                            ?>
+                            <?php if(in_array(48, $catIds)) {
+                                $isAction = true;
+                            } else {
+                                $isAction = false;
+                            }
+                            ?>
+                            <div class="product_captions_container">
+                                <?php if ( $isTop):  ?>
+                                    <div class="product_captions_label top-sale">
+                                        <span class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <path d="M19.1446 6.85177L13.4441 5.98561L10.8957 0.582201C10.7276 0.225618 10.3805 0 10.0002 0C9.62032 0 9.2732 0.225618 9.1051 0.582201L6.55555 5.98561L0.854653 6.85177C0.478675 6.90889 0.166271 7.18469 0.048875 7.5629C-0.0685205 7.94069 0.0293741 8.35603 0.301607 8.63346L4.42644 12.8394L3.45296 18.7793C3.3886 19.171 3.54266 19.5672 3.85038 19.8005C4.15772 20.0343 4.56529 20.0649 4.90187 19.8801L10.0002 17.0756L15.0977 19.8801C15.4308 20.0629 15.8388 20.0368 16.1496 19.8005C16.457 19.5672 16.611 19.171 16.5467 18.7789L15.5732 12.8394L19.6984 8.63346C19.9706 8.35562 20.0685 7.94069 19.9511 7.56249C19.8333 7.18469 19.5209 6.90889 19.1446 6.85177ZM13.8033 11.7268C13.5681 11.9667 13.4604 12.3127 13.5162 12.6513L14.2366 17.0462L10.4651 14.9712C10.1741 14.8112 9.82664 14.8112 9.53568 14.9712L5.76303 17.0462L6.4834 12.6513C6.53878 12.3127 6.43153 11.9671 6.19635 11.7268L3.14406 8.6151L7.36211 7.97415C7.68739 7.92478 7.96859 7.711 8.11407 7.40256L10.0002 3.40467L11.8855 7.40256C12.031 7.711 12.3122 7.92478 12.6375 7.97415L16.8555 8.6151L13.8033 11.7268Z" fill="white"/>
+                                            </svg>
+                                        </span>
+                                        <span class="label"><?= /* @escapeNotVerified */ __('Top sale') ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ( $isAction||$hasSpecialPrice):  ?>
+                                    <div class="product_captions_label action">
+                                          <span class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path d="M19.1639 4.71473C18.7685 4.31925 18.1272 4.31925 17.7317 4.71473L4.36448 18.082C3.969 18.4775 3.969 19.1187 4.36448 19.5142C4.56223 19.712 4.82142 19.8109 5.08055 19.8109C5.33968 19.8109 5.59895 19.712 5.79662 19.5142L19.1638 6.14701C19.5595 5.75145 19.5595 5.11029 19.1639 4.71473Z" fill="white"/>
+                                                <path d="M7.71333 3C5.66582 3 4 4.66582 4 6.71333C4 8.76084 5.66582 10.4267 7.71333 10.4267C9.76084 10.4267 11.4267 8.76084 11.4267 6.71333C11.4267 4.66582 9.76084 3 7.71333 3ZM7.71333 8.40116C6.78265 8.40116 6.0255 7.64401 6.0255 6.71326C6.0255 5.78258 6.78265 5.02543 7.71333 5.02543C8.64401 5.02543 9.40123 5.78258 9.40123 6.71326C9.40116 7.64401 8.64401 8.40116 7.71333 8.40116Z" fill="white"/>
+                                                <path d="M15.815 13.8023C13.7675 13.8023 12.1017 15.4681 12.1017 17.5156C12.1017 19.5632 13.7675 21.229 15.815 21.229C17.8625 21.229 19.5283 19.5632 19.5283 17.5156C19.5283 15.4681 17.8625 13.8023 15.815 13.8023ZM15.815 19.2035C14.8843 19.2035 14.1271 18.4463 14.1271 17.5156C14.1271 16.585 14.8843 15.8278 15.815 15.8278C16.7457 15.8278 17.5028 16.585 17.5028 17.5156C17.5028 18.4463 16.7457 19.2035 15.815 19.2035Z" fill="white"/>
+                                            </svg>
+                                        </span>
+                                        <span class="label"><?= /* @escapeNotVerified */ __('Action') ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <?= $productImage->toHtml() ?>
+                        </a>
+                        <div data-role="add-to-links" class="actions-secondary">
+                            <a href="<?php echo $block->getUrl('wishlist', ['_secure' => true]);?>" img src="<?php echo $block->getViewFileUrl('images/wish_icon.jpg'); ?>" data-post='<?php  echo $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($_product) ?>' class="action towishlist" data-action="add-to-wishlist"><span>' . __('Add to Wish List') . '</span></a>
+                        </div>
+                        <div class="product details product-item-details">
+                            <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                            ?>
+                            <div class="product name product-item-name">
+                                <a class="product-item-link"
+                                   href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>">
+                                    <?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                                </a>
+                            </div>
+                            <div class="product-reviews-sumary">
+                                <?php echo $block->getReviewsSummaryHtml($_product,"sort",true); ?>
+                            </div>
+                            <div class="product_sku">
+                                <span class="title-sku">
+                                    <?= /* @escapeNotVerified */ __('Sku:') ?>
+                                </span>
+                                <span class="sku">
+                                    <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getSku(), 'sku'); ?>
+                                </span>
+                            </div>
+
+                            <?= $block->getProductDetailsHtml($_product) ?>
+                            <?php
+                            $piece_packing = 1;
+                            if ( $_product->getCustomAttribute('pieces_in_the_package')->getValue() == 0 || $_product->getCustomAttribute('pieces_in_the_package')== null ||  $_product->getCustomAttribute('pieces_in_the_package')->getValue() == '') {
+                                $piece_packing = 1;
+                            }else{
+                                $piece_packing = $_product->getCustomAttribute('pieces_in_the_package')->getValue()*1;
+                            }
+                            if($_product->getTypeId() == 'configurable'){
+                                $_config_product = $_objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                                $_children = $_config_product->getTypeInstance()->getUsedProducts($_config_product);
+                                $_children_price = array();
+                                $_children_final_price = array();
+                                foreach ($_children as $_child){
+                                    array_push($_children_price, $_child->getPrice()*1);
+                                    array_push( $_children_final_price, $_child->getFinalPrice()*1);
+                                }
+                                $price_piece_packing = min($_children_price)*1;
+                                $price_piece_packing_final = min( $_children_final_price)*1;
+                            }else{
+                                $price_piece_packing = $_product->getPrice()*1;
+                                $price_piece_packing_final = $_product->getFinalPrice()*1;
+                            }
+                            $price_package =  floor($price_piece_packing*$piece_packing * 100) / 100;
+                            $price_package_final =  floor( $price_piece_packing_final*$piece_packing * 100) / 100;
+                            ?>
+                            <div class="prices-wrapper">
+                                <div class="piece_packing hidden">
+                                    <span class="label">  <?= /* @escapeNotVerified */ __('Piece packing') ?></span>
+                                    <span class="value"><?php echo $piece_packing ; ?></span>
+                                </div>
+                                <div class="price_piece_packing">
+                                    <span class="label hidden">  <?= /* @escapeNotVerified */ __('Price piece packing') ?></span>
+                                    <?php if ($price_piece_packing >  $price_piece_packing_final) { ?>
+                                        <span class="value">
+                                            <?php echo number_format($price_piece_packing_final, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                        <span class="value old">
+                                            <?php echo number_format($price_piece_packing, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                    <?php } else{?>
+                                        <span class="value">
+                                            <?php echo number_format($price_piece_packing_final, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                    <?php } ?>
+
+                                </div>
+                                <div class="price_package hidden">
+                                    <span class="label"><?= /* @escapeNotVerified */ __('Price package'); ?></span>
+                                    <?php if ($price_package >  $price_package_final) { ?>
+                                        <span class="value">
+                                             <?php echo number_format($price_package_final, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                        <span class="value old">
+                                            <?php echo number_format($price_package, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                    <?php } else{?>
+                                        <span class="value">
+                                            <?php echo number_format($price_package_final, 2, ',', ''); ?><span>грн</span>
+                                        </span>
+                                    <?php } ?>
+                                </div>
+                            </div>
+
+                            <div class="product-item-inner">
+                                <?php if ($showBuyButton):?>
+                                <div class="product actions product-item-actions">
+                                    <div class="actions-primary">
+                                        <?php if ($_product->isSaleable()): ?>
+                                            <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                            <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>" action="<?= /* @NoEscape */ $postParams['action'] ?>" method="post">
+                                                <input type="hidden" name="product" value="<?= /* @escapeNotVerified */ $postParams['data']['product'] ?>">
+                                                <input type="hidden" name="<?= /* @escapeNotVerified */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @escapeNotVerified */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+												<input type="hidden" name="qty" value="1">
+                                                <?= $block->getBlockHtml('formkey') ?>
+                                                <button type="submit"
+                                                        title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                        class="action tocart primary">
+                                                    <span><?= /* @escapeNotVerified */ __('Add to Cart') ?></span>
+                                                </button>
+                                            </form>
+                                        <?php else: ?>
+                                            <?php if ($_product->isAvailable()): ?>
+                                                <div class="stock available"><span><?= /* @escapeNotVerified */ __('In stock') ?></span></div>
+                                            <?php else: ?>
+                                                <div class="stock unavailable"><span><?= /* @escapeNotVerified */ __('Out of stock') ?></span></div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                                <?php if ($showDescription):?>
+                                    <div class="product description product-item-description">
+                                        <?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                        <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" title="<?= /* @escapeNotVerified */ $_productNameStripped ?>"
+                                           class="action more"><?= /* @escapeNotVerified */ __('Learn More') ?></a>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="open-pop-up mobile">
+                            <div class="open">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="2" height="16" viewBox="0 0 2 16" fill="none">
+                                    <circle cx="1" cy="1" r="1" fill="#424242"/>
+                                    <circle cx="1" cy="8" r="1" fill="#424242"/>
+                                    <circle cx="1" cy="15" r="1" fill="#424242"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="close-pop-up mobile">
+                            <div class="close">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                    <path opacity="0.54" fill-rule="evenodd" clip-rule="evenodd" d="M14.9869 1.40003L13.5879 3.05176e-05L7.99176 5.60003L2.39562 3.05176e-05L0.996582 1.40003L6.59272 7.00003L0.996582 12.6L2.39562 14L7.99176 8.40003L13.5879 14L14.9869 12.6L9.3908 7.00003L14.9869 1.40003Z" fill="#424242"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+<?php endif; ?>
+<div class="category-link-wrapper">
+    <a href="<?= /* @escapeNotVerified */ $categoryUrl ?>" class="category-link" >
+        <?php echo __('View all ').$categoryName ?>
+    </a>
+</div>
+<script>
+    require(['jquery', 'owlcarousel'], function ($){
+        $(document).ready(function(){
+
+
+            // find element
+            $owl = $('body').find('.home-new-products.owl-carousel');
+
+// set the owl-carousel otions
+            var carousel_Settings = {
+                "items" : 4,
+                loop:true,
+                margin:1,
+                nav:false,
+                dots: false,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                        nav:false,
+                        dots:false
+                    },
+                    450:{
+                        items:2,
+                        nav:false,
+                        dots:false
+                    },
+                    771:{
+                        items:3,
+                        nav:false,
+                        dots:false
+                    },
+                    900:{
+                        items:4,
+                        nav:false,
+                        dots:false
+                    },
+                    1200:{
+                        items:5,
+                        nav:false,
+                        dots:false
+                    }
+                },
+                navText: [
+                    "\
+                       <div><?=  __('Prev product') ?></div>\
+                       <svg width=\"24\" height=\"18\" viewBox=\"0 0 24 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\
+                           <path d=\"M7.83868 0.816051C8.16564 0.477658 8.70981 0.477658 9.04821 0.816051C9.37517 1.14301 9.37517 1.68718 9.04821 2.01338L2.91521 8.14638H23.1533C23.625 8.14714 24 8.52212 24 8.99389C24 9.46565 23.625 9.85282 23.1533 9.85282H2.91521L9.04821 15.9744C9.37517 16.3128 9.37517 16.8577 9.04821 17.1839C8.70981 17.5223 8.16488 17.5223 7.83868 17.1839L0.253796 9.59903C-0.0845985 9.27207 -0.0845985 8.7279 0.253796 8.4017L7.83868 0.816051Z\" fill=\"#878787\"/>\
+                       </svg>",
+                    "\
+                    <div><?=  __('Next product') ?></div>\
+                    <svg width=\"24\" height=\"18\" viewBox=\"0 0 24 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\
+                        <path d=\"M16.1613 0.816051C15.8344 0.477658 15.2902 0.477658 14.9518 0.816051C14.6248 1.14301 14.6248 1.68718 14.9518 2.01338L21.0848 8.14638H0.846745C0.374976 8.14714 0 8.52212 0 8.99389C0 9.46565 0.374976 9.85282 0.846745 9.85282H21.0848L14.9518 15.9744C14.6248 16.3128 14.6248 16.8577 14.9518 17.1839C15.2902 17.5223 15.8351 17.5223 16.1613 17.1839L23.7462 9.59903C24.0846 9.27207 24.0846 8.7279 23.7462 8.4017L16.1613 0.816051Z\" fill=\"#878787\"/>\
+                    </svg>"
+                ]
+            };
+
+            function initialize(){
+                var containerWidth = $('body').outerWidth();
+                if(containerWidth > 767) {
+                    // initialize owl-carousel if window screensize is less the 767px
+                    $owl.owlCarousel( carousel_Settings );
+                } else {
+                    // destroy owl-carousel and remove all depending classes if window screensize is bigger then 767px
+                    $owl.trigger('destroy.owl.carousel').removeClass(' owl-loaded');
+                    $owl.find('.owl-stage-outer').children().unwrap();
+                }
+            }
+
+// initilize after window resize
+
+            $(window).resize( function() {
+                initialize();
+            });
+
+// initilize onload
+            initialize();
+        });
+    })
+</script>

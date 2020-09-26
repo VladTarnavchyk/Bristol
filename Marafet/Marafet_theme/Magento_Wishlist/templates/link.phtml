@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var \Magento\Wishlist\Block\Link $block */
+?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+?>
+<li class="link wishlist" data-bind="scope: 'wishlist'">
+    <?php
+    if($customerSession->isLoggedIn()):?>
+        <a <?= /* @noEscape */ $block->getLinkAttributes() ?> ><?= $block->escapeHtml($block->getLabel()) ?>
+            <!-- ko if: wishlist().counter -->
+            <span data-bind="text: wishlist().counter" class="counter qty"></span>
+            <!-- /ko -->
+        </a>
+    <?php else:?>
+        <a href="#" data-action="link-to-wishlist"><?= $block->escapeHtml($block->getLabel()) ?>
+
+        </a>
+    <?php endif;?>
+</li>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "wishlist": {
+                        "component": "Magento_Wishlist/js/view/wishlist"
+                    }
+                }
+            }
+        }
+    }
+
+</script>

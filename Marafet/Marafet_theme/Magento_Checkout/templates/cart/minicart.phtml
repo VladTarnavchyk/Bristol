@@ -1,0 +1,66 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+?>
+<div data-block="minicart" class="minicart-wrapper">
+    <a class="action showcart" href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>" data-bind="scope: 'minicart_content'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.17072 16.6232C5.0675 16.6232 4.18213 17.511 4.18213 18.6071C4.18213 19.7022 5.0675 20.5909 6.17072 20.5909C7.27494 20.5909 8.16931 19.7022 8.16931 18.6071C8.16931 17.511 7.27494 16.6232 6.17072 16.6232ZM16.1638 16.6232C15.0605 16.6232 14.1752 17.511 14.1752 18.6071C14.1752 19.7022 15.0605 20.5909 16.1638 20.5909C17.268 20.5909 18.1624 19.7022 18.1624 18.6071C18.1624 17.511 17.268 16.6232 16.1638 16.6232ZM2.17344 0.752319H0.173828V2.73519H2.17344L5.76895 10.262L4.41689 12.6932C4.261 12.9779 4.17206 13.3032 4.17206 13.6474C4.17206 14.7425 5.06744 15.6313 6.17068 15.6313H18.1624V13.6474H6.59338C6.45548 13.6474 6.34456 13.5373 6.34456 13.3994L6.37453 13.2794L7.27191 11.6636H14.7158C15.4672 11.6636 16.1228 11.2519 16.4645 10.6429L20.0361 4.20622C20.116 4.06537 20.162 3.9017 20.162 3.72811C20.162 3.17957 19.7143 2.73519 19.1617 2.73519H4.38491L3.97919 1.88808C3.66041 1.21654 2.97089 0.752319 2.17344 0.752319Z" fill="white"/>
+        </svg>
+        <span class="text"><?php echo __('My Cart'); ?></span>
+        <span class="cart_count counter qty empty" data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+            <span class="counter-number">(
+                <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+                )
+            </span>
+        </span>
+    </a>
+    <?php //if ($block->getIsNeedToDisplaySideBar()): ?>
+        <div class="block block-minicart"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "appendTo":"[data-block=minicart]",
+                "triggerTarget":".showcart",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
+            <div class="minicart_overlay">
+                <div class="minicart_overlay_img"></div>
+            </div>
+            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            </div>
+            <?= $block->getChildHtml('minicart.addons') ?>
+        </div>
+    <?php /* else: ?>
+        <script>
+            require(['jquery'], function ($) {
+                $('a.action.showcart').click(function() {
+                    $(document.body).trigger('processStart');
+                });
+            });
+        </script>
+    <?php endif */ ?>
+    <script>
+        window.checkout = <?= /* @escapeNotVerified */ $block->getSerializedConfig() ?>;
+    </script>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='minicart']": {
+            "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout() ?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?= /* @escapeNotVerified */ $block->getViewFileUrl('images/loader-1.gif') ?>"
+        }
+    }
+    </script>
+</div>

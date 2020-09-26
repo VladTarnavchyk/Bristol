@@ -1,0 +1,215 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+
+<?php $attributeId = $block->getAttributeId()?>
+<?php $isMulti = $block->getIsMultiselect()?>
+<?php $canShowQty = (is_null($block->getShowQty())) ? $this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer() : $block->getShowQty();?>
+<?php $current_url = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]); ?>
+
+<?php if ($filter instanceof Magento\CatalogSearch\Model\Layer\Filter\Price): ?>
+    <?php
+    $range = $this->getPriceRange($filter);
+    ?>
+    <?php if($range['min'] != $range['max']): ?>
+        <div class="price_filter_wrap">
+            <div class="price_filter_content">
+                <div id="price-slider"></div>
+                <div class="price_inputs">
+                    <div class="price_from">
+                        <input class="filter-price-from input-text" data-min-value="<?php echo (int)$range['min']; ?>" value="<?php echo (int)$range['min']; ?>" name="price_from" type="text" readonly/>
+                    </div>
+                    <div class="price_to">
+                        <input class="filter-price-to input-text" data-max-value="<?php echo (int)$range['max']; ?>" value="<?php echo (int)$range['max']; ?>" name="price_to" type="text" readonly/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            require(['jquery', 'jquery/ui'],
+                function($) {
+                    $("div#price-slider").slider({
+                        range: true,
+                        min: <?php echo $range['min'] ?>,
+                        max: <?php echo $range['max'] ?>,
+                        step: 1,
+                        values: [<?php echo $range['min'] ?>, <?php echo $range['max'] ?>],
+                        stop: function (event, ui) {
+                            $('.price_filter_wrap').find('input.filter-price-from').val(ui.values[0]);
+                            $('.price_filter_wrap').find('input.filter-price-to').val(ui.values[1]);
+                            runFilter();
+                        }
+                    });
+
+                    $('.filter-price-from').on('change', function(){
+                        var input_val = $(this).val();
+                        $("div#price-slider").slider({
+                            values: [input_val, $('.price_filter_wrap').find('input.filter-price-to').val()]
+                        });
+
+                        runFilter();
+                    });
+
+                    $('.filter-price-to').on('change', function(){
+                        var input_val = $(this).val();
+                        $("div#price-slider").slider({
+                            values: [$('.price_filter_wrap').find('input.filter-price-from').val(), input_val]
+                        });
+                        runFilter();
+                    });
+
+                    function runFilter() {
+                        var current_url = '<?php echo $current_url; ?>';
+                        var min = '<?php echo $range['min'] ?>';
+                        var max =  '<?php echo $range['max'] ?>';
+                        var input_val_from =  $('.filter-price-from').val();
+                        var input_val_to =  $('.filter-price-to').val();
+                        if(input_val_from == ''|| input_val_from <= 0 || !jQuery.isNumeric (input_val_from)){
+                            input_val_from = parseInt(min);
+                        };
+
+                        if(input_val_to == ''|| input_val_to <= 0 || !jQuery.isNumeric (input_val_to)){
+                            input_val_to = parseInt(max);
+                        };
+                        if(parseInt(input_val_from ) >= parseInt(input_val_to)){
+                            input_val_from = input_val_to-1;
+                        };
+
+                        if(current_url.indexOf('?') !== -1){
+                            if(current_url.indexOf('price=') !== -1){
+                                var old_prices = current_url.substring(current_url.indexOf('price=')+6, );
+                                if( old_prices.indexOf('&') !== -1){
+                                    old_prices = old_prices.substring(old_prices.indexOf(-1),old_prices.indexOf('&') );
+                                }
+                                var new_prices = input_val_from.toString()+'-'+input_val_to.toString();
+                                current_url = current_url.replace(old_prices, new_prices);
+                                window.location.replace(current_url);
+                            }else{
+                                current_url = current_url+'&price='+input_val_from+'-'+input_val_to;
+                                window.location.replace(current_url);
+                            }
+                        }else {
+                            current_url = current_url+'?price='+input_val_from+'-'+input_val_to;
+                            window.location.replace(current_url);
+                        };
+                    }
+
+                }
+            );
+        </script>
+    <?php endif; ?>
+<?php else: ?>
+    <ol class="items" id="<?= $attributeId ?>_items" >
+
+        <?php foreach ($filterItems as $filterItem): ?>
+            <?php $requestVar = $filterItem->getFilter()->getRequestVar();?>
+            <?php $filterItemVal = is_array($filterItem->getValue()) ? implode('-', $filterItem->getValue()) : $filterItem->getValue()?>
+            <?php $dataOptPath = ($requestVar != 'cat') ? $filterItem->getFilter()->getAttributeModel()->getAttributeCode() . '='. $filterItemVal : 'cat='.$filterItemVal;?>
+            <?php if($requestVar == 'cat'): ?>
+                <?php if ($filterItem->getCount() > 0): ?>
+                    <li class="item"  style="display: none" id="wp_ln_attr_<?= $attributeId ?>_<?= /* @escapeNotVerified */ is_array($filterItem->getValue()) ? implode('-', $filterItem->getValue()) : $filterItem->getValue() ?>">
+                        <?php $filter = $filterItem->getFilter();?>
+                        <a href="<?= $block->escapeUrl($filterItem->getUrl()) ?>"
+                           data-opt-path="<?= /* @escapeNotVerified */ $dataOptPath ?>"
+                           data-is-multi="<?= $isMulti?>">
+                            <?= /* @escapeNotVerified */ $filterItem->getLabel() ?>
+                            <?php if ($canShowQty): ?>
+                                <span class="count"><?= /* @escapeNotVerified */ $filterItem->getCount() ?><span class="filter-count-label">
+									<?php if ($filterItem->getCount() == 1):?> <?= /* @escapeNotVerified */ __('item') ?><?php else:?> <?= /* @escapeNotVerified */ __('items') ?><?php endif;?></span></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+
+            <?php else: ?>
+                <li class="item"  style="display: none" id="wp_ln_attr_<?= $attributeId ?>_<?= /* @escapeNotVerified */ is_array($filterItem->getValue()) ? implode('-', $filterItem->getValue()) : $filterItem->getValue() ?>">
+                    <?php if ($filterItem->getCount() > 0): $filter = $filterItem->getFilter();?>
+                        <a href="<?= $block->escapeUrl($filterItem->getUrl()) ?>"
+                           data-opt-path="<?= /* @escapeNotVerified */ $dataOptPath ?>"
+                           data-is-multi="<?= $isMulti?>">
+                            <?= /* @escapeNotVerified */ $filterItem->getLabel() ?>
+                            <?php if ($canShowQty): ?>
+                                <span class="count"><?= /* @escapeNotVerified */ $filterItem->getCount() ?><span class="filter-count-label">
+									<?php if ($filterItem->getCount() == 1):?> <?= /* @escapeNotVerified */ __('item') ?><?php else:?> <?= /* @escapeNotVerified */ __('items') ?><?php endif;?></span></span>
+                            <?php endif; ?>
+                        </a>
+                    <?php else:?>
+                        <?= /* @escapeNotVerified */ $filterItem->getLabel() ?>
+                        <?php if ($canShowQty): ?>
+                            <span class="count"><?= /* @escapeNotVerified */ $filterItem->getCount() ?><span class="filter-count-label">
+								<?php if ($filterItem->getCount() == 1):?><?= /* @escapeNotVerified */ __('item') ?><?php else:?><?= /* @escapeNotVerified */ __('items') ?><?php endif;?></span></span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </li>
+            <?php endif; ?>
+        <?php endforeach ?>
+        <div class="wp-ln-actions">
+            <b id="loadMore_<?=$attributeId?>" class="wp-ln-action wp-ln-load-more icon-line-arrow-down"></b>
+            <b id="showLess_<?=$attributeId?>"  class="wp-ln-action wp-ln-show-less icon-line-arrow-up"></b>
+        </div>
+    </ol>
+<?php endif; ?>
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function($){
+        $(document).ready(function(){
+            var visibleItems = "<?= $block->getVisibleItems()?>",
+                visibleItemsStep = "<?= $block->getVisibleItemsStep()?>",
+                attrId = "<?= $attributeId?>",
+                elId = attrId + '_items',
+                ulSize = $('#' + elId + ' li').size(),
+                loadMoreId = '#loadMore_' + attrId,
+                showLessId = '#showLess_' + attrId,
+                x = parseInt(visibleItems),
+                initialX = x,
+                xStep = parseInt(visibleItemsStep);
+            if(visibleItems > 0 && visibleItems.length > 0 && visibleItems < 99 && ulSize > visibleItems) {
+                $(loadMoreId).show();
+                $("#"+ elId + " li:lt(" + visibleItems + ")").show();
+                $(showLessId).hide();
+            } else {
+                $("#"+ elId + " li").show();
+                $(loadMoreId).hide();
+                $(showLessId).hide();
+            }
+
+            $(loadMoreId).click(function () {
+                if(xStep == 99) {
+                    $('#' + elId + ' li:lt(' + ulSize + ')').show();
+                    $(this).hide();
+                    $(showLessId).show();
+                } else {
+                    x = ( x + xStep <= ulSize) ? x + xStep : ulSize;
+                    $('#' + elId + ' li:lt(' + x + ')').show();
+                    if(ulSize == x){
+                        $(this).hide();
+                        $(showLessId).show();
+                    }else{
+                        $(showLessId).show();
+                    }
+                }
+            });
+
+            $(showLessId).click(function () {
+                if(xStep == 99) {
+                    $('#' + elId + ' li').not(':lt(' + xStep + ')').hide();
+                    $(this).hide();
+                    $(loadMoreId).show();
+                } else {
+                    x = ( x - xStep < 0 || x == ulSize) ? initialX : x - xStep;
+                    $('#' + elId + ' li').not(':lt(' + x + ')').hide();
+                    if(x <= visibleItems){
+                        $(this).hide();
+                        $(loadMoreId).show();
+                    }else{
+                        $(loadMoreId).show();
+                    }
+
+                }
+            });
+
+        })
+
+    });
+</script>

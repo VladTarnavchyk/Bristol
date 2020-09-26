@@ -1,0 +1,139 @@
+`<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php
+$_product = $block->getProduct();
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+if (null !== $_product->getCustomAttribute('pieces_in_the_package')) {
+    $piece_packing = $_product->getCustomAttribute('pieces_in_the_package')->getValue()*1;
+}else{
+    $piece_packing = 1;
+}
+?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?= /* @escapeNotVerified */ __('Qty product') ?></span></label>
+                    <div class="control qty-wrapper">
+                        <a href="javascript:void(0);" class="product_view_qty_btn decrement_btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="none">
+                                <rect width="10" height="2" fill="#878787"/>
+                            </svg>
+                        </a>
+                        <input type="number"
+                               name="qty"
+                               id="qty"
+                               min="0"
+                               value="1"
+							   data-multiplicity="1"
+                               title="<?= /* @escapeNotVerified */ __('Qty') ?>"
+                               class="input-text qty front"
+                               data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                               readonly="readonly"
+                        />
+                        <a href="javascript:void(0);" class="product_view_qty_btn increment_btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                <rect y="4" width="10" height="2" fill="#393939"/>
+                                <rect x="4" y="10" width="10" height="2" transform="rotate(-90 4 10)" fill="#393939"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <span class="qty_info hidden" ><?= /* @escapeNotVerified */ __('Multiple sales to packages') ?></span>
+                    <span class="qty_info  price-total" >
+                        <span class="label"><?= /* @escapeNotVerified */ __('Total:') ?></span>
+                        <span class="value"><?php echo round($_product->getFinalPrice(), 2); ?></span>
+                        <span class="simbol">грн</span>
+                    </span>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+
+                <button type="submit"
+                        title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
+                        class="action primary tocart"
+                        id="product-addtocart-button" disabled>
+                    <span><?= /* @escapeNotVerified */ $buttonTitle ?></span>
+                </button>
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require(['jquery'], function ($){
+            $(document).ready(function(){
+                $('.increment_btn').click(function() {
+                    var oldVal = $(this).closest('.qty-wrapper').find("#qty").val();
+                    oldVal = parseFloat(oldVal.replace(',', '.'));
+                    priceProductOld = "<?php echo $_product->getFinalPrice(); ?>"*100/100;
+
+					
+					if ( parseFloat(oldVal) >= 0 ) {
+						var newValFront = oldVal + parseInt($(this).closest('.qty-wrapper').find("#qty").attr('data-multiplicity'));
+                        priceProductNew = priceProductOld * newValFront;
+						$(this).closest('.qty-wrapper').find("#qty").val(newValFront);
+                        $(this).closest('.qty-wrapper').siblings(".price-total").find('.value').text(priceProductNew);
+
+                    }
+					
+                    /* if ( parseFloat(oldVal) >= 0 ) {
+                        var newVal = Math.round((oldVal + 1.0)* 10, -1) / 10;
+                        if($(this).closest('.qty-wrapper').find("#qty").hasClass('weight_product')) {
+                            if(newVal.toString().indexOf('.') == -1) {
+                                newVal = newVal + '.0';
+                            }
+                        }
+                        $(this).closest('.qty-wrapper').find("#qty").val(newVal);
+                        var newValFront = newVal*;
+                        $(this).closest('.qty-wrapper').find("#qty-front").val(newValFront);
+
+                    } */
+                });
+
+                $('.decrement_btn').click(function() {
+                    var oldVal = $(this).closest('.qty-wrapper').find("#qty").val();
+                    oldVal = parseFloat(oldVal.replace(',', '.'));
+                    priceProductOld = "<?php echo $_product->getFinalPrice(); ?>"*100/100;
+					
+					if ( parseFloat(oldVal) > parseInt($(this).closest('.qty-wrapper').find("#qty").attr('data-multiplicity')) ) {
+						var newValFront = oldVal - parseInt($(this).closest('.qty-wrapper').find("#qty").attr('data-multiplicity'));
+                        priceProductNew = priceProductOld * newValFront;
+						$(this).closest('.qty-wrapper').find("#qty").val(newValFront);
+                        $(this).closest('.qty-wrapper').siblings(".price-total").find('.value').text(priceProductNew);
+					}
+					
+                    /* if ( parseFloat(oldVal) > 1 ) {
+                        var newVal = Math.round((oldVal - 1.0)* 10, -1) / 10;
+                        if($(this).closest('.qty-wrapper').find("#qty").hasClass('weight_product')) {
+                            if(newVal.toString().indexOf('.') == -1) {
+                                newVal = newVal + '.0';
+                            }
+                        }
+                        $(this).closest('.qty-wrapper').find("#qty").val(newVal);
+                        var newValFront = newVal*;
+                        $(this).closest('.qty-wrapper').find("#qty-front").val(newValFront);
+
+                    } */
+                });
+
+
+            });
+        })
+    </script>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>

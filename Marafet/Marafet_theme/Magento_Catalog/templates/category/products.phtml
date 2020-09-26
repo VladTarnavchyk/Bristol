@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+?>
+<?php if (!$block->isContentMode() || $block->isMixedMode()) :?>
+    <?php
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+    ?>
+    <?php if ($category->getId() == 48) :?>
+        <?php echo $this->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Slider')->setTemplate('Mageplaza_BannerSlider::action_page.phtml')->toHtml(); ?>
+    <?php  else: ?>
+        <?= $block->getProductListHtml() ?>
+    <?php endif; ?>
+<?php endif; ?>

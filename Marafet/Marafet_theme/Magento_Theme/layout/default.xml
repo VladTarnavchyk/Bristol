@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <move element="minicart" destination="header_bottom_panel" after="wish-list-link"/>
+        <move element="catalog.compare.link" destination="header_operations" after="wish-list-link"/>
+        <!--<move element="navigation.sections" destination="header_bottom_panel" before="-"/>-->
+        <referenceBlock name='navigation.sections' remove='true'/>
+        <referenceContainer name="header.container">
+            <referenceContainer name="header.panel.wrapper">
+                <referenceContainer name="header.panel">
+                    <container name="header.contacts_and_language" htmlClass="contacts_and_language" htmlTag="div" before="-">
+                        <block
+                                class="Magento\Store\Block\Switcher"
+                                name="store_language"
+                                as="store_language"
+                                template="Magento_Store::switch/languages.phtml"
+                                after='contacts_links'>
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">Magento\Store\ViewModel\SwitcherUrlProvider</argument>
+                            </arguments>
+                        </block>
+                    </container>
+                    <block class="Magento\Cms\Block\Block" name="header_top_links" after="header.contacts_and_language">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">header_top_links</argument>
+                        </arguments>
+                    </block>
+                </referenceContainer>
+            </referenceContainer>
+            <referenceContainer name="header-wrapper">
+                <block class="Magento\Cms\Block\Block" name="header_contact_info_link" after="top.search">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">header_contact_info_link</argument>
+                    </arguments>
+                </block>
+            </referenceContainer>
+            <container name='header_bottom_panel' htmlTag='div' htmlClass='header_bottom_panel' after="header-wrapper">
+                <block class="Magento\Framework\View\Element\Template" name="store.menu" group="navigation-sections" template="Magento_Theme::html/container.phtml">
+                    <arguments>
+                        <argument name="title" translate="true" xsi:type="string">Menu</argument>
+                    </arguments>
+                    <block class="Magento\Theme\Block\Html\Topmenu" name="catalog.topnav" template="Magento_Theme::html/topmenu.phtml" ttl="3600" before="-"/>
+                </block>
+                <container name='header_operations' htmlTag='div' htmlClass='header_icons' after="store.menu">
+                    <block class="Magento\Wishlist\Block\Link" name="wish-list-link">
+                        <arguments>
+                            <argument name="sortOrder" xsi:type="number">60</argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+
+        <!--<referenceContainer name="content">-->
+            <!--<referenceBlock class="Magento\Catalog\Block\Category\View" name="category.products" template="Magento_Catalog::category/products.phtml">-->
+                <!--<referenceBlock class="Magento\Catalog\Block\Product\ListProduct" name="category.products.list" as="product_list" template="Magento_Catalog::product/list.phtml">-->
+                    <!--<block class="Magento\Catalog\Block\Product\ProductList\Item\Container" name="category.product.addto" as="addto">-->
+                        <!--<block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare"-->
+                               <!--name="category.product.addto.compare" as="compare"-->
+                               <!--template="Magento_Catalog::product/list/addto/compare.phtml"/>-->
+                    <!--</block>-->
+                <!--</referenceBlock>-->
+            <!--</referenceBlock>-->
+        <!--</referenceContainer>-->
+
+
+        <referenceContainer name="footer-container">
+            <container name="footer" as="footer" label="Page Footer" htmlTag="div" htmlClass="footer footer-wrapper">
+                <block class="Magento\Theme\Block\Html\Footer" name="footer.content" template="html/footer.phtml">
+                    <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="subscribe.phtml"/>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

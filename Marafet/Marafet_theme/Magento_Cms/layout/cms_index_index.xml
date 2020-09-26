@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!--<referenceContainer name="content">-->
+            <!--<container name='homepage.wrapper' htmlTag='div' htmlClass='homepage_wrapper' before="-">-->
+                <!--<container name='homepage.container' htmlTag='div' htmlClass='homepage_container' before="-">-->
+                    <!--<container name='top.products.wrapper' htmlTag='div' htmlClass='top_products_wrapper' before="-">-->
+                        <!--<block class="Magento\Catalog\Block\Product\ListProduct" name="top.products.slider" template="Magento_Catalog::catalog/product/HomeActionProducts.phtml"  before="-">-->
+                            <!--<referenceBlock name="category.product.addto">-->
+                                <!--<block class="Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist"-->
+                                       <!--name="category.product.addto.wishlist" as="wishlist" before="compare"-->
+                                       <!--template="Magento_Wishlist::catalog/product/list/addto/wishlist.phtml"/>-->
+                            <!--</referenceBlock>-->
+                            <!--<referenceContainer name="category.product.list.additional">-->
+                                <!--<block class="Magento\Wishlist\Block\AddToWishlist" name="category.product.list.additional.wishlist_addto" template="Magento_Wishlist::addto.phtml" />-->
+                            <!--</referenceContainer>-->
+                        <!--</block>-->
+                    <!--</container>-->
+                <!--</container>-->
+            <!--</container>-->
+        <!--</referenceContainer>-->
+
+    </body>
+</page>

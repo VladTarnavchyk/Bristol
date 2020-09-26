@@ -1,0 +1,78 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$item = $block->getItem();
+$_product = $item->getProduct();
+?>
+
+<?php foreach ($block->getChildNames() as $childName) : ?>
+    <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
+<?php endforeach;?>
+
+<?php
+$piece_packing = 1;
+if ( $_product->getCustomAttribute('pieces_in_the_package')->getValue() == 0 || $_product->getCustomAttribute('pieces_in_the_package')== null ||  $_product->getCustomAttribute('pieces_in_the_package')->getValue() == '') {
+    $piece_packing = 1;
+}else{
+    $piece_packing = $_product->getCustomAttribute('pieces_in_the_package')->getValue()*1;
+}
+if($_product->getTypeId() == 'configurable'){
+    $_config_product = $_objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+    $_children = $_config_product->getTypeInstance()->getUsedProducts($_config_product);
+    $_children_price = array();
+    $_children_final_price = array();
+    foreach ($_children as $_child){
+        array_push($_children_price, $_child->getPrice()*1);
+        array_push( $_children_final_price, $_child->getFinalPrice()*1);
+    }
+    $price_piece_packing = min($_children_price)*1;
+    $price_piece_packing_final = min( $_children_final_price)*1;
+}else{
+    $price_piece_packing = $_product->getPrice()*1;
+    $price_piece_packing_final = $_product->getFinalPrice()*1;
+}
+$price_package =  floor($price_piece_packing*$piece_packing * 100) / 100;
+$price_package_final =  floor( $price_piece_packing_final*$piece_packing * 100) / 100;
+?>
+<div class="prices-wrapper">
+    <div class="piece_packing hidden">
+        <span class="label">  <?= /* @escapeNotVerified */ __('Piece packing') ?></span>
+        <span class="value"><?php echo $piece_packing ; ?></span>
+    </div>
+    <div class="price_piece_packing">
+        <span class="label hidden">  <?= /* @escapeNotVerified */ __('Price piece packing') ?></span>
+        <?php if ($price_piece_packing >  $price_piece_packing_final) { ?>
+            <span class="value">
+                                            <?php echo $price_piece_packing_final ; ?><span>грн</span>
+                                        </span>
+            <span class="value old">
+                                            <?php echo $price_piece_packing ; ?><span>грн</span>
+                                        </span>
+        <?php } else{?>
+            <span class="value">
+                                            <?php echo $price_piece_packing ; ?><span>грн</span>
+                                        </span>
+        <?php } ?>
+
+    </div>
+    <div class="price_package hidden">
+        <span class="label"><?= /* @escapeNotVerified */ __('Price package'); ?></span>
+        <?php if ($price_package >  $price_package_final) { ?>
+            <span class="value">
+                                            <?php echo $price_package_final ; ?>
+                                        </span>
+            <span class="value old">
+                                            <?php echo $price_package; ?>
+                                        </span>
+        <?php } else{?>
+            <span class="value">
+                                            <?php echo $price_package; ?>
+                                        </span>
+        <?php } ?>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+<?php
+	$main_slider = $block->getSimpleBannerCollection(1);
+?>
+<?php if(count($main_slider) > 0): ?>
+	<div class="homepage_slider_wrap">
+		<div class="homepage_slider_content owl-carousel">
+			<?php foreach ($main_slider as $banner): ?>
+				<?php
+					$banner_image = $banner->getImageUrl();
+					$banner_url = $banner->getUrlBanner();
+				?>
+				<div class="item">
+					<div class="image_wrap">
+						<img class="slide_image" src="<?php echo $banner_image ?>">
+						<?php if($banner_url): ?>
+							<div class="banner_button">
+								<a href="<?php echo $banner_url; ?>"><?php echo __('More'); ?></a>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<span class="prev_current"></span>
+		<span class="next_current"></span>
+	</div>
+	
+	<script>
+        require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
+            $('.homepage_slider_content').owlCarousel({
+				loop: true,
+				margin: 0,
+				autoplay: false,
+				items: 1,
+				nav: true,
+				dots: true,
+				onInitialized: counter,
+				onChanged: counter,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:false,
+                        dots:true
+                    },
+                    450:{
+                        items:1,
+                        nav:false,
+                        dots:true
+                    },
+                    771:{
+                        items:1,
+                        nav:true,
+                        dots:true
+                    },
+                    900:{
+                        items:1,
+                        nav:true,
+                        dots:true
+                    },
+                    1200:{
+                        items:1,
+                        nav:true,
+                        dots:true
+                    }
+                },
+			});
+			
+			function counter(event) {
+				if (!event.namespace) {
+					return;
+				}
+				var slides = event.relatedTarget;
+				var slides_count = slides.items().length;
+				
+				var current_slide = slides.relative(slides.current()) + 1;
+				
+				var prev_slide = current_slide - 1;
+				var next_slide = current_slide + 1;
+				
+				if(prev_slide == 0) {
+					prev_slide = slides_count;
+				}
+				if(next_slide > slides_count) {
+					next_slide = 1;
+				}
+				
+				if(next_slide < 10) {
+					next_slide = '0' + next_slide;
+				}
+				
+				if(prev_slide < 10) {
+					prev_slide = '0' + prev_slide;
+				}
+				
+				if(slides_count < 10) {
+					slides_count = '0' + slides_count;
+				}
+				
+				
+				$('.prev_current').html('<span class="slide_counter">' + prev_slide + '</span>/<span class="slides_count">' + slides_count + '</span>');
+				$('.next_current').html('<span class="slide_counter">' + next_slide + '</span>/<span class="slides_count">' + slides_count + '</span>');
+			}
+        });
+    </script>
+<?php endif; ?>

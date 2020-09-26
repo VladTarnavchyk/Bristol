@@ -1,0 +1,96 @@
+<?php
+/**
+ * @copyright Copyright (c) 2017 www.tigren.com
+ * @var $block \Tigren\Ajaxlogin\Block\Form\Login
+ */
+?>
+<div class="mb-login-popup" style="display:none;">
+    <div class="white_block block">
+        <a  class="mb-ajaxsuite-close-custome mb-ajaxsuite-close"></a>
+        <div class="mb-login-popup-title">
+            <span class="mb-login-popup-title-logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <strong><?php echo __('Login'); ?></strong>
+        </div>
+        <div class="mb-ajaxsuite-popup-border mb-ajaxlogin-popup mb-ajaxlogin-login">
+            <form class="form form-login"
+                  method="post"
+                  id="login-form"
+                  enctype="multipart/form-data" autocomplete="off">
+                <?php echo $block->getBlockHtml('formkey'); ?>
+                <fieldset class="fieldset login" data-hasrequired="<?php echo __('* Required Fields') ?>">
+                    <div class="field email required">
+                        <label class="label" for="email"><span><?php echo __('Email') ?></span></label>
+                        <div class="control">
+                            <input name="login[username]"
+                                   value="<?php echo $block->escapeHtml($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()) : ?> autocomplete="off"<?php endif; ?>
+                                   id="email" type="email" class="input-text" title="<?php echo __('Email') ?>"
+                                   data-validate="{required:true, 'validate-email':true}" placeholder="<?php echo __('Email') ?>*">
+                        </div>
+                    </div>
+                    <div class="field password required">
+                        <label for="pass" class="label"><span><?php echo __('Password') ?></span></label>
+                        <div class="control">
+                            <input name="login[password]"
+                                   type="password" <?php if ($block->isAutocompleteDisabled()) : ?> autocomplete="off"<?php endif; ?>
+                                   class="input-text" id="pass" title="<?php echo __('Password') ?>"
+                                   data-validate="{required:true, 'validate-password':true}" placeholder="<?php echo __('Password') ?>*">
+                        </div>
+                    </div>
+                </fieldset>
+                <a class="action forgot" href="<?php echo $block->getForgotPasswordUrl() ?>">
+                    <span><?php echo __('Forgot Your Password?') ?></span>
+                </a>
+                <?php
+                if ($block->isEnableSocialLogin() && !$block->isLoggedIn()) {
+                    ?>
+                    <hr>
+                    <div id="social-login">
+                        <span class="social-login-title"><?php echo __('Or sign in with:') ?></span>
+                        <div class="primary">
+                            <?php if ($this->helper('Tigren\Ajaxlogin\Helper\Data')->getScopeConfig('ajaxlogin/social_login/facebook_appid')) { ?>
+                                <button id="facebook-login-btn" type="button" class="action social-login-btn">
+                                    <span><?php echo __('Facebook Login') ?></span>
+                                </button>
+                            <?php } ?>
+                            <?php if ($this->helper('Tigren\Ajaxlogin\Helper\Data')->getScopeConfig('ajaxlogin/social_login/googleplus_clientid')) { ?>
+                                <button id="ggplus-login-btn" type="button" class="action social-login-btn">
+                                    <span><?php echo __('Google+ Login') ?></span>
+                                </button>
+                            <?php } ?>
+                            <?php if ($this->helper('Tigren\Ajaxlogin\Helper\Data')->getScopeConfig('ajaxlogin/social_login/twitter_consumer_key')
+                                && $this->helper('Tigren\Ajaxlogin\Helper\Data')->getScopeConfig('ajaxlogin/social_login/twitter_consumer_secret')
+                            ) {
+                                ?>
+                                <button id="twitter-login-btn" type="button" class="action social-login-btn">
+                                    <span><?php echo __('Twitter Login') ?></span>
+                                </button>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+                <div class="actions">
+                    <div class="primary">
+                        <button type="submit" class="action submit primary" name="login" id="login">
+                            <span><?php echo __('Login') ?></span>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="green_block block">
+        <div class="actions">
+            <span class="title"><?php echo __('Registration'); ?></span>
+            <span class="block_info_text"><?php echo __('Unless you are a registered user'); ?></span>
+            <div class="secondary">
+                <a class="action mb-create-account button"
+                   href="<?php echo $block->getUrl('customer/account/create'); ?>">
+                    <span><?php echo __('Sign up') ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

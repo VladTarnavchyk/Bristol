@@ -1,0 +1,263 @@
+<?php
+$action_4 = $block->getSimpleBannerCollection(4);
+$action_5 = $block->getSimpleBannerCollection(5);
+$action_6 = $block->getSimpleBannerCollection(6);
+$action_7 = $block->getSimpleBannerCollection(7);
+$action_8 = $block->getSimpleBannerCollection(8);
+$action_9 = $block->getSimpleBannerCollection(9);
+$action_10 = $block->getSimpleBannerCollection(10);
+$action_11 = $block->getSimpleBannerCollection(11);
+$action_12 = $block->getSimpleBannerCollection(12);
+$action_13 = $block->getSimpleBannerCollection(13);
+?>
+
+<div class="action_block_wrapper">
+    <div class="two_items_container">
+        <div class="baner-wrapper long_item">
+            <?php if(count($action_4) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_4 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper long_item">
+            <?php if(count($action_5) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_5 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="tree_items_container">
+        <div class="baner-wrapper short_item" >
+            <?php if(count($action_6) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_6 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper short_item">
+            <?php if(count($action_7) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_7 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper short_item">
+            <?php if(count($action_8) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_8 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="two_items_container">
+        <div class="baner-wrapper long_item">
+            <?php if(count($action_9) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_9 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper long_item">
+            <?php if(count($action_10) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_10 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="tree_items_container">
+        <div class="baner-wrapper short_item" >
+            <?php if(count($action_11) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_11 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper short_item">
+            <?php if(count($action_12) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_12 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="baner-wrapper short_item">
+            <?php if(count($action_13) > 0): ?>
+                <div class="banner_item ">
+                    <?php $i = 1; ?>
+                    <?php foreach ($action_13 as $banner): ?>
+                        <?php if($i < 2): ?>
+                            <?php
+                            $banner_image = $banner->getImageUrl();
+                            $banner_url = $banner->getUrlBanner();
+                            if(!$banner_url) {
+                                $banner_url = '#';
+                            }
+                            ?>
+                            <div class="banner_img">
+                                <a href="<?php echo $banner_url; ?>">
+                                    <img class="slide_image" src="<?php echo $banner_image ?>">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

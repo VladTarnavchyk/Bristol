@@ -1,0 +1,137 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Blog
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var \Mageplaza\Blog\Block\Frontend $block */
+?>
+<div class="post-list-content" id="mpblog-list-container">
+    <div class="title_wrapper">
+        <span class="h1"> <?= /* @escapeNotVerified */ __('News') ?></span>
+    </div>
+
+    <?php $postCollection = $block->getPostCollection(); ?>
+    <?php if ($postCollection && $postCollection->getSize()) : ?>
+        <div class="post-list-body owl-carousel">
+            <?php $i = 1 ?>
+            <?php /** @var \Mageplaza\Blog\Model\Post $post */
+            foreach ($postCollection as $post) : ?>
+                <div class="post-list-item col-mp<?= $block->isGridView() ? ' post-item-grid mp-4 mp-md-4  mp-sm-6 mp-xs-12' : ' post-item-list mp-12'; ?>">
+                    <div class="post-item-wraper">
+                        <div class="post-info-wraper">
+                            <?php if ($post->getImage()) : ?>
+                                <div class="post-image">
+                                    <a href="<?= $post->getUrl() ?>">
+                                        <img class="img-responsive"
+                                             src="<?= $block->resizeImage($post->getImage(), '400x'); ?>"
+                                             alt="<?= $block->escapeHtml($post->getName()); ?>"/>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <div class="mp-post-info">
+                                <?= $block->getHomePostInfo($post); ?>
+                            </div>
+                            <h2 class="mp-post-title">
+                                <a class="post-link-title" title="<?= $block->escapeHtml($post->getName()); ?>"
+                                   href="<?= $post->getUrl() ?>">
+                                    <?= $post->getName(); ?>
+                                </a>
+                            </h2>
+
+
+                            <div class="post-short-description">
+                                <p><?= $block->maxShortDescription($post->getShortDescription()); ?></p>
+                            </div>
+                            <div class="mp-clearfix"></div>
+                            <div class="mp-post-meta-info mp-alignright">
+                                <div class="actions">
+                                    <a class="mp-read-more" href="<?= $post->getUrl(); ?>"
+                                       title="<?= __('Read more'); ?>">
+                                        <?= __('Read more'); ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else : ?>
+        <?= __('There are no posts at this moment'); ?>
+    <?php endif; ?>
+</div>
+<script>
+    require(['jquery'], function ($) {
+        $('.limiter').css('float', 'right');
+    });
+</script>
+<script>
+    require(['jquery', 'owlcarousel'], function ($){
+        $(document).ready(function(){
+            $(".post-list-body.owl-carousel").owlCarousel({
+                "items" : 4,
+                loop:true,
+                margin:1,
+                nav:false,
+                dots: false,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                        nav:false,
+                        dots:false
+                    },
+                    450:{
+                        items:2,
+                        nav:false,
+                        dots:false
+                    },
+                    771:{
+                        items:3,
+                        nav:false,
+                        dots:false
+                    },
+                    900:{
+                        items:4,
+                        nav:false,
+                        dots:false
+                    },
+                    1200:{
+                        items:4,
+                        nav:false,
+                        dots:false
+                    }
+                },
+                navText: [
+                    "\
+                       <div><?=  __('Prev product') ?></div>\
+                       <svg width=\"24\" height=\"18\" viewBox=\"0 0 24 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\
+                           <path d=\"M7.83868 0.816051C8.16564 0.477658 8.70981 0.477658 9.04821 0.816051C9.37517 1.14301 9.37517 1.68718 9.04821 2.01338L2.91521 8.14638H23.1533C23.625 8.14714 24 8.52212 24 8.99389C24 9.46565 23.625 9.85282 23.1533 9.85282H2.91521L9.04821 15.9744C9.37517 16.3128 9.37517 16.8577 9.04821 17.1839C8.70981 17.5223 8.16488 17.5223 7.83868 17.1839L0.253796 9.59903C-0.0845985 9.27207 -0.0845985 8.7279 0.253796 8.4017L7.83868 0.816051Z\" fill=\"#878787\"/>\
+                       </svg>",
+                    "\
+                    <div><?=  __('Next product') ?></div>\
+                    <svg width=\"24\" height=\"18\" viewBox=\"0 0 24 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\
+                        <path d=\"M16.1613 0.816051C15.8344 0.477658 15.2902 0.477658 14.9518 0.816051C14.6248 1.14301 14.6248 1.68718 14.9518 2.01338L21.0848 8.14638H0.846745C0.374976 8.14714 0 8.52212 0 8.99389C0 9.46565 0.374976 9.85282 0.846745 9.85282H21.0848L14.9518 15.9744C14.6248 16.3128 14.6248 16.8577 14.9518 17.1839C15.2902 17.5223 15.8351 17.5223 16.1613 17.1839L23.7462 9.59903C24.0846 9.27207 24.0846 8.7279 23.7462 8.4017L16.1613 0.816051Z\" fill=\"#878787\"/>\
+                    </svg>"
+                ]
+            });
+
+        });
+    })
+</script>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true" />
+    <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true" />
+    <referenceBlock name="customer-account-navigation-product-reviews-link" remove="true" />
+    <referenceBlock name="sale.reorder.sidebar" remove="true" />
+    <body>
+        <referenceContainer name="sidebar.main">
+            <referenceBlock  name="sidebar.main.account_nav" >
+                <referenceBlock  name="customer_account_navigation" >
+                    <referenceBlock class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-link">
+                        <arguments>
+                            <argument name="sortOrder" xsi:type="number">370</argument>
+                        </arguments>
+                    </referenceBlock>
+                    <referenceBlock  name="customer-account-navigation-account-edit-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Personal data</argument>
+                            <argument name="sortOrder" xsi:type="number">360</argument>
+                        </arguments>
+                    </referenceBlock>
+                    <referenceBlock class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-orders-link">
+                        <arguments>
+                            <argument name="sortOrder" xsi:type="number">350</argument>
+                        </arguments>
+                    </referenceBlock>
+                    <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-sign-out-link">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Sign out</argument>
+                            <argument name="path" xsi:type="string">customer/account/logout</argument>
+                            <argument name="sortOrder" xsi:type="number">10</argument>
+                        </arguments>
+                    </block>
+                </referenceBlock>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

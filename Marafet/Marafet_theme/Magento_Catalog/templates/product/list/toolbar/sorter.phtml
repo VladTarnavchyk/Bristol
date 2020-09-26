@@ -1,0 +1,46 @@
+
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+use Magento\Catalog\Model\Product\ProductList\Toolbar;
+?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('Magento\Framework\App\Request\Http');
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+$current_url = $urlInterface->getCurrentUrl();
+
+if($request->getFullActionName() == 'catalog_category_view') {
+    $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+    $category_url = $category->getUrl() . '?';
+} else {
+    if($request->getParam('q')) {
+        $search_query = $request->getParam('q');
+        $category_url = $this->getUrl('') . 'catalogsearch/result/?q=' . $search_query . '&';
+    } else {
+        $category_url = '';
+    }
+
+}
+
+?>
+
+<div class="toolbar-sorter sorter">
+    <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort by')) ?></label>
+    <div class="toolbar_sorter_container">
+        <select id="sorter" class="sorter-options toolbar_sorter">
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'asc')) ?>" <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'asc' ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Cheaper at first') ?>
+            </option>
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'desc')) ?>" <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'desc'  ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Initially more expensive') ?>
+            </option>
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'position', "product_list_dir"=>'asc')) ?>" <?php if($block->getCurrentOrder() == 'position'  ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Popular') ?>
+            </option>
+        </select>
+    </div>
+</div>
