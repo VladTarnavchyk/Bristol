@@ -1,0 +1,64 @@
+<?php
+$catId = 7;
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$subcategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subcats = $subcategory->getChildrenCategories()->addAttributeToFilter('include_in_menu', 1);
+
+    echo "<div class='category_brands_slider owl-carousel'>";
+foreach ($subcats as $subcat) {
+    if ($subcat->getIsActive()) {
+        $subcat_url = $subcat->getUrl();
+        $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+        $categoryImage = $_category->getImageUrl();
+        $subcat_name = $subcat->getName();
+        echo "<div class='item'>
+        	<img src='$categoryImage' class='bg_image'>
+
+        </div>";
+	}
+}
+echo "</div>";
+?>
+<script>
+	require(['jquery', 'owlcarousel'], function ($){
+		$(document).ready(function(){
+			$(".category_brands_slider.owl-carousel").owlCarousel({
+				"items" : 6,
+				dots: false,
+				loop:true,
+				margin:30,
+                nav: false,
+//                autoplay: true,
+//                autoplayTimeout: 5000,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:3,
+                        nav:true,
+                        dots:false
+                    },
+                    450:{
+                        items:3,
+                        nav:true,
+                        dots:false
+                    },
+                    771:{
+                        items:4,
+                        nav:true,
+                        dots:true
+                    },
+                    900:{
+                        items:5,
+                        nav:true,
+                        dots:true
+                    },
+                    1200:{
+                        items:6,
+                        nav:true,
+                        dots:true
+                    }
+                }
+			});
+		});
+	})
+</script>

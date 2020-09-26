@@ -1,0 +1,127 @@
+
+
+
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+use Magento\Catalog\Model\Product\ProductList\Toolbar;
+?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('Magento\Framework\App\Request\Http');
+//$count_params = count($request->getParams());
+$discount_param = $request->getParam('on_sale');
+/* $gift_param = $request->getParam('have_gift');
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+$current_url = $urlInterface->getCurrentUrl();
+
+if($request->getFullActionName() == 'catalog_category_view') {
+	$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+	$category_url = $category->getUrl() . '?';
+} else {
+	if($request->getParam('q')) {
+		$search_query = $request->getParam('q');
+		$category_url = $this->getUrl('') . 'catalogsearch/result/?q=' . $search_query . '&';
+	} else {
+		$category_url = '';
+	}
+	
+} */
+
+/* if($count_params == 1 && !$discount_param) {
+    $discount_url = str_replace('?on_sale=1', '', str_replace('&on_sale=1', '', $current_url)).'?on_sale=1';
+} elseif($count_params > 2 && $discount_param) {
+    $discount_url = str_replace('?on_sale=1', '', str_replace('&on_sale=1', '', $current_url)).'&on_sale=1';
+} elseif($count_params == 2 && $discount_param && !$request->getParam('q')) {
+    $discount_url = str_replace('?on_sale=1', '', str_replace('&on_sale=1', '', $current_url)).'?on_sale=1';
+} else {
+    $discount_url = str_replace('?on_sale=1', '', str_replace('&on_sale=1', '', $current_url)).'&on_sale=1';
+}
+
+if($count_params == 1 && !$gift_param) {
+    $gift_url = str_replace('?have_gift=722', '', str_replace('&have_gift=722', '', $current_url)).'?have_gift=722';
+} elseif($count_params > 2 && $gift_param) {
+    $gift_url = str_replace('?have_gift=722', '', str_replace('&have_gift=722', '', $current_url)).'&have_gift=722';
+} elseif($count_params == 2 && $gift_param && !$request->getParam('q')) {
+    $gift_url = str_replace('?have_gift=722', '', str_replace('&have_gift=722', '', $current_url)).'?have_gift=722';
+} else {
+    $gift_url = str_replace('?have_gift=722', '', str_replace('&have_gift=722', '', $current_url)).'&have_gift=722';
+} */
+?>
+
+
+<div class="toolbar-sorter sorter mobile">
+    <div class="filter-buttons-contaner  ">
+        <div class="open-filter ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M15.5969 15.0673H0.899438C0.39975 15.0673 0 15.467 0 15.9667C0 16.4664 0.39975 16.8661 0.899438 16.8661H15.5969C16.0167 18.9515 17.8622 20.5305 20.0741 20.5305C22.2861 20.5305 24.1316 18.9515 24.5513 16.8661H31.0939C31.5936 16.8661 31.9933 16.4664 31.9933 15.9667C31.9933 15.467 31.5936 15.0673 31.0939 15.0673H24.5513C24.1316 12.9819 22.2861 11.4029 20.0741 11.4029C17.8688 11.4029 16.0167 12.9752 15.5969 15.0673ZM22.8391 15.9667C22.8391 17.4924 21.5998 18.7316 20.0741 18.7316C18.5484 18.7316 17.3092 17.4924 17.3092 15.9667C17.3092 14.441 18.5484 13.2018 20.0741 13.2018C21.5998 13.2018 22.8391 14.441 22.8391 15.9667Z" fill="#393939"/>
+                <path d="M8.05497 26.0804H0.899438C0.39975 26.0804 0 26.4802 0 26.9799C0 27.4796 0.39975 27.8793 0.899438 27.8793H8.05497C8.4747 29.9647 10.3202 31.5437 12.5322 31.5437C14.7441 31.5437 16.5896 29.9647 17.0094 27.8793H31.0939C31.5936 27.8793 31.9933 27.4796 31.9933 26.9799C31.9933 26.4802 31.5936 26.0804 31.0939 26.0804H17.0027C16.583 23.9951 14.7375 22.4161 12.5255 22.4161C10.3136 22.4161 8.4747 23.9951 8.05497 26.0804ZM15.2971 26.9799C15.2971 28.5056 14.0579 29.7448 12.5322 29.7448C11.0065 29.7448 9.76723 28.5056 9.76723 26.9799C9.76723 25.4542 11.0065 24.2149 12.5322 24.2149C14.0579 24.2149 15.2971 25.4608 15.2971 26.9799Z" fill="#393939"/>
+                <path d="M8.05497 4.12073L0.899438 4.12073C0.39975 4.12073 0 4.52048 0 5.02017C0 5.51986 0.39975 5.91961 0.899438 5.91961H8.05497C8.4747 8.00497 10.3202 9.58398 12.5322 9.58398C14.7441 9.58398 16.5896 8.00497 17.0094 5.91961L31.1006 5.91961C31.6003 5.91961 32 5.51986 32 5.02017C32 4.52048 31.6003 4.12073 31.1006 4.12073L17.0027 4.12073C16.583 2.03537 14.7375 0.456354 12.5255 0.456354C10.3136 0.456354 8.4747 2.02871 8.05497 4.12073ZM15.2971 5.02017C15.2971 6.54588 14.0579 7.78511 12.5322 7.78511C11.0065 7.78511 9.76723 6.54588 9.76723 5.02017C9.76723 3.49446 11.0065 2.25523 12.5322 2.25523C14.0579 2.25523 15.2971 3.49446 15.2971 5.02017Z" fill="#393939"/>
+            </svg>
+        </div>
+        <div class="close-filter hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path  d="M13.6283 12.0004L23.6644 1.96436C24.1139 1.5148 24.1139 0.785996 23.6644 0.336437C23.2148 -0.113122 22.486 -0.113122 22.0365 0.336437L12.0004 10.3725L1.96435 0.337971C1.51479 -0.111588 0.78598 -0.111588 0.336422 0.337971C-0.113137 0.78753 -0.113137 1.51634 0.336422 1.9659L10.3725 12.002L0.337956 22.0365C-0.111603 22.486 -0.111603 23.2148 0.337956 23.6644C0.563502 23.8884 0.85656 24.0019 1.15115 24.0019C1.44574 24.0019 1.74033 23.8899 1.96435 23.6644L12.0004 13.6283L22.0365 23.6644C22.262 23.8884 22.5551 24.0019 22.8497 24.0019C23.1442 24.0019 23.4388 23.8899 23.6629 23.6644C24.1124 23.2148 24.1124 22.486 23.6629 22.0365L13.6283 12.0004Z" fill="white"/>
+            </svg>
+        </div>
+    </div>
+    <div class="toolbar_sorter_container">
+        <select id="sorter" class="sorter-options toolbar_sorter">
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'asc')) ?>" <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'asc' ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Cheaper at first') ?>
+            </option>
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'desc')) ?>" <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'desc'  ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Initially more expensive') ?>
+            </option>
+            <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'position', "product_list_dir"=>'asc')) ?>" <?php if($block->getCurrentOrder() == 'position'  ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Popular') ?>
+            </option>
+            <?php /*  ?><option value="<?php echo $category_url.'is_new=1' ?>" <?php if($block->getCurrentOrder() == 'New'  ): ?>selected="selected"<?php endif; ?>>
+               <?php echo __('New') ?>
+            </option>
+            <option value="<?php echo $category_url.'on_sale=1' ?>" <?php if($block->getCurrentOrder() == 'On Sale'  ): ?>selected="selected"<?php endif; ?>>
+                <?php echo __('Action') ?>
+            </option>
+            <option value="<?php echo $category_url.'rating=5' ?>" <?php if($block->getCurrentOrder() == 'Rating'  ): ?>selected="selected"<?php endif; ?>>
+              <?php echo __('By rating') ?>
+            </option><?php  */ ?>
+        </select>
+    </div>
+</div>
+<div class="toolbar-sorter sorter desktop">
+    <div class="toolbar_sorter_container">
+        <ul class="sorting_list">
+            <li <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'asc' && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'asc')) ?>"><?php echo __('Cheaper at first') ?></a>
+            </li>
+            <li <?php if($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'desc'  && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'desc')) ?>"><?php echo __('Initially more expensive') ?></a>
+            </li>
+            <li <?php if($block->getCurrentOrder() == 'position'  && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $block->getPagerUrl(array("product_list_order"=>'position', "product_list_dir"=>'asc')) ?>"><?php echo __('Popular') ?></a>
+            </li>
+            <?php /*  ?><li <?php if($block->getCurrentOrder() == 'New'  && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $category_url.'is_new=1' ?>"><?php echo __('New') ?></a>
+            </li>
+            <li <?php if($block->getCurrentOrder() == 'On Sale'  && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $category_url.'on_sale=1' ?>"><?php echo __('Action') ?></a>
+            </li>
+            <li <?php if($block->getCurrentOrder() == 'Rating'  && !$discount_param): echo 'class="active"'; endif; ?>>
+                <a href="<?php echo $category_url.'rating=5' ?>"><?php echo __('By rating') ?></a>
+            </li><?php  */ ?>
+        </ul>
+    </div>
+</div>
+

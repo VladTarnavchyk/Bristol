@@ -1,0 +1,96 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?= /* @escapeNotVerified */ __('Qty') ?></span></label>
+                    <div class="control qty-wrapper">
+                        <a href="javascript:void(0);" class="product_view_qty_btn decrement_btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="none">
+                                <rect width="10" height="2" fill="#878787"/>
+                            </svg>
+                        </a>
+                        <input type="number"
+                               name="qty"
+                               id="qty"
+                               min="0"
+                               value="<?= /* @escapeNotVerified */ $block->getProductDefaultQty() * 1 ?>"
+                               title="<?= /* @escapeNotVerified */ __('Qty') ?>"
+                               class="input-text qty "
+                               data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                        />
+                        <a href="javascript:void(0);" class="product_view_qty_btn increment_btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                <rect y="4" width="10" height="2" fill="#393939"/>
+                                <rect x="4" y="10" width="10" height="2" transform="rotate(-90 4 10)" fill="#393939"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <button type="submit"
+                        title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
+                        class="action primary tocart"
+                        id="product-addtocart-button" disabled>
+                    <span><?= /* @escapeNotVerified */ $buttonTitle ?></span>
+                </button>
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require(['jquery'], function ($){
+        $(document).ready(function(){
+            $('.increment_btn').click(function() {
+                var oldVal = $(this).closest('.qty-wrapper').find("input").val();
+                oldVal = parseFloat(oldVal.replace(',', '.'));
+                if ( parseFloat(oldVal) >= 0 ) {
+                    var newVal = Math.round((oldVal + 1.0)* 10, -1) / 10;
+                    if($(this).closest('.qty-wrapper').find("input").hasClass('weight_product')) {
+                        if(newVal.toString().indexOf('.') == -1) {
+                            newVal = newVal + '.0';
+                        }
+                    }
+                    $(this).closest('.qty-wrapper').find("input").val(newVal);
+                }
+            });
+
+            $('.decrement_btn').click(function() {
+                var oldVal = $(this).closest('.qty-wrapper').find("input").val();
+                oldVal = parseFloat(oldVal.replace(',', '.'));
+                if ( parseFloat(oldVal) > 1 ) {
+                    var newVal = Math.round((oldVal - 1.0)* 10, -1) / 10;
+                    if($(this).closest('.qty-wrapper').find("input").hasClass('weight_product')) {
+                        if(newVal.toString().indexOf('.') == -1) {
+                            newVal = newVal + '.0';
+                        }
+                    }
+                    $(this).closest('.qty-wrapper').find("input").val(newVal);
+                }
+            });
+
+
+        });
+        })
+    </script>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>

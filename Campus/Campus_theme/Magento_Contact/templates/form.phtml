@@ -1,0 +1,82 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Magento\Contact\Block\ContactForm $block */
+?>
+<div class="contact_page_info-wrapper">
+    <?= $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("contact_page_info")->toHtml(); ?>
+</div>
+<div class="form-contact-wrapper">
+    <div class="form-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect width="20" height="20" fill="#393939"/>
+            <g clip-path="url(#clip0)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8138 9.99984L15.8318 4.98181C16.0566 4.75704 16.0566 4.39263 15.8318 4.16785C15.607 3.94307 15.2426 3.94307 15.0179 4.16785L9.99982 9.18588L4.9818 4.16862C4.75702 3.94384 4.39261 3.94384 4.16783 4.16862C3.94305 4.3934 3.94305 4.7578 4.16783 4.98258L9.18586 10.0006L4.1686 15.0179C3.94382 15.2427 3.94382 15.6071 4.1686 15.8318C4.28137 15.9438 4.4279 16.0006 4.5752 16.0006C4.72249 16.0006 4.86979 15.9446 4.9818 15.8318L9.99982 10.8138L15.0179 15.8318C15.1306 15.9438 15.2772 16.0006 15.4244 16.0006C15.5717 16.0006 15.719 15.9446 15.831 15.8318C16.0558 15.6071 16.0558 15.2427 15.831 15.0179L10.8138 9.99984Z" fill="white"/>
+            </g>
+            <defs>
+                <clipPath id="clip0">
+                    <rect width="12" height="12" fill="white" transform="translate(4 4)"/>
+                </clipPath>
+            </defs>
+        </svg>
+    </div>
+    <form class="form contact"
+          action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+          id="contact-form"
+          method="post"
+          data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+          data-mage-init='{"validation":{}}'>
+        <div class="form-title">
+                <span class="h2">
+                    <?= $block->escapeHtml(__('Contact with us')) ?>
+                </span>
+        </div>
+        <fieldset class="fieldset">
+            <div class="left-side">
+                <div class="field name required">
+                    <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+                    <div class="control">
+                        <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('name') ?: $this->helper('Magento\Contact\Helper\Data')->getUserName()) ?>" class="input-text" type="text" data-validate="{required:true}"/>
+                    </div>
+                </div>
+                <div class="field email required">
+                    <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                    <div class="control">
+                        <input name="email" id="email" title="<?= $block->escapeHtmlAttr(__('E-mail')) ?>" value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('email') ?: $this->helper('Magento\Contact\Helper\Data')->getUserEmail()) ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+                    </div>
+                </div>
+                <div class="field telephone">
+                    <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+                    <div class="control">
+                        <input name="telephone" id="telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('telephone')) ?>" class="input-text" type="text" />
+                    </div>
+                </div>
+                <div class="required-description">
+                    <span><?= $block->escapeHtmlAttr(__('* Required fields')) ?></span>
+                </div>
+            </div>
+            <div class="right-side">
+                <div class="field comment required">
+                    <label class="label" for="comment"><span><?= $block->escapeHtml(__('What’s on your mind?')) ?></span></label>
+                    <div class="control">
+                        <textarea name="comment" id="comment" title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="10" data-validate="{required:true}"><?= $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('comment')) ?></textarea>
+                    </div>
+                </div>
+            </div>
+            <?= $block->getChildHtml('form.additional.info') ?>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value="" />
+                <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                    <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+

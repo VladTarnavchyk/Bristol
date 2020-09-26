@@ -1,0 +1,29 @@
+<?php
+$_product = $block->getProduct();
+$catIds = $_product->getCategoryIds();
+$brands_cat_id = 7;
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category = $_objectManager->create('Magento\Catalog\Model\Category')->load($brands_cat_id);
+$_categories = $category->getCollection()
+    ->addAttributeToSelect(array('name', 'image', 'id'))
+    ->addAttributeToFilter('is_active', 1)
+    ->addAttributeToSort('position')
+    ->addIdFilter($category->getChildren());
+if(count($_categories) > 0) {?>
+    <?php foreach ($_categories as $_category):
+        if($_category->getIsActive()): ?>
+            <?php if(in_array($_category->getId(), $catIds)): ?>
+                <div class="subcategory_item product_captions_brand_container attribute_item">
+                    <a href="<?php echo $_category->getUrl(); ?>" class="value">
+                        <?php if($_category->getImageUrl()): ?>
+                            <img src="<?php echo $_category->getImageUrl(); ?>" alt="<?php echo $_category->getName(); ?>" title="<?php echo $_category->getName(); ?>" />
+                        <?php endif; ?>
+                    </a>
+                </div>
+            <?php endif; ?>
+        <?php endif;
+    endforeach;?>
+<?php } ?>
+
+
+

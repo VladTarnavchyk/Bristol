@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<referenceContainer name='header.panel' remove='true'></referenceContainer>
+	<referenceBlock name="advanced-search-link" remove="true"/>
+	<referenceBlock name="navigation.sections" remove="true"/>
+	<move element="logo" destination="header.middle_left_part" as="logo" before="-"/>
+	<move element="minicart" destination="cart_button" before='-'/>
+	<move element="top.search" destination="header.middle_left_part" after="logo"/>
+	<move element="authorization-link" destination="customer_button" before="-"/>
+    <body>
+        <referenceContainer name='header.panel.wrapper' htmlClass="darken_part">
+			<container name="header.panel.wrapper.container" htmlClass="darken_part_container" htmlTag="div" >
+				<block class="Magento\Cms\Block\Block" name="left_links">
+					<arguments>
+						<argument name="block_id" xsi:type="string">left_links</argument>
+					</arguments>
+				</block>
+				<container name="header.contacts_and_language" htmlClass="contacts_and_language" htmlTag="div" after='left_links'>
+					<block class="Magento\Cms\Block\Block" name="contacts_links">
+						<arguments>
+							<argument name="block_id" xsi:type="string">contacts_links</argument>
+						</arguments>
+					</block>
+					<block
+						class="Magento\Store\Block\Switcher"
+						name="store_language"
+						as="store_language"
+						template="Magento_Store::switch/languages.phtml"
+						after='contacts_links'>
+							<arguments>
+								<argument name="view_model" xsi:type="object">Magento\Store\ViewModel\SwitcherUrlProvider</argument>
+							</arguments>
+					</block>
+				</container>
+			</container>
+        </referenceContainer>
+        <referenceContainer name='header-wrapper' htmlClass="middle_part">
+			<container name="header-wrapper.container" htmlClass="middle_part_container" htmlTag="div" >
+				<container name="header.middle_left_part" htmlClass="middle_left_part" htmlTag="div" after='-'>
+					<referenceBlock class="Magento\Framework\View\Element\Template" name="logo" template="Magento_Theme::header/logo.phtml"></referenceBlock>
+					<block class="Magento\Cms\Block\Block" name="middle_header_contacts" after='top.search'>
+						<arguments>
+							<argument name="block_id" xsi:type="string">middle_header_contacts</argument>
+						</arguments>
+					</block>
+				</container>
+				<container name="header.middle_right_part" htmlClass="middle_right_part" htmlTag="div" after='header.middle_left_part'>
+					<container name='customer_button' htmlClass='customer_button' htmlTag='div' before='-'>
+						<!-- <block class="Magento\Customer\Block\Account\Navigation" name="top.links">
+							<arguments>
+								<argument name="css_class" xsi:type="string"></argument>
+							</arguments>
+						</block> -->
+						<!--<block class="Magento\Cms\Block\Block" name="customer_button_icon" after='top.search'>-->
+							<!--<arguments>-->
+								<!--<argument name="block_id" xsi:type="string">customer_button</argument>-->
+							<!--</arguments>-->
+						<!--</block>-->
+					</container>
+					<container name='cart_button' htmlClass='cart_button' htmlTag='div' after='customer_button'>
+
+					</container>
+				</container>
+			</container>
+        </referenceContainer>
+		<referenceContainer name="page.top">
+			<container name="main_navigation_menu" htmlClass="main_navigation_menu" htmlTag="div" before="-">
+				<block class="Magento\Framework\View\Element\Template" name="store.menu" group="navigation-sections" template="Magento_Theme::html/container.phtml" before="-">
+					<arguments>
+						<argument name="title" translate="true" xsi:type="string">Menu</argument>
+					</arguments>
+					<block class="Magento\Theme\Block\Html\Topmenu" name="catalog.topnav" template="Magento_Theme::html/topmenu.phtml" ttl="3600" before="-"/>
+				</block>
+			</container>
+		</referenceContainer>
+		<referenceContainer name="footer-container">
+            <container name="footer" as="footer" label="Page Footer" htmlTag="div" htmlClass="footer footer-wrapper">
+				<block class="Magento\Theme\Block\Html\Footer" name="footer.content" template="html/footer.phtml">
+					<block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="subscribe.phtml"/>
+				</block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

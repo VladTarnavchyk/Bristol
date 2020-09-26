@@ -1,0 +1,6 @@
+<?php echo $this->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Slider')->setTemplate('Mageplaza_BannerSlider::homepage_slider.phtml')->toHtml(); ?>
+
+
+<?php include ($this->getTemplateFile('Magento_Theme::html/homepage_slider_categories.phtml')) ?>
+
+<?php echo $this->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Slider')->setTemplate('Mageplaza_BannerSlider::homepage_banners.phtml')->toHtml(); ?>

@@ -1,0 +1,142 @@
+<?php
+	$left_first = $block->getSimpleBannerCollection(2);
+	$right_first = $block->getSimpleBannerCollection(3);
+	$left_second = $block->getSimpleBannerCollection(4);
+	$right_second = $block->getSimpleBannerCollection(5);
+?>
+<div class="homepage_banners_wrapper">
+	<div class="homepage_banner_container">
+		<div class="banners_line_block">
+			<?php if(count($left_first) > 0): ?>
+				<div class="banner_item long_item">
+					<?php $i = 1; ?>
+					<?php foreach ($left_first as $banner): ?>
+						<?php if($i < 2): ?>
+							<?php
+								$banner_image = $banner->getImageUrl();
+								$banner_url = $banner->getUrlBanner();
+								$banner_title = $banner->getTitle();
+								$banner_description = $banner->getShortdescription();
+								if(!$banner_url) {
+									$banner_url = '#';
+								}
+							?>
+							<div class="banner_img">
+								<a href="<?php echo $banner_url; ?>">
+									<img class="slide_image" src="<?php echo $banner_image ?>">
+								</a>
+							</div>
+							<div class="banner_title_wrap">
+								<?php if($banner_title): ?>
+									<div class="banner_title"><?php echo $banner_title; ?></div>
+								<?php endif; ?>
+								<?php if($banner_description): ?>
+									<div class="banner_description"><?php echo $banner_description; ?></div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+						<?php $i++; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+			<?php if(count($right_first) > 0): ?>
+				<div class="banner_item small_item">
+					<?php $i = 1; ?>
+					<?php foreach ($right_first as $banner): ?>
+						<?php if($i < 2): ?>
+							<?php
+								$banner_image = $banner->getImageUrl();
+								$banner_url = $banner->getUrlBanner();
+								$banner_title = $banner->getTitle();
+								$banner_description = $banner->getShortdescription();
+								if(!$banner_url) {
+									$banner_url = '#';
+								}
+							?>
+							<div class="banner_img">
+								<a href="<?php echo $banner_url; ?>">
+									<img class="slide_image" src="<?php echo $banner_image ?>">
+								</a>
+							</div>
+							<div class="banner_title_wrap">
+								<?php if($banner_title): ?>
+									<div class="banner_title"><?php echo $banner_title; ?></div>
+								<?php endif; ?>
+								<?php if($banner_description): ?>
+									<div class="banner_description"><?php echo $banner_description; ?></div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+						<?php $i++; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+		<div class="banners_line_block">
+			<?php if(count($left_second) > 0): ?>
+				<div class="banner_item small_item">
+					<?php $i = 1; ?>
+					<?php foreach ($left_second as $banner): ?>
+						<?php if($i < 2): ?>
+							<?php
+								$banner_image = $banner->getImageUrl();
+								$banner_url = $banner->getUrlBanner();
+								$banner_title = $banner->getTitle();
+								$banner_description = $banner->getShortdescription();
+								if(!$banner_url) {
+									$banner_url = '#';
+								}
+							?>
+							<div class="banner_img">
+								<a href="<?php echo $banner_url; ?>">
+									<img class="slide_image" src="<?php echo $banner_image ?>">
+								</a>
+							</div>
+							<div class="banner_title_wrap">
+								<?php if($banner_title): ?>
+									<div class="banner_title"><?php echo $banner_title; ?></div>
+								<?php endif; ?>
+								<?php if($banner_description): ?>
+									<div class="banner_description"><?php echo $banner_description; ?></div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+						<?php $i++; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+			<?php if(count($right_second) > 0): ?>
+				<div class="banner_item long_item">
+					<?php $i = 1; ?>
+					<?php foreach ($right_second as $banner): ?>
+						<?php if($i < 2): ?>
+							<?php
+								$banner_image = $banner->getImageUrl();
+								$banner_url = $banner->getUrlBanner();
+								$banner_title = $banner->getTitle();
+								$banner_description = $banner->getShortdescription();
+								if(!$banner_url) {
+									$banner_url = '#';
+								}
+							?>
+							<div class="banner_img">
+								<a href="<?php echo $banner_url; ?>">
+									<img class="slide_image" src="<?php echo $banner_image ?>">
+								</a>
+							</div>
+							<div class="banner_title_wrap">
+								<?php if($banner_title): ?>
+									<div class="banner_title"><?php echo $banner_title; ?></div>
+								<?php endif; ?>
+								<?php if($banner_description): ?>
+									<div class="banner_description"><?php echo $banner_description; ?></div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+						<?php $i++; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,37 @@
+<?php
+	$_product = $block->getProduct();
+?>
+<div class="product_popup_size_grid_wrap">
+	<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('grid-size')->toHtml(); ?>
+</div>
+<script>
+	require(['jquery'],
+		function($) {
+			$(document).on('click', '.product_size_table_btn', function(e){ 
+				e.preventDefault();
+				$(".product_popup_size_grid_wrap").modal({
+					type: 'popup',
+					title: '',
+					modalVisibleClass: '_show size_grid_opened',
+					parentModalClass: '',
+					clickableOverlay: true,
+					buttons: [],
+					responsive: true
+				}).modal('openModal');
+			});
+		}
+	);
+</script>
+
+<?php if($_product->getTypeId() == 'configurable'): ?>
+	<?php
+		$childProductCollection = $_product->getTypeInstance()->getUsedProducts($_product);
+	?>
+	<?php if(count($childProductCollection) > 0): ?>
+		<div class="subproducts_sku_wrap" style="display: none !important;">
+			<?php foreach($childProductCollection as $child): ?>
+				<div class="product_<?php echo $child->getId(); ?>"><?php echo $child->getSku(); ?></div>
+			<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
+<?php endif; ?>

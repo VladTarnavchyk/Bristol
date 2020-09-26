@@ -1,0 +1,110 @@
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Osc
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+
+<div id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
+    <div class="step-title" data-role="title">
+		<span class="step_checkout">1</span>
+		<span data-bind="i18n: 'Contact details'"></span>
+    </div>
+    <div id="checkout-step-shipping"
+         class="step-content"
+         data-role="content">
+		
+
+        <!-- ko foreach: getRegion('address-list') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <!-- ko foreach: getRegion('address-list-additional-addresses') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <!-- Address form pop up -->
+        <!-- ko if: (!isFormInline) -->
+        <button type="button"
+                data-bind="click: showFormPopUp, visible: !isNewAddressAdded()"
+                class="action action-show-popup">
+            <span data-bind="i18n: 'New Address'"></span></button>
+        <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible()">
+            <!-- ko template: 'Mageplaza_Osc/container/address/shipping/form' --><!-- /ko -->
+        </div>
+        <!-- /ko -->
+
+        <!-- ko foreach: getRegion('before-form') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <!-- ko if: !isAmazonAccountLoggedIn() -->
+            <!-- Inline address form -->
+            <!-- ko if: (isFormInline) -->
+            <!-- ko template: 'Mageplaza_Osc/container/address/shipping/form' --><!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: (!isCustomerLoggedIn() && !quoteIsVirtual) -->
+                <!-- ko foreach: getRegion('customer-email') -->
+                    <!-- ko template: 'Mageplaza_Osc/container/address/billing/create' --><!-- /ko -->
+                <!--/ko-->
+            <!--/ko-->
+
+            <div class="mp-clear"></div>
+
+            <!-- ko scope: 'checkout.steps.shipping-step.billingAddress' -->
+                <!-- ko template: 'Mageplaza_Osc/container/address/billing/checkbox' --><!-- /ko -->
+            <!--/ko-->
+        <!--/ko-->
+		
+		
+		<!-- ko if: (!quoteIsVirtual) -->
+            <!-- ko foreach: getRegion('customer-email') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        <!--/ko-->
+
+        <div class="mp-clear"></div>
+		
+		<!-- ko ifnot: isCustomerLoggedIn() -->
+		<div class="checkout_shipping_additional_block_wrap">
+			<div class="checkout_shipping_additional_block_container">
+				<div class="not_logged_block">
+					<div class="block_info" data-bind="i18n: 'Enter the account and we will automatically fill in your contact details and save the order data in your account'"></div>
+					<div class="checkout_login_link_wrap">
+						<a href="javascript:void(0);" class="checkout_login_link" data-bind="click: goLogin, i18n: 'Login'"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/ko-->
+		<!-- ko if: isCustomerLoggedIn() -->
+		<div class="checkout_shipping_additional_block_wrap">
+			<div class="checkout_shipping_additional_block_container">
+				<div class="logged_block">
+					<div class="customer_checkout_message" data-bind="text: getCustomerInfo()"></div>
+					<div class="block_info" data-bind="i18n: 'We automatically filled in your contact details and save the order data in your office'"></div>
+					<div class="checkout_logout_link_wrap">
+						<a class="checkout_logout_link" data-bind="attr: {href: getLogoutCustomerUrl()}, i18n: 'Exit'"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/ko-->
+    </div>
+</div>

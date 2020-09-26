@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+		<!--referenceContainer name="header.middle_left_part">
+            <block class="Magento\Framework\View\Element\Template" after='logo' name="top.search" as="topSearch" template="Magento_Search::form.mini.phtml" />
+        </referenceContainer-->
+		<referenceBlock name="top.search">
+            <block class="MageWorx\SearchSuiteAutocomplete\Block\Autocomplete" name="mageworx-search-autocomplete-wrapper" template="MageWorx_SearchSuiteAutocomplete::autocomplete.phtml"/>
+        </referenceBlock>
+  	</body>
+</page>
