@@ -1,0 +1,4 @@
+<?php 
+	$cat_id = 70;
+	echo $this->getLayout()->createBlock('Magento\Catalog\Block\Product\ListProduct')->setTemplate('Magento_Catalog::product/list_super_prices.phtml')->setCategoryId($cat_id)->toHtml(); 
+?>

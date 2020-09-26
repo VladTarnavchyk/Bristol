@@ -1,0 +1,147 @@
+<?php
+	$_helper = $this->helper('Magento\Catalog\Helper\Output');
+	$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+	$registry = $objectManager->get('\Magento\Framework\Registry');
+	$currentProduct = $registry->registry('current_product');
+	$cats = $currentProduct->getCategoryIds();
+	if($cats[0] != 2) {
+		$cat_id = $cats[0];
+	} else {
+		$cat_id = $cats[1];
+	}
+	$category = $categoryFactory->create()->load($cat_id);
+	$categoryProducts = $category->getProductCollection()->addAttributeToSelect('*')->addAttributeToFilter('status',1)->addAttributeToFilter('entity_id',array('neq' => $currentProduct->getId()));
+	$categoryProducts->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(7);
+?>
+<?php if(count($categoryProducts) > 0): ?>
+	<div class="product_recommended_items_wrapper">
+		<div class="product_recommended_items_container">
+			<div class="product_recommended_items_title">
+				<p class="title_overlay"><?php echo __('Recommend'); ?></p>
+				<span class="title_recommended"><?php echo __('We recommend'); ?></span>
+			</div>
+			<div class="product_recommended_items_list owl-carousel">
+				<?php foreach ($categoryProducts as $_product): ?>
+					<?php //$_product = $objectManager->create('Magento\Catalog\Model\Product')->load($item->getId()); ?>
+					<div class="item">
+						<div class="item_image_wrap">
+							<?php $productImage = $block->getImage($_product, 'category_page_grid'); ?>
+							<a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+								<?= $productImage->toHtml() ?>
+							</a>
+						</div>
+						<div class="item_details">
+							<strong class="product name product-item-name">
+								<a class="product-item-link" href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>">
+									<?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+								</a>
+							</strong>
+							<?php if($_product->getTypeId() != 'grouped'): ?>
+								<?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+							<?php else: ?>
+								<?php
+									$childProductCollection = $_product->getTypeInstance()->getAssociatedProducts($_product);
+									$assicoateProductsQty = 0;
+									$priceForAll = 0;
+									foreach ($childProductCollection as $child) {
+										if($child->getQty() * 1 > 0) {
+											$priceForAll += $child->getFinalPrice();
+										}
+										$assicoateProductsQty += $child->getQty() * 1;
+									}
+								?>
+								<?php if($assicoateProductsQty != 0): ?>
+									<div class="price-box price-final_price" data-role="priceBox" data-product-id="<?php echo $_product->getId(); ?>" data-price-box="product-id-<?php echo $_product->getId(); ?>">
+										<span class="price-container price-final_price tax weee">
+											<span id="product-price-<?php echo $_product->getId(); ?>" data-price-amount="<?php echo $priceHelper->currency($priceForAll, true, false); ?>" data-price-type="finalPrice" class="price-wrapper "><span class="price"><?php echo $priceHelper->currency($priceForAll, true, false); ?></span></span>
+										</span>
+									</div>
+								<?php endif; ?>
+							<?php endif; ?>
+							
+							<?= $block->getReviewsSummaryHtml($_product, \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW) ?>
+							
+							<?php $product_factory = $_product->getResource()->getAttribute('manufacturer')->getFrontend()->getValue($_product); ?>
+							<?php if($product_factory): ?>
+								<div class="product_factory">
+									<span class="label"><?php echo __('Factory:'); ?></span>
+									<span class="value"><?php echo $product_factory; ?></span>
+								</div>
+							<?php endif; ?>
+							
+							<?php if($_product->getTypeId() == 'grouped'): ?>
+								<?php if($assicoateProductsQty != 0): ?>
+									<div class="product_consists">
+										<span><?php echo __('Consists of %1 elements', $assicoateProductsQty); ?></span>
+									</div>
+								<?php endif; ?>
+							<?php else: ?>
+								<?php
+									$width = $_product->getResource()->getAttribute('width')->getFrontend()->getValue($_product);
+									$height = $_product->getResource()->getAttribute('height')->getFrontend()->getValue($_product);
+									$depth = $_product->getResource()->getAttribute('depth')->getFrontend()->getValue($_product);
+									$length = $_product->getResource()->getAttribute('length')->getFrontend()->getValue($_product);
+								?>
+								<div class="product_dimensions">
+									<?php if($width): ?>
+										<span class="width"><?php echo number_format($width, 1, '.', ''); ?>см</span>
+									<?php endif; ?>
+									<?php if($height): ?>
+										<span class="height"><?php echo number_format($height, 1, '.', ''); ?>см</span>
+									<?php endif; ?>
+									<?php if($depth): ?>
+										<span class="depth"><?php echo number_format($depth, 1, '.', ''); ?>см</span>
+									<?php endif; ?>
+									<?php if($length): ?>
+										<span class="length"><?php echo number_format($length, 1, '.', ''); ?>см</span>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<script>
+		require(['jquery', 'owlcarousel'], function ($){
+			$(document).ready(function(){
+				$(".product_recommended_items_list.owl-carousel").owlCarousel({
+					items : 5,
+					dots: false,
+					loop: false,
+					margin: 53,
+                    responsiveClass:true,
+                    responsive:{
+                        0:{
+                            items:1,
+                            margin: 0,
+                        },
+                        480:{
+                            items:2,
+                            margin: 20,
+                        },
+                        768:{
+                            items:3,
+                            margin: 20,
+                        },
+                        992:{
+                            items:3,
+                            margin: 30,
+                        },
+                        1200:{
+                            items:4,
+                            margin: 30,
+                        },
+                        1201:{
+                            items:5,
+                            margin: 53,
+                        },
+                    }
+				});
+			});
+		})
+	</script>
+<?php endif; ?>

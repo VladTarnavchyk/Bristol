@@ -1,0 +1,37 @@
+<?php
+	$_product = $block->getProduct();
+	$width = $_product->getResource()->getAttribute('width')->getFrontend()->getValue($_product);
+	$height = $_product->getResource()->getAttribute('height')->getFrontend()->getValue($_product);
+	$depth = $_product->getResource()->getAttribute('depth')->getFrontend()->getValue($_product);
+	
+	$load_per_bed = $_product->getResource()->getAttribute('load_per_bed')->getFrontend()->getValue($_product);
+?>
+<div class="characteristics_info_list_wrap">
+	<?php if($width || $height || $depth || $load_per_bed): ?>
+		<div class="characteristics_info_list">
+			<div class="characteristics_title">
+				<p><?php echo __('Characteristics'); ?></p>
+			</div>
+			<?php if($width): ?>
+				<div class="characteristic_item">
+					<span class="width"><?php echo __('Width: '); ?><?php echo number_format($width, 1, '.', ''); ?>см</span>
+				</div>
+			<?php endif; ?>
+			<?php if($height): ?>
+				<div class="characteristic_item">
+					<span class="height"><?php echo __('Height: '); ?><?php echo number_format($height, 1, '.', ''); ?>см</span>
+				</div>
+			<?php endif; ?>
+			<?php if($depth): ?>
+				<div class="characteristic_item">
+					<span class="depth"><?php echo __('Depth: '); ?><?php echo number_format($depth, 1, '.', ''); ?>см</span>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+</div>
+<?php if($load_per_bed): ?>
+	<div class="load_per_bed">
+		<span><?php echo __('Load per bed: '); ?><?php echo number_format($load_per_bed, 1, '.', ''); ?>кг</span>
+	</div>
+<?php endif; ?>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		<script src="https://kit.fontawesome.com/d5f1d888ef.js" src_type="url"></script>
+		<link src="https://fonts.googleapis.com/css?family=Oswald" src_type="url" rel="stylesheet" type="text/css"/>
+		<link src="https://fonts.googleapis.com/css?family=Open+Sans" src_type="url" rel="stylesheet" type="text/css"/> 
+		<script src="js/main.js"/>
+		<!--Custom-->
+		<css src="css/owl.carousel.css"/>
+		<css src="css/colorbox.css"/>
+		<css src="css/nice-select.css"/>
+		<css src="css/main.css"/>
+		<css src="css/vlad-style.css"/>
+		<css src="css/footer.css"/>
+		<css src="css/styles-koi.css"/>
+	</head>
+</page>

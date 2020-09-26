@@ -1,0 +1,161 @@
+<?php
+	$_helper = $this->helper('Magento\Catalog\Helper\Output');
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$registry = $objectManager->get('\Magento\Framework\Registry');
+	$currentProduct = $registry->registry('current_product');
+	$childProductCollection = $currentProduct->getTypeInstance()->getAssociatedProducts($currentProduct);
+?>
+<?php if(count($childProductCollection) > 0): ?>
+	<div id="product_complect_items_wrapper" class="product_complect_items_wrapper">
+		<div class="product_complect_items_container">
+			<div class="product_complect_items_title">
+				<p class="title_overlay"><?php echo __('Sets'); ?></p>
+				<span class="title_complect"><?php echo __('Sets'); ?></span>
+			</div>
+			<div class="product_complect_items_list owl-carousel">
+				<?php foreach ($childProductCollection as $item): ?>
+					<?php $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($item->getId()); ?>
+					<div class="item">
+						<div class="item_image_wrap">
+							<?php $productImage = $block->getImage($_product, 'category_page_grid'); ?>
+							<a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+								<?= $productImage->toHtml() ?>
+							</a>
+						</div>
+						<div class="item_details">
+							<strong class="product name product-item-name">
+								<a class="product-item-link" href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>">
+									<?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+								</a>
+							</strong>
+							<?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+							
+							<?= $block->getReviewsSummaryHtml($_product, \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW) ?>
+							
+							<?php $product_factory = $_product->getResource()->getAttribute('manufacturer')->getFrontend()->getValue($_product); ?>
+							<?php if($product_factory): ?>
+								<div class="product_factory">
+									<span class="label"><?php echo __('Factory:'); ?></span>
+									<span class="value"><?php echo $product_factory; ?></span>
+								</div>
+							<?php endif; ?>
+							
+							<?php
+								$width = $_product->getResource()->getAttribute('width')->getFrontend()->getValue($_product);
+								$height = $_product->getResource()->getAttribute('height')->getFrontend()->getValue($_product);
+								$depth = $_product->getResource()->getAttribute('depth')->getFrontend()->getValue($_product);
+							?>
+							<div class="product_dimensions">
+								<?php if($width): ?>
+									<span class="width"><?php echo number_format($width, 1, '.', ''); ?>см</span>
+								<?php endif; ?>
+								<?php if($height): ?>
+									<span class="height"><?php echo number_format($height, 1, '.', ''); ?>см</span>
+								<?php endif; ?>
+								<?php if($depth): ?>
+									<span class="depth"><?php echo number_format($depth, 1, '.', ''); ?>см</span>
+								<?php endif; ?>
+							</div>
+							
+							<div class="complect_item_actions">
+								<?php if ($_product->isSaleable()): ?>
+									<?php $postParams = $block->getAddToCartPostParams($_product); ?>
+									<form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>" action="<?= /* @NoEscape */ $postParams['action'] ?>" method="post">
+										<input type="hidden" name="product" value="<?= /* @escapeNotVerified */ $postParams['data']['product'] ?>">
+										<?= $block->getBlockHtml('formkey') ?>
+										<div class="action_qty_wrap" data-grouped-id="grouped_item_<?php echo $_product->getId(); ?>">
+											<a href="javascript:void(0);" class="decr_qty">-</a>
+											<input type="number" name="qty" id="qty" maxlength="12" readonly value="<?php echo  $item->getQty() * 1 ?>" title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty" />
+											<a href="javascript:void(0);" class="incr_qty">+</a>
+										</div>
+										<button type="submit" title="<?= $block->escapeHtml(__('Add to Cart')) ?>" <?php if(($item->getQty() * 1) == 0): echo 'disabled="disabled"'; endif; ?> class="action tocart primary">
+											<span><?= /* @escapeNotVerified */ __('Add to Cart') ?></span>
+										</button>
+									</form>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<script>
+		require(['jquery', 'owlcarousel'], function ($){
+			$(document).ready(function(){
+				$(".product_complect_items_list.owl-carousel").owlCarousel({
+					"items" : 5,
+					dots: false,
+					loop: false,
+					margin: 53,
+                    responsiveClass:true,
+                    responsive:{
+                        0:{
+                            items:1,
+                            margin: 0,
+                        },
+                        480:{
+                            items:2,
+                            margin: 20,
+                        },
+                        768:{
+                            items:3,
+                            margin: 20,
+                        },
+                        992:{
+                            items:3,
+                            margin: 30,
+                        },
+                        1200:{
+                            items:4,
+                            margin: 30,
+                        },
+                        1201:{
+                            items:5,
+                            margin: 53,
+                        },
+                    }
+				});
+			});
+		})
+		require(['jquery'],
+			function($){
+				$('.product_complect_items_list .item').each(function(){
+					var decr_btn = $(this).find('.complect_item_actions').find('.decr_qty');
+					var incr_btn = $(this).find('.complect_item_actions').find('.incr_qty');
+					decr_btn.click(function(e){
+						e.preventDefault();
+						var oldVal = $(this).parent().find("input").val();
+						if ( parseFloat(oldVal) >= 1 ) {
+							var newVal = parseFloat(oldVal) - 1;
+							$(this).parent().find("input").val(newVal);
+							if(newVal == 0) {
+								$(this).closest('.complect_item_actions').find('button').attr('disabled', 'disabled');
+							} else {
+								$(this).closest('.complect_item_actions').find('button').removeAttr('disabled');
+							}
+							
+							var grouped_item = $(this).parent().attr('data-grouped-id');
+							$('.grouped_product_items_wrap').find('.'+grouped_item).find('input').val(newVal);
+						}
+					});
+					
+					incr_btn.click(function(e){
+						e.preventDefault();
+						var oldVal = $(this).parent().find("input").val();
+						var newVal = parseFloat(oldVal) + 1;
+						$(this).parent().find("input").val(newVal);
+						if(newVal == 0) {
+							$(this).closest('.complect_item_actions').find('button').attr('disabled', 'disabled');
+						} else {
+							$(this).closest('.complect_item_actions').find('button').removeAttr('disabled');
+						}
+						
+						var grouped_item = $(this).parent().attr('data-grouped-id');
+						$('.grouped_product_items_wrap').find('.'+grouped_item).find('input').val(newVal);
+					});
+				});
+			}
+		);
+	</script>
+<?php endif; ?>

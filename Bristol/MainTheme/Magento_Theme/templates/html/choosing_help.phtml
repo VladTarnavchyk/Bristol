@@ -1,0 +1,51 @@
+<div class="need-help-popup">
+	<a href="javascript:void(0);" class="close_choosing_help">
+		<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M21.0938 7.41167L19.6114 5.92934L13.6819 11.8587L7.75273 5.92949L6.27031 7.41182L12.1995 13.3411L6.27031 19.2704L7.75273 20.7527L13.6819 14.8235L19.6114 20.7529L21.0938 19.2705L15.1644 13.3411L21.0938 7.41167Z" fill="#E34444"/></svg>
+	</a>
+
+	<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('choosing_help')->toHtml();?>
+</div>
+
+<div class="help-overlay">
+
+</div>
+
+
+
+<script type="text/javascript">
+	require(['jquery', 'jscrollpane', 'mousewheel'],
+		function($){
+			jQuery(window).resize(function(){
+				$('.help-text > div').jScrollPane({autoReinitialise: true});
+			});
+		}
+	);
+	require(['jquery'],
+		function($){
+			$('a.close_choosing_help').click(function(e){
+				e.preventDefault();
+				$('body').removeClass('_has-modal');
+				$('.need-help-popup').animate({
+					'left': '-393px'
+				}, 100);
+				$('.help-overlay').hide();
+			});
+			
+			$('.need-help-call-btn').click(function(e){
+				e.preventDefault();
+				$('body').removeClass('_has-modal');
+				$('.need-help-popup').animate({
+					'left': '-393px'
+				}, 1);
+				$('.help-overlay').hide();
+				$('#callback-modal').closest('.modal-popup').removeClass('from_header').addClass('from_choosing');
+				if(typeof window.callbackModal != 'undefined'){
+					window.callbackModal.modal('openModal');
+					$('.from_choosing').animate({
+						'left': 0
+					}, 500);
+				}
+			});
+		}
+	);
+</script>

@@ -1,0 +1,90 @@
+<?php
+	$_product = $block->getProduct();
+	$product_type = $_product->getTypeId();
+	$facade_color = $_product->getResource()->getAttribute('facade_color')->getFrontend()->getValue($_product);
+	$casing_color = $_product->getResource()->getAttribute('casing_color')->getFrontend()->getValue($_product);
+?>
+<div class="products_info_colors_wrapper">
+	<?php if($facade_color || $casing_color ): ?>
+		<?php $om = \Magento\Framework\App\ObjectManager::getInstance(); ?>
+		<div class="products_info_colors_container">
+			<?php if($facade_color): ?>
+				<?php
+					$color_ids = $_product->getFacadeColor();
+					$color_ids_array = explode(',', $color_ids);
+					$swatchCollection = $om->create('Amasty\Shopby\Model\ResourceModel\OptionSetting\Collection');
+					$swatchCollection->addFieldtoFilter('value',$color_ids_array);
+				?>
+				<?php if(count($swatchCollection) > 0): ?>
+					<div class="attribute_item">
+						<div class="label"><?php echo __('Color (Facade):'); ?></div>
+						<div class="value_list">
+							<?php foreach($swatchCollection as $swatch_item): ?>
+								<?php if($swatch_item->getImage()): ?>
+									<?php
+										$mediaPath = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+									?>
+									<div class="value_item">
+										<div class="img">
+											<img src="<?php echo $mediaPath.'amasty/shopby/option_images/'.$swatch_item->getImage(); ?>" width="50" height="50" alt="<?php echo $swatch_item->getTitle() ?>"/>
+										</div>
+										<img class="hover_image" src="<?php echo $mediaPath.'amasty/shopby/option_images/'.$swatch_item->getImage(); ?>" width="110" height="110" alt="<?php echo $swatch_item->getTitle() ?>"/>
+										<span class="value_label"><?php echo $swatch_item->getTitle() ?></span>
+									</div>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
+			<?php if($casing_color): ?>
+				<?php
+					$color_ids = $_product->getCasingColor();
+					$color_ids_array = explode(',', $color_ids);
+					$swatchCollection = $om->create('Amasty\Shopby\Model\ResourceModel\OptionSetting\Collection');
+					$swatchCollection->addFieldtoFilter('value',$color_ids_array);
+				?>
+				<?php if(count($swatchCollection) > 0): ?>
+					<div class="attribute_item">
+						<div class="label"><?php echo __('Color (Casing):'); ?></div>
+						<div class="value_list">
+							<?php foreach($swatchCollection as $swatch_item): ?>
+								<?php if($swatch_item->getImage()): ?>
+									<?php
+										$mediaPath = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+									?>
+									<div class="value_item">
+										<div class="img">
+											<img src="<?php echo $mediaPath.'amasty/shopby/option_images/'.$swatch_item->getImage(); ?>" width="50" height="50" alt="<?php echo $swatch_item->getTitle() ?>"/>
+										</div>
+										<img class="hover_image" src="<?php echo $mediaPath.'amasty/shopby/option_images/'.$swatch_item->getImage(); ?>" width="110" height="110" alt="<?php echo $swatch_item->getTitle() ?>"/>
+										<span class="value_label"><?php echo $swatch_item->getTitle() ?></span>
+									</div>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+</div>
+
+<?php if($product_type == 'grouped'): ?>
+	<div class="choose_sets_btn_wrap">
+		<a href="javascript:void(0);" class="choose_sets_btn">
+			<?php echo __('Select modules'); ?>
+		</a>
+	</div>
+	<script>
+		require(['jquery'],
+			function($) {
+				$('.choose_sets_btn').click(function(e){
+					$('html, body').animate({
+						scrollTop: $('#product_complect_items_wrapper').offset().top - 175
+					}, 1000);
+				});
+			}
+		);
+	</script>
+<?php endif; ?>

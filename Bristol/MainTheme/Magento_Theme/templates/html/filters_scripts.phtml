@@ -1,0 +1,600 @@
+<script>
+	require(['jquery'],
+		function($){
+			/**************************************Script for grouped products*****************************************/
+			$('.show_sub_products').each(function(){
+				$(this).find('a').click(function(e){
+					e.preventDefault();
+					if($(this).hasClass('active')) {
+						$(this).removeClass('active');
+						$(this).closest('.product_item_container').next('.grouped_sub_products_container').removeClass('active');
+					} else {
+						$(this).addClass('active');
+						$(this).closest('.product_item_container').next('.grouped_sub_products_container').addClass('active');
+					}
+				});
+			});
+			
+			$('.grouped_sub_products_container').each(function(){
+				var radius_items = $(this).find('.grouped_sub_products_radius_wrap').find('.radius_item');
+				radius_items.each(function(){
+					var item = $(this);
+					item.find('a').click(function(e){
+						e.preventDefault();
+						var data_radius = $(this).closest('.radius_item').attr('data-radius');
+						$(this).closest('.grouped_sub_products_radius_wrap').find('.radius_item').removeClass('active');
+						$(this).closest('.radius_item').addClass('active');
+						$(this).closest('.grouped_sub_products_container').find('.grouped_sub_products_radius_content').removeClass('active');
+						$(this).closest('.grouped_sub_products_container').find('.tab_sub_product_'+data_radius).addClass('active');
+					});
+				});
+			});
+			
+			/*************************************After loading page add to button category link*******************************************/
+			$('.top-filters-items a').each(function(){
+				var data_key = $(this).attr('data-item-key');
+				var top_filter_item_link = $(this).attr('data-cat-link');
+				$('.cat_filters_wrap.filter_'+data_key).find('.parameters').find('.parameters_btn').find('a').attr('href', top_filter_item_link);
+			});
+			
+			
+			/**************************************Bottom filters standart size************************************/
+			/* $('.popular-size-item a').each(function(){
+				$(this).click(function(e){
+					e.preventDefault();
+					var cat_link = $(this).closest('.popular_standart_sizes_wrap').attr('data-cat-link');
+					var current_link_name = $(this).text().toLowerCase();
+					var current_link_name = current_link_name.replace(' ', '');
+					var attribute_code = $(".standart_size_attribute_item[data-name='"+current_link_name+"']").attr('data-link');
+					
+					if(attribute_code != undefined) {
+						window.location.href = cat_link + '?' + attribute_code;
+					}
+				});
+			}); */
+			
+			
+			/************************************Change tabs items*****************************************/
+			$('.top-filters-items a').each(function(){
+				$(this).click(function(e){
+					e.preventDefault();
+					$('.top-filters-items a').removeClass('active');
+					$(this).addClass('active');
+					var data_key = $(this).attr('data-item-key');
+					$('.cat_filters_wrap').removeClass('active');
+					$('.cat_filters_wrap.filter_'+data_key).addClass('active');
+					var item_indent = $(this).attr('data-ident');
+					var div_indent = $('.homepage_top_filters_wrapper').attr('data-ident');
+					if(div_indent) {
+						$('.homepage_top_filters_wrapper').removeClass(div_indent).addClass(item_indent).attr('data-ident', item_indent);
+					} else {
+						$('.homepage_top_filters_wrapper').addClass(item_indent).attr('data-ident', item_indent);
+					}
+					
+				});
+			});
+			
+			/*********************************************Element click events*************************************/
+			$('.cat_filters_wrap').each(function(){
+				var filter_elements = $(this).find('.filters').find('.filter_element_wrap');
+				var filter_auto_elements = $(this).find('.filters').find('.filter_auto_element_wrap');
+				
+				/*==================================================Parameters=======================================================*/
+				filter_elements.each(function(){
+					
+					/*************************Show/hide filter item select***********************/
+					var element_link = $(this).find('.parametr_single_item');
+					element_link.click(function(e){
+						e.preventDefault();
+						if($(this).hasClass('opened')) {
+							$(this).removeClass('opened');
+							$(this).parent().find('.filters__list').removeClass('visible');
+						} else {
+							$('.filter_element_wrap .parametr_single_item').removeClass('opened');
+							$('.filter_element_wrap').find('.filters__list').removeClass('visible');
+							$(this).addClass('opened');
+							$(this).parent().find('.filters__list').addClass('visible');
+						}
+					});
+					
+					/****************************Select filter item link****************************/
+					var filter_select_items = element_link.parent().find('.filters__list').find('.filter__item');
+					filter_select_items.each(function(){
+						$(this).find('span').click(function(e){
+							e.preventDefault();
+							var item_text = $(this).text();
+							var item_link = $(this).attr('data-link');
+							$(this).closest('.filter_element_wrap').find('.parametr_single_item').removeClass('opened').addClass('with_label').find('span').text(item_text);
+							$(this).closest('.filter_element_wrap').find('.filters__list').removeClass('visible');
+							$(this).closest('.filters').find('.parameters_btn').removeClass('disable');
+							
+							/**************************************Add filter to link**************************************/
+							var button_link = $(this).closest('.filters').find('.parameters_btn a').attr('href');
+							if(button_link.indexOf("?") ==-1) {
+								$(this).closest('.filters').find('.parameters_btn a').attr('href', button_link+'?'+item_link);
+							} else {
+								var old_filter_value = $(this).closest('.filter_element_wrap').find('.parametr_single_item').attr('data-value');
+								console.log(old_filter_value);
+								
+								if(old_filter_value) {
+									if(button_link.indexOf(old_filter_value) == -1) {
+										$(this).closest('.filters').find('.parameters_btn a').attr('href', button_link+'&'+item_link);
+									} else {
+										button_link = button_link.replace(old_filter_value,item_link);
+										$(this).closest('.filters').find('.parameters_btn a').attr('href', button_link);
+									}
+								} else {
+									$(this).closest('.filters').find('.parameters_btn a').attr('href', button_link+'&'+item_link);
+								}
+								
+							}
+							
+							$(this).closest('.filter_element_wrap').find('.parametr_single_item').attr('data-value', item_link);
+						});
+					});
+				});
+				
+				/*==================================================Auto=======================================================*/
+				filter_auto_elements.each(function(){
+					
+					/*************************Show/hide filter item select***********************/
+					var element_link = $(this).find('.parametr_single_item');
+					element_link.click(function(e){
+						e.preventDefault();
+						if($(this).hasClass('opened')) {
+							$(this).removeClass('opened');
+							$(this).parent().find('.filters__list').removeClass('visible');
+						} else {
+							$('.filter_auto_element_wrap .parametr_single_item').removeClass('opened');
+							$('.filter_auto_element_wrap').find('.filters__list').removeClass('visible');
+							$(this).addClass('opened');
+							$(this).parent().find('.filters__list').addClass('visible');
+						}
+					});
+				});
+			});
+			
+			/***************************************Hide filter item select********************************/
+			$(document).mouseup(function (e){
+				var div = $(".parametr_single_item");
+				if (!div.is(e.target) && div.has(e.target).length === 0) {
+					$('.filter_auto_element_wrap .parametr_single_item').removeClass('opened');
+					$('.filter_auto_element_wrap').find('.filters__list').removeClass('visible');
+					
+					$('.filter_element_wrap .parametr_single_item').removeClass('opened');
+					$('.filter_element_wrap').find('.filters__list').removeClass('visible');
+				}
+				
+				var div2 = $(".auto__filter_item");
+				if (!div2.is(e.target) && div2.has(e.target).length === 0) {
+					div2.find('.auto_parametr_single').removeClass('opened');
+					div2.find('.auto_parametr_single').parent().find('.auto__filter_list').removeClass('visible');
+				}
+				
+				var div3 = $(".tab_content_parameters");
+				if (!div3.is(e.target) && div3.has(e.target).length === 0) {
+					div3.find('.attribute_item > span').removeClass('opened');
+					div3.find('.attribute_item > ul').removeClass('visible');
+				}
+			});
+			
+		
+			
+			/*==================================================Filter by Auto=======================================================*/
+			/* $(document).on('click', '.filter_auto_span', function(e){
+				e.preventDefault();
+				var item = $(this);
+				var item_text = $(this).text();
+                var item_type = $(this).attr('data-type');
+				var item_link = '';
+                var car_vendor = '';
+                var car_model = '';
+                var car_year = '';
+                var cur_type = '';
+                if(item_type=='vendor'){
+                    car_vendor=item_text;
+                    cur_type="model";
+                }else if(item_type=='model'){
+                    car_vendor=jQuery(".auto-mark.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_model=item_text;
+                    cur_type="year";
+                }else if(item_type=='year'){
+                    car_vendor=jQuery(".auto-mark.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_model=jQuery(".auto-model.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_year=item_text;
+                    cur_type="modification";
+                }
+				//var item_id = $(this).attr('data-id');
+				var values = {
+					'car_vendor': car_vendor,
+                    'car_model': car_model,
+                    'car_year': car_year
+				};
+                //alert(car_vendor);
+				if(item.closest('.filter_auto_element_wrap').find('.parametr_single_item span').text().length == 0) {
+					item.closest('.filters').find('.parameters_btn').addClass('disable');
+				} else {
+					item.closest('.filters').find('.parameters_btn').addClass('disable');
+
+
+					if(item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.auto_filter_list').data('jsp')) item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.auto_filter_list').data('jsp').destroy();
+					item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('with_label').find('span').text('').closest('.filter_auto_element_wrap').find('.auto_filter_list').empty();
+				}
+				item.closest('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('opened').addClass('with_label').find('span').text(item_text);
+				item.closest('.filter_auto_element_wrap').find('.auto_filter_list').removeClass('visible');
+
+				jQuery.ajax({
+					url: "getauto.php",
+					type: "GET",
+					data: values,
+					success: function(response){
+						var obj = JSON.parse(response);
+                        //alert(obj);
+						var index;
+						for (index = 0; index < obj.length; ++index) {
+							var cat_item = '<div class="filter__item"><span class="filter_auto_span" data-type="'+cur_type+'">'+obj[index]+'</span></div>';
+							item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').append(cat_item);
+						}
+						item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').jScrollPane({autoReinitialise: true});
+						if(item_type=='modification') {
+							if($('div').hasClass('autopage_top_filters_wrapper')) {
+								item_link = $('.main_item').attr('data-url') + '?' + 'car_vendor=' + $('.auto-mark').find('.parametr_single_item').find('span').text() + '&car_model=' + $('.auto-model').find('.parametr_single_item').find('span').text() + '&car_year=' + $('.auto-year').find('.parametr_single_item').find('span').text() + '&car_modification=' + $('.auto-modification').find('.parametr_single_item').find('span').text();
+								item.closest('.filters').find('.parameters_btn').removeClass('disable').find('a').attr('href', item_link);
+							} else {
+								var current_tab = $('.cat_filters_wrap.filter_' + $('.top-filters-items a.active').attr('data-item-key'));
+								item_link = $('.top-filters-items a.active').attr('data-cat-link') + '?' + 'car_vendor=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_1"]').find('.parametr_single_item').find('span').text() + '&car_model=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_2"]').find('.parametr_single_item').find('span').text() + '&car_year=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_3"]').find('.parametr_single_item').find('span').text() + '&car_modification=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_4"]').find('.parametr_single_item').find('span').text();
+								item.closest('.filters').find('.parameters_btn').removeClass('disable').find('a').attr('href', item_link);
+							}
+							
+						}
+						
+
+					},
+				});
+			}); */
+			$(document).on('click', '.filter_auto_span', function(e){
+				e.preventDefault();
+				var item = $(this);
+				var item_text = $(this).text();
+                var item_type = $(this).attr('data-type');
+				var item_link = '';
+                var car_vendor = '';
+                var car_model = '';
+                var car_year = '';
+                var cur_type = '';
+                if(item_type=='vendor'){
+                    car_vendor=item_text;
+                    cur_type="model";
+                }else if(item_type=='model'){
+                    car_vendor=jQuery(".auto-mark.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_model=item_text;
+                    cur_type="year";
+                }else if(item_type=='year'){
+                    car_vendor=jQuery(".auto-mark.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_model=jQuery(".auto-model.filter_auto_element_wrap .parametr_single_item.with_label span").text();
+                    car_year=item_text;
+                    cur_type="modification";
+                }
+				//var item_id = $(this).attr('data-id');
+				var values = {
+					'car_vendor': car_vendor,
+                    'car_model': car_model,
+                    'car_year': car_year
+				};
+                //alert(car_vendor);
+				if(item.closest('.filter_auto_element_wrap').find('.parametr_single_item span').text().length == 0) {
+					item.closest('.filters').find('.parameters_btn').addClass('disable');
+				} else {
+					item.closest('.filters').find('.parameters_btn').addClass('disable');
+
+
+					if(item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.auto_filter_list').data('jsp')) item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.auto_filter_list').data('jsp').destroy();
+					item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('with_label').find('span').text('').closest('.filter_auto_element_wrap').find('.auto_filter_list').empty();
+				}
+				item.closest('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('opened').addClass('with_label').find('span').text(item_text);
+				item.closest('.filter_auto_element_wrap').find('.auto_filter_list').removeClass('visible');
+
+				jQuery.ajax({
+					url: "getauto.php",
+					type: "GET",
+					data: values,
+					success: function(response){
+						var obj = JSON.parse(response);
+                        //alert(obj);
+						var index;
+						for (index = 0; index < obj.length; ++index) {
+							var cat_item = '<div class="filter__item"><span class="filter_auto_span" data-type="'+cur_type+'">'+obj[index]+'</span></div>';
+							item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').append(cat_item);
+						}
+						item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').jScrollPane({autoReinitialise: true});
+
+						if(item_type=='modification') {
+							if($('div').hasClass('autopage_top_filters_wrapper')) {
+								item_link = $('.main_item').attr('data-url') + '?' + 'car_vendor=' + $('.auto-mark').find('.parametr_single_item').find('span').text() + '&car_model=' + $('.auto-model').find('.parametr_single_item').find('span').text() + '&car_year=' + $('.auto-year').find('.parametr_single_item').find('span').text() + '&car_modification=' + $('.auto-modification').find('.parametr_single_item').find('span').text();
+								item.closest('.filters').find('.parameters_btn').removeClass('disable').find('a').attr('href', item_link);
+							} else {
+								var current_tab = $('.cat_filters_wrap.filter_' + $('.top-filters-items a.active').attr('data-item-key'));
+								item_link = $('.top-filters-items a.active').attr('data-cat-link') + '?' + 'car_vendor=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_1"]').find('.parametr_single_item').find('span').text() + '&car_model=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_2"]').find('.parametr_single_item').find('span').text() + '&car_year=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_3"]').find('.parametr_single_item').find('span').text() + '&car_modification=' + current_tab.find('.filter_auto_element_wrap[data-elem="element_4"]').find('.parametr_single_item').find('span').text();
+								item.closest('.filters').find('.parameters_btn').removeClass('disable').find('a').attr('href', item_link);
+							}
+						}
+
+					},
+				});
+			});
+			/*****************************************=============================================************************************/
+			$(document).on('click', '.filter_auto_compatibility', function(e){
+				e.preventDefault();
+				var item = $(this);
+				var item_text = $(this).text();
+				var item_link = $(this).attr('data-link');
+				var item_id = $(this).attr('data-id');
+				var values = {
+					'cat_id': item_id
+				};
+				
+				
+				if(item.closest('.filter_auto_element_wrap').find('.parametr_single_item span').text().length == 0) {
+					item.closest('.filters').find('.auto_compatibility__btn').addClass('disable');
+				} else {
+					item.closest('.filters').find('.auto_compatibility__btn').addClass('disable');
+					
+					
+					item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.auto_filter_list').data('jsp').destroy();
+					item.closest('.filter_auto_element_wrap').nextAll('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('with_label').find('span').text('').closest('.filter_auto_element_wrap').find('.auto_filter_list').empty();
+				}
+				item.closest('.filter_auto_element_wrap').find('.parametr_single_item').removeClass('opened').addClass('with_label').find('span').text(item_text);
+				item.closest('.filter_auto_element_wrap').find('.auto_filter_list').removeClass('visible');	
+				
+				$('.auto_compatibility_loader').show();
+				
+				jQuery.ajax({
+					url: "getcat.php",
+					type: "GET",		
+					data: values,
+					success: function(response){
+						$('.auto_compatibility_loader').hide();
+						var obj = JSON.parse(response);
+						var index;
+						for (index = 0; index < obj.length; ++index) {
+							var cat_item = '<div class="filter__item"><span class="filter_auto_compatibility" data-id="'+obj[index].id+'" data-link="'+obj[index].url+'">'+obj[index].name+'</span></div>';
+							item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').append(cat_item);
+						}
+						item.closest('.filter_auto_element_wrap').next().find('.auto_filter_list').jScrollPane({autoReinitialise: true});
+						
+						
+						item.closest('.filters').find('.auto_compatibility__btn').removeClass('disable').find('a').attr('data-cat-id', item_id).attr('data-cat-url', item_link);
+									
+					},
+				});
+			});
+			
+			/* $(document).on('click', '.auto_compatibility___btn', function(e){
+				e.preventDefault();
+				var cat_id = $(this).attr('data-cat-id');
+				var product_id = $('.product_sidebar_mini_item').attr('data-product-id');
+				var values = {
+					'cat_id': cat_id,
+					'product_id': product_id
+				};
+				
+				var text_car = '';
+				
+				$('.auto_compatibility_form_content .filter_auto_element_wrap').each(function(){
+					if($(this).find('.parametr_single_item').hasClass('with_label')) {
+						text_car = text_car + ' ' + $(this).find('.parametr_single_item').find('span').text();
+					}
+				});
+				
+				$('.auto_compatibility_loader').show();
+				
+				jQuery.ajax({
+					url: "checkcompatibility.php",
+					type: "GET",		
+					data: values,
+					success: function(response){
+						$('.auto_compatibility_loader').hide();
+						var new_html_block = '';
+						var cat_url = $('.auto_compatibility___btn').attr('data-cat-url');
+						
+						$('.product_sidebar_mini_item .auto_compatibility_wrap').remove();
+						
+						if(response == 'true') {
+							message = $('.messages__block').find('.success_message').text();
+							new_html_block = '<div class="true_tires"><p><span class="block_message">' + message + '</span><span class="car_block">' + text_car + '</span></p></div>';
+						} else {
+							message = $('.messages__block').find('.error_message').text();
+							var add_message = $('.messages__block').find('.car_url_text').text();
+							new_html_block = '<div class="false_tires"><p><span class="block_message">' + message + '</span><span class="car_block">' + text_car + '</span></p></div><div class="url_link"><a href="' + cat_url + '">' + add_message + '</a></div>';
+						}
+						
+						$('.auto_compatibility_form').animate({
+							'left': '-' + $('.auto_compatibility_form').outerWidth()
+						}, 200);
+						$('.auto_compatibility_form_overlay').hide();
+						$('body').removeClass('_has-modal');
+						
+						$('.product_sidebar_mini_item').append(new_html_block);	
+					},
+				});
+				
+			}); */
+			
+		}
+	);
+	
+	require(['jquery', 'jscrollpane', 'mousewheel'],
+		function($){
+			$('.filter_element_wrap .filters__list').each(function(){
+				$(this).jScrollPane({autoReinitialise: true});
+			});
+			
+			$('.filter_auto_element_wrap.first .filters__list').each(function(){
+				$(this).jScrollPane({autoReinitialise: true});
+			});
+			
+			$('.tab_content_parameters .items_list .attribute_item ul').each(function(){
+				$(this).jScrollPane(/* {autoReinitialise: true} */);
+			});
+			
+			$('.tab_content_car .auto__filter_item.first .auto__filter_list').each(function(){
+				$(this).jScrollPane(/* {autoReinitialise: true} */);
+			});
+			
+			// Tabs on top filters
+			$('.top_filters_content .filters_tab_title li a').each(function(){
+				$(this).click(function() {
+					if(!$(this).parent().hasClass('active')) {
+						$('.top_filters_content .filters_tab_title li').removeClass('active');
+						$(this).parent().addClass('active');
+						$('.filter_tab_content').removeClass('active');
+						var dataItem = $(this).attr('data-tab');
+						$('.tab_content_' + dataItem).addClass('active');
+					}
+				});
+			});
+			
+			/***********************************Category filter by auto*********************************/
+			$('.auto__filter_item').each(function(){
+				var element_link = $(this).find('.auto_parametr_single');
+				element_link.click(function(e){
+					e.preventDefault();
+					if($(this).hasClass('opened')) {
+						$(this).removeClass('opened');
+						$(this).parent().find('.auto__filter_list').removeClass('visible');
+					} else {
+						$('.auto__filter_item .auto_parametr_single').removeClass('opened');
+						$('.auto__filter_item').find('.auto__filter_list').removeClass('visible');
+						$(this).addClass('opened');
+						$(this).parent().find('.auto__filter_list').addClass('visible');
+					}
+				});
+			});
+			
+			$(document).on('click', '.cat_auto_filter_item', function(e){
+				e.preventDefault();
+				var item = $(this);
+				var item_text = $(this).text();
+                var item_type = $(this).attr('data-type');
+				var item_link = '';
+                var car_vendor = '';
+                var car_model = '';
+                var car_year = '';
+                var cur_type = '';
+                if(item_type=='vendor'){
+                    car_vendor=item_text;
+                    cur_type="model";
+                }else if(item_type=='model'){
+                    car_vendor=jQuery(".top_filters_content .tab_content_car .mark_item .auto_parametr_single.with_label .current_auto_filter_item").text();
+                    car_model=item_text;
+                    cur_type="year";
+                }else if(item_type=='year'){
+                    car_vendor = jQuery(".top_filters_content .tab_content_car .mark_item .auto_parametr_single.with_label .current_auto_filter_item").text();
+                    car_model = jQuery(".top_filters_content .tab_content_car .model_item .auto_parametr_single.with_label .current_auto_filter_item").text();
+                    car_year=item_text;
+                    cur_type="modification";
+                }
+				var values = {
+					'car_vendor': car_vendor,
+                    'car_model': car_model,
+                    'car_year': car_year
+				};
+				
+				if(item.closest('.auto__filter_item').find('.current_auto_filter_item').text().length == 0) {
+					
+				} else {
+					item.closest('.auto__filter_item').nextAll('.auto__filter_item').find('.auto__filter_list').data('jsp').destroy();
+					item.closest('.auto__filter_item').nextAll('.auto__filter_item').find('.auto_parametr_single').removeClass('with_label').find('.current_auto_filter_item').text('').closest('.auto__filter_item').find('.auto__filter_list').empty();
+				}
+				item.closest('.auto__filter_item').find('.auto_parametr_single').removeClass('opened').addClass('with_label').find('.current_auto_filter_item').text(item_text);
+				item.closest('.auto__filter_item').find('.auto__filter_list').removeClass('visible');	
+				
+				jQuery.ajax({
+					url: window.location.origin + "/getauto.php",
+					type: "GET",		
+					data: values,
+					success: function(response){
+						var obj = JSON.parse(response);
+						var index;
+						for (index = 0; index < obj.length; ++index) {
+							var cat_item = '<div class="auto__filter__item"><span class="cat_auto_filter_item" data-type="'+cur_type+'">'+obj[index]+'</span></div>';
+							item.closest('.auto__filter_item').next().find('.auto__filter_list').append(cat_item);
+						}
+						item.closest('.auto__filter_item').next().find('.auto__filter_list').jScrollPane(/* {autoReinitialise: true} */);
+						
+						if(item_type=='modification') {
+							var current_cat_url = $('.top_filters_content .filters_tab_title li a[data-tab="car"]').attr('data-cat-url');
+							
+							item_link = current_cat_url + '?' + 'car_vendor=' + $('.top_filters_content .tab_content_car .auto__filter_item.mark_item').find('.auto_parametr_single').find('.current_auto_filter_item').text() + '&car_model=' + $('.top_filters_content .tab_content_car .auto__filter_item.model_item').find('.auto_parametr_single').find('.current_auto_filter_item').text() + '&car_year=' + $('.top_filters_content .tab_content_car .auto__filter_item.year_item').find('.auto_parametr_single').find('.current_auto_filter_item').text() + '&car_modification=' + $('.top_filters_content .tab_content_car .auto__filter_item.modification_item').find('.auto_parametr_single').find('.current_auto_filter_item').text();
+							
+							item.closest('.tab_content_car').find('.car_filter_btn_wrap').find('a').attr('href', item_link);
+						}
+						
+						
+									
+					},
+				});
+			});
+		}
+	);
+	
+	require(['jquery'],
+		function($){
+			/***************************Brands season filter change*********************************/
+			$('.season_item').each(function(){
+				var season_link = $(this).find('a');
+				season_link.click(function(e){
+					e.preventDefault();
+					if(!$(this).closest('.season_item').hasClass('active')) {
+						$(this).closest('.brand_menu_season').find('.season_item').removeClass('active');
+						$(this).closest('.season_item').addClass('active');
+					}
+				});
+			});
+			
+			/*************************************Check menu brand item***********************************/
+			$('.brand__item').each(function(){
+				var brand_link = $(this).find('a');
+				brand_link.click(function(e){
+					e.preventDefault();
+					var season_link = $(this).closest('.brands_wrap').find('.brand_menu_season_wrap').find('.season_item.active').find('a').attr('data-link');
+					if(season_link != '') {
+						window.location.href = $(this).attr('data-link') + '?' + season_link;
+					} else {
+						window.location.href = $(this).attr('data-link');
+					}
+				});
+			});
+			
+			/************************************Mobile menu click**********************************/
+			//Mobule overlay
+			$('.mobile_menu_btn_wrap a').click(function(e){
+                e.preventDefault();
+				$('.mobile_menu_wrapper').toggleClass('active');
+				$('.mobile-menu-overlay').toggleClass('active');
+				$(this).toggleClass('close');
+            });
+				
+			$(document).mouseup(function (e){
+				var div = $(".mobile_menu_wrapper");
+				var close_menu_btn = $(".mobile_menu_btn_wrap a");
+				if (!div.is(e.target) && div.has(e.target).length === 0 && !close_menu_btn.is(e.target)) {
+					$('.mobile_menu_wrapper').removeClass('active');
+					$('.mobile-menu-overlay').removeClass('active');
+					$('.mobile_menu_btn_wrap a').removeClass('close');
+				}
+			});
+			
+            $('.mobile_menu_wrapper .navigation a').each(function(e){
+				$(this).click(function(e){
+					if ($(this).parent().hasClass('parent')) {
+						e.preventDefault();
+						$(this).next('ul').show();
+						$(this).next('ul').toggleClass('show');
+						$('.mobile_menu_wrapper .info').hide();
+					}
+				});
+			});
+		}
+	);
+</script>

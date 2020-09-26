@@ -1,0 +1,92 @@
+<?php
+/**
+ * @copyright Copyright (c) 2017 www.tigren.com
+ * @var $block \Tigren\Ajaxlogin\Block\Form\Register
+ */
+?>
+<div class="mb-register-popup" style="display:none;">
+    <div class="mb-login-popup-title">
+        <strong><?php echo __('Register'); ?></strong>
+    </div>
+    <div class="mb-ajaxsuite-popup-border mb-ajaxlogin-popup mb-ajaxlogin-register">
+        <form class="form form-create-account mb-login-form-register"
+              method="post"
+              id="register-form"
+              enctype="multipart/form-data" autocomplete="off">
+            <fieldset class="fieldset create info">
+                <input type="hidden" name="success_url" value="">
+                <input type="hidden" name="error_url" value="">
+                <div class="field field-name-firstname required">
+                    <label class="label" for="firstname">
+                        <span><?php echo __('First Name') ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text" id="firstname" name="firstname" value="" title="<?php echo __('First Name') ?>"
+                               class="input-text required-entry" data-validate="{required:true}" autocomplete="off"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="field field-name-lastname required">
+                    <label class="label" for="lastname">
+                        <span><?php echo __('Last Name') ?></span>
+                    </label>
+
+                    <div class="control">
+                        <input type="text" id="lastname" name="lastname" value="" title="<?php echo __('Last Name') ?>"
+                               class="input-text required-entry" data-validate="{required:true}" autocomplete="off"
+                               aria-required="true">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset create account" data-hasrequired="* Required Fields">
+                <div class="field required">
+                    <label for="email_address" class="label"><span><?php echo __('E-mail') ?></span></label>
+                    <div class="control">
+                        <input type="email" name="email" autocomplete="email" id="email_address" value="" title="<?php echo __('E-mail') ?>"
+                               class="input-text" data-validate="{required:true, 'validate-email':true}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="field password required">
+                    <label for="password" class="label"><span><?php echo __('Password') ?></span></label>
+                    <div class="control">
+                        <input type="password" name="password" id="password" title="<?php echo __('Password') ?>" class="input-text"
+                               data-password-min-length="6" data-password-min-character-sets="1"
+                               data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off"
+                               aria-required="true">
+                    </div>
+
+                </div>
+                <div class="field confirmation required">
+                    <label for="password-confirmation" class="label"><span><?php echo __('Confirm Password') ?></span></label>
+                    <div class="control">
+                        <input type="password" name="password_confirmation" title="<?php echo __('Confirm Password') ?>"
+                               id="password-confirmation" class="input-text"
+                               data-validate="{required:true, equalTo:'#password'}" autocomplete="off"
+                               aria-required="true">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="clr"></div>
+            <div class="actions mb-style-actions">
+                <div class="primary">
+                    <button type="submit" class="action submit primary"
+                            title="<?php echo __('Register') ?>"><span><?php echo __('Register') ?></span></button>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="secondary">
+                    <a class="action forgot" href="<?php echo $block->getUrl('customer/account/forgotpassword'); ?>">
+                        <span><?php echo __('Forgot Your Password?') ?></span>
+                    </a>
+                </div>
+                <span> | </span>
+                <div class="secondary">
+                    <a class="action back" href="<?php echo $block->getUrl('customer/account/login'); ?>">
+                        <span class="mb-back-link"><?php echo __('Sign In') ?></span>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

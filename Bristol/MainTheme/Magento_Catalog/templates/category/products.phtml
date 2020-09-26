@@ -1,0 +1,52 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+?>
+<?php
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+	$cat_id = $category->getId();
+?>
+<?php if($cat_id == 104): ?>
+	<?php
+		$subCats = $category->getChildrenCategories();
+	?>
+	<div class="manufacturers_wrapper">
+		<div class="manufacturers_container">
+			<?php foreach($subCats as $sub_cat): ?>
+				<?php
+					$sub_cat = $objectManager->create('Magento\Catalog\Model\Category')->load($sub_cat->getId());
+					$_imgUrl = $sub_cat->getImageUrl();
+				?>
+				<?php if($_imgUrl != ''): ?>
+					<div class="cat_item">
+						<a href="<?php echo $sub_cat->getUrl(); ?>">
+							<div class="cat-image-con">
+								<img class="cat-image" src="<?php echo $_imgUrl; ?>" alt="<?php echo $sub_cat->getName(); ?>"/>
+							</div>
+							<div class="cat-title-con">
+								<?php echo $block->escapeHtml($sub_cat->getName()); ?>
+							</div>
+						</a>
+					</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php else: ?>
+	<?php if (!$block->isContentMode() || $block->isMixedMode()): ?>
+		<?= $block->getProductListHtml() ?>
+	<?php endif; ?>
+<?php endif; ?>

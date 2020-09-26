@@ -1,0 +1,106 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_BannerSlider
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+$banners       = $block->getBannerCollection();
+$sliderId      = $block->getSliderId() . '-' . uniqid();
+
+$counter = 1;
+
+if (count($banners)): ?>
+    <div class="carousel-container homepage_slider">
+        <div id="banner-slider-carousel">
+            <?php $iterator = 1; ?>
+            <div id="bannerslider-list-items-<?php echo $sliderId; ?>"
+                 class="owl-carousel owl-theme">
+                <?php foreach ($banners as $banner): ?>
+                    <?php
+						$bnType  = $banner->getType();
+						$bnTitle = $banner->getTitle();
+						$bnUrl   = $banner->getUrlBanner();
+						$bnImg   = $banner->getImageUrl();
+						$bnSmallImg   = $banner->getSmallImageUrl();
+						$banner_content = $banner->getBannertext();
+                    ?>
+                    <?php echo ($iterator++ == 1) ? '<div class="banner-item banner-slider">' : '</div><div class="banner-item banner-slider">' ?>
+                    <?php if ($bnType == \Mageplaza\BannerSlider\Model\Config\Source\Type::CONTENT): ?>
+                        <div class="item-content">
+                            <?php echo $block->getPageFilter($banner->getContent()); ?>
+                        </div>
+                    <?php else: #image type?>
+                        <div class="item-image">
+							<img class="owl-image img-responsive" src="<?php echo $bnImg ?>" title="<?php echo $bnTitle ?>"/>
+							<div class="slide_additional_container">
+								<div class="left_column">
+									<?php if($bnTitle): ?>
+										<div class="banner_item_title"><?php echo $bnTitle; ?></div>
+									<?php endif; ?>
+									<?php if($banner_content): ?>
+										<div class="banner_content"><p><?php echo $banner_content; ?></p></div>
+									<?php endif; ?>
+									<?php if($bnUrl): ?>
+										<div class="banner_link">
+											<a href="<?php echo $bnUrl; ?>">
+												<?php echo __('More'); ?>
+												<svg width="25" height="18" viewBox="0 0 25 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5952 0.788075C16.2595 0.440596 15.7007 0.440596 15.3532 0.788075C15.0175 1.12381 15.0175 1.6826 15.3532 2.01755L21.6509 8.31521H0.869478C0.385044 8.31599 0 8.70103 0 9.18547C0 9.6699 0.385044 10.0675 0.869478 10.0675H21.6509L15.3532 16.3534C15.0175 16.7009 15.0175 17.2604 15.3532 17.5954C15.7007 17.9429 16.2603 17.9429 16.5952 17.5954L24.3837 9.80686C24.7312 9.47112 24.7312 8.91234 24.3837 8.57738L16.5952 0.788075Z" fill="white"/></svg>
+											</a>
+										</div>
+									<?php endif; ?>
+									<div class="slide_counter">
+										<span><?php if($counter < 10): echo '0'.$counter; else: echo $counter; endif; ?></span>
+									</div>
+								</div>
+								<div class="right_column">
+									<?php if($bnSmallImg): ?>
+										<div class="banner_small_image_container">
+											<img class="banner_small_image" src="<?php echo $bnSmallImg ?>" title="<?php echo $bnTitle ?>"/>
+										</div>
+									<?php endif; ?>
+								</div>
+							</div>
+                        </div>
+                    <?php endif; ?>
+					<?php $counter++; ?>
+                    <?php echo ($iterator == count($banners) + 1) ? '</div>' : '' ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php echo $block->getPagerHtml() ?>
+    </div>
+
+    <script>
+        require(['jquery', 'owlcarousel'], function ($) {
+			$('#bannerslider-list-items-<?php echo $sliderId; ?>').owlCarousel({
+				items: 1,
+				dots: true,
+				autoplay: false,
+				autoplayTimeout: 10000,
+				loop: true,
+				margin: 0,
+        // autoWidth: true,
+				animateIn: 'fadeIn',
+				animateOut: 'fadeOut',
+				onDragged: function(e) {
+					$(e.target).hide().fadeIn();
+				}
+			});
+        });
+    </script>
+<?php endif; ?>

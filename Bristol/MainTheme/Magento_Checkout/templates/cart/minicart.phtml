@@ -1,0 +1,132 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+?>
+
+<div data-block="minicart" class="minicart-wrapper">
+    <a class="action showcart" href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>"
+       data-bind="scope: 'minicart_content'">
+        <span class="text">
+        	<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M5.79941 11.6369H5.80023C5.80092 11.6369 5.80161 11.6367 5.80229 11.6367H15.3633C15.5987 11.6367 15.8056 11.4806 15.8703 11.2543L17.9797 3.87144C18.0251 3.71228 17.9933 3.54117 17.8937 3.40906C17.794 3.27695 17.6381 3.19922 17.4727 3.19922H4.58322L4.20625 1.50279C4.15256 1.26151 3.9386 1.08984 3.69141 1.08984H0.527344C0.236069 1.08984 0 1.32591 0 1.61719C0 1.90846 0.236069 2.14453 0.527344 2.14453H3.26843C3.33517 2.44514 5.07239 10.2627 5.17236 10.7125C4.61192 10.9561 4.21875 11.5149 4.21875 12.1641C4.21875 13.0364 4.92847 13.7461 5.80078 13.7461H15.3633C15.6546 13.7461 15.8906 13.51 15.8906 13.2188C15.8906 12.9275 15.6546 12.6914 15.3633 12.6914H5.80078C5.51006 12.6914 5.27344 12.4548 5.27344 12.1641C5.27344 11.8737 5.50923 11.6375 5.79941 11.6369ZM16.7735 4.25391L14.9654 10.582H6.22375L4.8175 4.25391H16.7735Z" fill="black"/>
+				<path d="M5.27344 15.3281C5.27344 16.2004 5.98315 16.9102 6.85547 16.9102C7.72778 16.9102 8.4375 16.2004 8.4375 15.3281C8.4375 14.4558 7.72778 13.7461 6.85547 13.7461C5.98315 13.7461 5.27344 14.4558 5.27344 15.3281ZM6.85547 14.8008C7.14619 14.8008 7.38281 15.0374 7.38281 15.3281C7.38281 15.6189 7.14619 15.8555 6.85547 15.8555C6.56474 15.8555 6.32812 15.6189 6.32812 15.3281C6.32812 15.0374 6.56474 14.8008 6.85547 14.8008Z" fill="black"/>
+				<path d="M12.7266 15.3281C12.7266 16.2004 13.4363 16.9102 14.3086 16.9102C15.1809 16.9102 15.8906 16.2004 15.8906 15.3281C15.8906 14.4558 15.1809 13.7461 14.3086 13.7461C13.4363 13.7461 12.7266 14.4558 12.7266 15.3281ZM14.3086 14.8008C14.5993 14.8008 14.8359 15.0374 14.8359 15.3281C14.8359 15.6189 14.5993 15.8555 14.3086 15.8555C14.0179 15.8555 13.7812 15.6189 13.7812 15.3281C13.7812 15.0374 14.0179 14.8008 14.3086 14.8008Z" fill="black"/>
+			</svg>
+			<?php /* @escapeNotVerified __('My Cart')*/ ?>
+		</span>
+        <span class="counter qty empty"
+              data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+            <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+            <span class="counter-label">
+            <!-- ko if: getCartParam('summary_count') -->
+                <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+                <!-- ko i18n: 'items' --><!-- /ko -->
+            <!-- /ko -->
+            </span>
+        </span>
+    </a>
+    <?php if ($block->getIsNeedToDisplaySideBar()): ?>
+        <div class="block block-minicart"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "appendTo":"[data-block=minicart]",
+                "triggerTarget":".showcart",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
+			<div class="minicart_overlay">
+				<div class="minicart_overlay_img"></div>
+			</div>
+            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            </div>
+			
+			<div id="minicart_similar_items_wrap">
+				<?php
+					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+					$cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+					$itemsCollection = $cart->getQuote()->getItemsCollection();
+					$itemsVisible = $cart->getQuote()->getAllVisibleItems();
+					$items = $cart->getQuote()->getAllItems();
+				?>
+				<?php if(count($items) > 0): ?>
+					<?php
+						$_product = $objectManager->create('Magento\Catalog\Model\Product')->load($items[count($items) - 1]->getProductId());
+						$cat_ids = $_product->getCategoryIds();
+						$reverse_cats_array = array_reverse ($cat_ids);
+						$cat_id = 0;
+						foreach($reverse_cats_array as $reverse_cat_id):
+							$category = $objectManager->create('Magento\Catalog\Model\Category')->load($reverse_cat_id);
+							if($category->getIncludeInMenu() == 1 && count($category->getChildrenCategories()) == 0) {
+								$cat_id = $reverse_cat_id;
+								break;
+							}
+						endforeach;
+						$_category = $categoryFactory->create()->load($cat_id);
+						$_productCollection = $_category->getProductCollection()->addAttributeToSelect('*')->addAttributeToFilter('status',1);
+						$_productCollection->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(6);
+					?>
+					<?php if(count($_productCollection) > 0): ?>
+						<?php $store = $objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore(); ?>
+						<div class="minicart_similar_items_title_block">
+							<span><?php echo __('You may be interested'); ?></span>
+						</div>
+						<div class="minicart_similar_items_content owl-carousel">
+							<?php foreach ($_productCollection as $_product): ?>
+								<div class="item">
+									<div class="image_wrap">
+										<a href="<?php echo $_product->getProductUrl(); ?>">
+											<img src="<?php echo $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $_product->getImage(); ?>" alt="<?php echo $_product->getName(); ?>"/>
+										</a>
+									</div>
+									<div class="item_name">
+										<a href="<?php echo $_product->getProductUrl(); ?>"><?php echo $_product->getName(); ?></a>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+						<script>
+							require(['jquery', 'owlcarousel'], function ($){
+								$(document).ready(function(){
+									$(".minicart_similar_items_content.owl-carousel").owlCarousel({
+										"items": 4,
+										dots: false,
+										loop: false,
+										margin: 36
+									});
+								});
+							})
+						</script>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+			
+            <?= $block->getChildHtml('minicart.addons') ?>
+        </div>
+    <?php endif ?>
+    <script>
+        window.checkout = <?= /* @escapeNotVerified */ $block->getSerializedConfig() ?>;
+    </script>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='minicart']": {
+            "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout() ?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?= /* @escapeNotVerified */ $block->getViewFileUrl('images/loader-1.gif') ?>"
+        }
+    }
+    </script>
+</div>
+
+

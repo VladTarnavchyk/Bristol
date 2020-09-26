@@ -1,0 +1,115 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ * You may not sell, distribute, sub-license, rent, lease or lend complete or portion of software to anyone.
+ *
+ * DISCLAIMER
+ * Do not edit or add to this file if you wish to upgrade to newer
+ * versions in the future.
+ *
+ * @package   RLTSquare_ProductReviewImages
+ * @copyright Copyright (c) 2017 RLTSquare (https://www.rltsquare.com)
+ * @contacts  support@rltsquare.com
+ * @license  See the LICENSE.md file in module root directory
+ */
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+?>
+<div class="block review-add">
+    <div class="block_title"><strong><?php /* @escapeNotVerified */ echo __('Write Review') ?></strong></div>
+    <div class="block-content">
+        <?php if ($block->getAllowWriteReviewFlag()): ?>
+            <form enctype="multipart/form-data" action="<?php /* @escapeNotVerified */ echo $block->getAction() ?>" class="review-form" method="post" id="review-form" data-role="product-review-form" data-bind="scope: 'review-form'">
+                <?php echo $block->getBlockHtml('formkey'); ?>
+                <?php echo $block->getChildHtml('form_fields_before') ?>
+                <fieldset class="fieldset review-fieldset" data-hasrequired="<?php __('* Required Fields'); ?>">
+                    <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
+						<div class="review_form_stars_rating_wrap">
+							<span id="input-message-box"></span>
+							<fieldset class="field required review-field-ratings">
+								<div class="control">
+									<div class="nested" id="product-review-table">
+										<?php foreach ($block->getRatings() as $_rating): ?>
+											<div class="field choice review-field-rating">
+												<div class="control review-control-vote">
+													<?php
+														$options = $_rating->getOptions();
+														$iterator = 1;
+													?>
+													<?php foreach ($options as $_option): ?>
+														<input type="radio" name="ratings[<?php /* @escapeNotVerified */ echo $_rating->getId() ?>]" id="<?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_<?php /* @escapeNotVerified */ echo $_option->getValue() ?>" value="<?php /* @escapeNotVerified */ echo $_option->getId() ?>" class="radio" data-validate="{'rating-required':true}" aria-labelledby="<?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_rating_label <?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_<?php /* @escapeNotVerified */ echo $_option->getValue() ?>_label" />
+														<label class="rating-<?php /* @escapeNotVerified */ echo $iterator; ?>" for="<?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_<?php /* @escapeNotVerified */ echo $_option->getValue() ?>" title="<?php /* @escapeNotVerified */ echo __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?>" id="<?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_<?php /* @escapeNotVerified */ echo $_option->getValue() ?>_label">
+															<span><?php /* @escapeNotVerified */ echo __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?></span>
+														</label>
+														<?php $iterator++; ?>
+													<?php endforeach; ?>
+												</div>
+											</div>
+										<?php endforeach; ?>
+									</div>
+									<input type="hidden" name="validate_rating" class="validate-rating" value="" />
+								</div>
+							</fieldset>
+						</div>
+                    <?php endif ?>
+					<div class="review_form_fields_wrapper">
+						<div class="review_form_customer_info">
+							<div class="field review-field-nickname required">
+								<label for="nickname_field" class="label"><span><?php /* @escapeNotVerified */ echo __('First Name') ?></span></label>
+								<div class="control">
+									<input type="text" name="nickname" id="nickname_field" class="input-text" data-validate="{required:true}" data-bind="value: nickname()" />
+								</div>
+							</div>
+							<div class="field review-field-summary required">
+								<label for="summary_field" class="label"><span><?php /* @escapeNotVerified */ echo __('Email') ?></span></label>
+								<div class="control">
+									<input type="email" name="title" id="summary_field" class="input-text" data-validate="{required:true}" data-bind="value: review().title" />
+								</div>
+							</div>
+						</div>
+						<div class="field review-field-text required">
+							<label for="review_field" class="label"><span><?php /* @escapeNotVerified */ echo __('Review') ?></span></label>
+							<div class="control">
+								<textarea name="detail" id="review_field" cols="5" rows="3" data-validate="{required:true}" data-bind="value: review().detail"></textarea>
+							</div>
+						</div>
+						<div class="review_form_additional_fileds">
+							<div class="field review-field-advantages">
+								<label for="advantages_field" class="label"><span><?php /* @escapeNotVerified */ echo __('Advantages') ?></span></label>
+								<div class="control">
+									<textarea name="advantages" id="advantages_field" cols="5" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="field review-field-disadvantages">
+								<label for="disadvantages_field" class="label"><span><?php /* @escapeNotVerified */ echo __('Disadvantages') ?></span></label>
+								<div class="control">
+									<textarea name="disadvantages" id="disadvantages_field" cols="5" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="actions-toolbar review-form-actions">
+					<div class="primary actions-primary">
+						<button type="submit" class="action submit primary"><span><?php /* @escapeNotVerified */ echo __('Send Review') ?></span></button>
+					</div>
+				</div>
+			</form>
+			<script type="text/x-magento-init">
+			{
+				"#review-form": {
+					"Magento_Review/js/error-placement": {},
+					"Magento_Review/js/validate-review": {}
+				}
+			}
+			</script>
+		<?php else: ?>
+			<div class="message info notlogged" id="review-form">
+				<div>
+					<?php /* @escapeNotVerified */ echo __('Only registered users can write reviews. Please <a href="%1">Sign in</a> or <a href="%2">create an account</a>', $block->getLoginLink(), $block->getRegisterUrl()) ?>
+				</div>
+			</div>
+		<?php endif ?>
+    </div>
+</div>

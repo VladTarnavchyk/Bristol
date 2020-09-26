@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+use Magento\Catalog\Model\Product\ProductList\Toolbar;
+?>
+<div class="toolbar-sorter sorter">
+    <select id="sorter" class="sorter-options toolbar_sorter">
+        <option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'position', "product_list_dir"=>'asc')) ?>" <?php if ($block->getCurrentOrder() == 'position'): ?>selected="selected"<?php endif; ?>>
+			<?php echo __('Recent Added') ?>
+		</option>
+		<option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'name', "product_list_dir"=>'asc')) ?>" <?php if ($block->getCurrentOrder() == 'name'): ?>selected="selected"<?php endif; ?>>
+			<?php echo __('First Name') ?>
+		</option>
+		<option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'desc')) ?>" <?php if ($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'desc'): ?>selected="selected"<?php endif; ?>>
+			<?php echo __('Price - High to Low') ?>
+		</option>
+		<option value="<?php echo $block->getPagerUrl(array("product_list_order"=>'price', "product_list_dir"=>'asc')) ?>" <?php if ($block->getCurrentOrder() == 'price' && $block->getCurrentDirection() == 'asc'): ?>selected="selected"<?php endif; ?>>
+			<?php echo __('Price - Low to High') ?>
+		</option>
+    </select>
+</div>

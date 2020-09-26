@@ -1,0 +1,107 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Blog
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var \Mageplaza\Blog\Block\Widget\Posts $block */
+
+$posts = $block->getCollection();
+?>
+<?php if(count($posts) > 0): ?>
+	<div class="homepage_news_wrapper">
+		<div class="homepage_news_container">
+			<div class="block_title">
+				<?php echo __('News'); ?>
+				<span><?php echo __('Latest News'); ?></span>
+			</div>
+			<div class="homepage_news_content owl-carousel off">
+				<?php foreach ($posts as $post) : ?>
+					<div class="post_item item">
+						<div class="post_item_wraper">
+							<?php if ($post->getImage()) : ?>
+								<div class="post_image_container">
+									<a href="<?= $post->getUrl() ?>">
+										<img class="post_image" src="<?= $block->resizeImage($post->getImage(), '370x'); ?>" alt="<?= $block->escapeHtml($post->getName()); ?>"/>
+									</a>
+								</div>
+							<?php endif; ?>
+							<div class="post_info_wraper">
+								<div class="new_title">
+									<a class="post_link_title" title="<?= $post->getName(); ?>" href="<?= $post->getUrl() ?>">
+										<?= $post->getName(); ?>
+									</a>
+								</div>
+								<div class="post_date">
+									<?= $block->getPostDate($post) ?>
+								</div>
+								<div class="post_short_description">
+									<p><?= $post->getShortDescription(); ?></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<script>
+		require(['jquery', 'owlcarousel'], function ($){
+			var owl = $('.homepage_news_content'),
+			owlOptions = {
+				loop: true,
+				margin: 10,
+				autoplay: false,
+				items: 4,
+				nav: false,
+				dots: true,
+				responsiveClass:true,
+				responsive: {
+					0:{
+						items: 1
+					},
+					480:{
+						items: 2
+					},
+					992:{
+						items: 3
+					}
+				}
+			};
+			if ($(window).width() < 993) {
+				var owlActive = owl.owlCarousel(owlOptions);
+			} else {
+				owl.addClass('off');
+			}
+			$(window).resize(function() {
+				if ($(window).width() < 993) {
+					if ( $('.homepage_news_content').hasClass('off') ) {
+						var owlActive = owl.owlCarousel(owlOptions);
+						owl.removeClass('off');
+					}
+					
+				} else {
+					if (!$('.homepage_news_content').hasClass('off')) {
+						owl.addClass('off').trigger('destroy.owl.carousel');
+						owl.find('.owl-stage-outer').children(':eq(0)').unwrap();
+					}
+				}
+			});
+		});
+	</script>
+<?php endif; ?>

@@ -1,0 +1,56 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+//$this->getLayout->createBlock("Magento\Cms\Block\Block")->setBlockId("")->toHtml();
+//$block->getChildHtml()
+//
+?>
+<?php
+	$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+	$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+	$logo_template =  'Magento_Theme::html/footer/logo_'.$storeManager->getStore()->getCode().'.phtml';
+?>
+<div class="footer-container">
+	<div class="f_static_info">
+		<div class="f_logo">
+			<a class="footer_logo" href="<?= $block->getUrl('') ?>">
+				<?php echo $this->getLayout()->createBlock('Magento\Framework\View\Element\Template')->setTemplate($logo_template)->toHtml(); ?>
+			</a>
+		</div>
+		<div class='f_copyright'><?= $block->getCopyright() ?></div>
+	</div>
+	<div class="f_menu">
+		<div class="f_menu_top">
+			<div class="f_menu_title">
+				<?= __("Menu") ?>
+			</div>
+			<div class="f_menu_items">
+				<?= $this->getLayout()->createBlock("Magento\Cms\Block\Block")->setBlockId("footer_menu")->toHtml(); ?>
+			</div>
+		</div>
+		<div class="f_menu_contact">
+			<div class="f_menu_title">
+				<?= __("Contact with us") ?>
+			</div>
+			<div class="f_menu_contact_list">
+				<?= $this->getLayout()->createBlock("Magento\Cms\Block\Block")->setBlockId("footer_contact")->toHtml(); ?>
+			</div>
+		</div>
+	</div>
+	<div class="f_socials">
+		<div class="f_socials_title"><?= __("We in socials") ?>:</div>
+		<div class="f_social_icons">
+			<?= $this->getLayout()->createBlock("Magento\Cms\Block\Block")->setBlockId("footer_socials")->toHtml(); ?>
+		</div>
+		<div class="f_social_creators">
+			<?= __("Site Design") ?>
+		</div>
+		<div class='f_social_creators_list'>
+			<?= $this->getLayout()->createBlock("Magento\Cms\Block\Block")->setBlockId("site_design_company")->toHtml(); ?>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,260 @@
+/**
+ * @copyright Copyright (c) 2017 www.tigren.com
+ */
+
+ /* class="customer-account-login page-layout-1column" */
+.mb-ajaxsuite-popup-wrapper {
+  top: 10%;
+  left: 30%;
+  display: none;
+  position: fixed;
+  background: white;
+  z-index: 999;
+}
+
+.mb-ajaxsuite-popup-wrapper a.mb-ajaxsuite-close {
+  width: 25px;
+  height: 25px;
+  background: #fff url('../images/popup-close.svg') no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 28px;
+  right: 22px;
+  opacity: 1;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.mb-ajaxsuite-popup-wrapper a.mb-ajaxsuite-close:hover {
+    width: 25px;
+    height: 25px;
+    background: #fff url('../images/popup-close-hover.svg') no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 28px;
+    right: 22px;
+    opacity: 1;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+.mb-ajaxsuite-popup-wrapper .mb-ajaxsuite-popup .mb-login-popup-title-logo {
+  background-image: url('../images/login-title.png');
+  background-repeat: no-repeat;
+}
+
+.mb-ajaxsuite-popup-wrapper .mb-ajaxsuite-popup .center {
+  text-align: center;
+}
+
+.mb-ajaxsuite-popup-wrapper .mb-login-popup-title {
+  padding: 25px 0;
+  margin: 0 25px;
+  text-transform: uppercase;
+  text-align: left;
+  color: #1D1D24;
+  background: #fff;
+  border-bottom: 1px dashed #DCDCE3;
+}
+
+.mb-ajaxsuite-popup-wrapper .mb-login-popup-title strong {
+  color: floralwhite;
+}
+
+.mb-ajaxsuite-popup-wrapper .mb-login-popup-title strong {
+  color: #1D1D24;
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.mb-ajaxsuite-popup-wrapper .mb-ajaxsuite-popup-border {
+  padding: 25px;
+  background: #fff;
+}
+
+/*Blank black*/
+#mb-ajaxsuite-blank {
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  background-color: #000000;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  display: none;
+  left: 0;
+}
+
+.mb-ajaxsuite-popup-wrapper {
+  z-index: 200;
+}
+
+.control input[type="text"],
+.control input[type="password"],
+.control input[type="url"],
+.control input[type="tel"],
+.control input[type="search"],
+.control input[type="number"],
+.control input[type="datetime"],
+.control input[type="email"] {
+  background: #F5F5F5;
+  border: 1px solid #DCDCE3;
+  border-radius: 1px;
+  font-size: 14px;
+  line-height: 28px;
+  color: #1D1D24;
+  height: 42px;
+  line-height: 1.42857143;
+  padding: 10px;
+}
+
+.control input[type="text"]:focus,
+.control input[type="password"]:focus,
+.control input[type="url"]:focus,
+.control input[type="tel"]:focus,
+.control input[type="search"]:focus,
+.control input[type="number"]:focus,
+.control input[type="datetime"]:focus,
+.control input[type="email"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.mb-login-popup,
+.mb-register-popup,
+.mb-forgetpassword-popup
+{
+  background: #fff;
+}
+
+.fieldset>.field>.label {
+  font-size: 18px;
+  color: #1D1D24;
+  font-weight: 400;
+}
+
+.fieldset {
+  margin: 0 0 25px;
+}
+
+.actions>.primary {
+  margin: 0 0 25px;
+  padding: 0 0 10px;
+  border-bottom: 1px dashed #DCDCE3;
+}
+
+#forgetpassword-form > div:nth-child(2) > div {
+  margin: 0 0 25px;
+  padding: 0 0 10px;
+  border-bottom: 1px dashed #DCDCE3;
+}
+
+.mb-ajaxsuite-popup-wrapper div.mb-ajaxsuite-popup-border .actions button.submit {
+  background: transparent;
+  color: #F24956;
+  border-color: #F24956;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 100;
+  padding: 12px 45px;
+}
+
+.mb-ajaxsuite-popup-wrapper div.mb-ajaxsuite-popup-border .actions button.submit:hover {
+  background: #F24956;
+  color: #fff;
+  transition-duration: 0.7s;
+}
+
+.actions a.action {
+    color: #1D1D24;
+}
+
+.mb-forgetpassword-popup .field.note {
+    max-width: 420px;
+}
+
+.mb-register-popup {
+  max-width: 650px;
+}
+
+.form-create-account .fieldset.create.account:after {
+  margin: 20px 0;
+}
+
+/* Popup Messages  */
+
+
+/* ERROR */
+.mb-message-popup .mb-error-message {
+    margin: 40px 0 0 0;
+    font-size: 18px;
+}
+.mb-ajaxsuite-popup-wrapper .mb-ajaxlogin-message-error .mb-message-popup  .mb-message-error {
+  font-size: 18px;
+}
+/* SUCCES */
+.mb-message-popup .mb-successful-message {
+    margin: 40px 0 0 0;
+    max-width: 300px;
+}
+.mb-ajaxsuite-popup-wrapper .mb-ajaxlogin-message-success .mb-message-popup .mb-message-successs {
+  color: #1D1D24;
+  margin: 0;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+/* .mb-ajaxsuite-popup-wrapper .mb-ajaxlogin-message-success .mb-message-successs */
+
+@media screen and (min-width: 768px) and (max-width: 835px) {
+  #mb-ajaxsuite-popup { */
+      width: 650px;
+  }
+  #mb-ajaxsuite-popup-wrapper { */
+      max-width: 650px;
+      max-width: 90%;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .form-create-account {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+  .mb-ajaxsuite-popup-wrapper form.mb-login-form-register fieldset.info,
+  .mb-ajaxsuite-popup-wrapper form.mb-login-form-register fieldset.account
+ {
+      width: 70%;
+  }
+  .form-create-account .control input[type="text"],
+  .form-create-account .control input[type="password"],
+  .form-create-account .control input[type="url"],
+  .form-create-account .control input[type="tel"],
+  .form-create-account .control input[type="search"],
+  .form-create-account .control input[type="number"],
+  .form-create-account .control input[type="datetime"],
+  .form-create-account .control input[type="email"]
+  {
+    width: 280px;
+  }
+  .form-create-account .fieldset > .field,
+  .form-create-account .fieldset > .fields > .field {
+    margin: 0 0 10px;
+  }
+
+  .form-create-account .fieldset {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 366px) {
+  #login-form .secondary > span {
+    display: none;
+  }
+}

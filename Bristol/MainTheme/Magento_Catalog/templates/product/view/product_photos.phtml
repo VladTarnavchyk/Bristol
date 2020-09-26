@@ -1,0 +1,30 @@
+<?php
+	$_product = $block->getProduct();
+	
+	$objectmanager = \Magento\Framework\App\ObjectManager::getInstance();
+	$productimages = array();
+	$product = $objectmanager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+	$productimages = $product->getMediaGalleryImages();
+?>
+<?php if(count($productimages) > 0): ?>
+	<div class="product_view_photos">
+		<?php foreach($productimages as $productimage): ?>
+			<div class="photo_item">
+				<a class="gallery-<?php echo $_product->getId(); ?>" href="<?php echo $productimage['url']; ?>">
+					<?php echo '<img src = '.$productimage["url"]. ' height="auto" width="auto" />'; ?>
+				</a>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<script>
+		require(['jquery', 'colorbox'],
+			function($) {
+				$("a.gallery-<?php echo $_product->getId(); ?>").colorbox({
+					rel:'gallery-<?php echo $_product->getId(); ?>',
+					maxWidth: 900,
+					title: '',
+				});
+			}
+		);
+	</script>
+<?php endif; ?>

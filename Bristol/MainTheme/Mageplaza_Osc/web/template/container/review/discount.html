@@ -1,0 +1,96 @@
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Osc
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<div class="osc-place-order-block checkout-comment-block col-mp mp-12" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'active': false}}">
+    <div class="field-row">
+		<div class="checkout_show_coupon_code_wrap" data-role="title"><!-- ko i18n: 'Add promo code'--><!-- /ko --></div>
+        <div class="payment-option-content checkout_coupon_wrapper" data-role="content">
+            <!-- ko foreach: getRegion('messages') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+			
+			<!-- ko ifnot: isApplied() -->
+				<form class="form form-discount" id="discount-form" data-bind="blockLoader: (typeof isLoading === 'undefined') ? isBlockLoading : isLoading">
+					<div class="payment-option-inner">
+						<div class="field">
+							<div class="control coupon_checkout_input_field_container">
+								<span class="checkout_coupon_message"><!-- ko i18n: 'Enter discount code'--><!-- /ko --></span>
+								<input class="input-text"
+									   type="text"
+									   id="discount-code"
+									   name="discount_code"
+									   data-validate="{'required-entry':true}"
+									   data-bind="value: couponCode, attr:{placeholder: $t('Enter discount code')} "/>
+							</div>
+						</div>
+					</div>
+					<div class="actions-toolbar">
+						<div class="primary">
+							<!-- ko ifnot: isApplied() -->
+								<button class="action action-apply" type="submit" data-bind="'value': $t('Apply Discount'), click: apply">
+									<span><!-- ko i18n: 'Apply Discount'--><!-- /ko --></span>
+								</button>
+							<!-- /ko -->
+							<!-- ko if: isApplied() -->
+								<button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancel">
+									<span><!-- ko i18n: 'Cancel coupon'--><!-- /ko --></span>
+								</button>
+							<!-- /ko -->
+						</div>
+					</div>
+				</form>
+			<!-- /ko -->
+			
+			<!-- ko if: isApplied() -->
+				<form class="form form-discount success_coupon" id="discount-form" data-bind="blockLoader: (typeof isLoading === 'undefined') ? isBlockLoading : isLoading">
+					<div class="payment-option-inner">
+						<div class="field">
+							<div class="control coupon_checkout_input_field_container">
+								<span class="checkout_coupon_message"><!-- ko i18n: 'Promotion code applied'--><!-- /ko --></span>
+								<input class="input-text"
+									   type="text"
+									   id="discount-code"
+									   name="discount_code"
+									   data-validate="{'required-entry':true}"
+									   data-bind="value: couponCode, attr:{placeholder: $t('Enter discount code')} "/>
+							</div>
+							<div class="success_coupon_icon"></div>
+						</div>
+					</div>
+					<div class="actions-toolbar">
+						<div class="primary">
+							<!-- ko ifnot: isApplied() -->
+								<button class="action action-apply" type="submit" data-bind="'value': $t('Apply Discount'), click: apply">
+									<span><!-- ko i18n: 'Apply Discount'--><!-- /ko --></span>
+								</button>
+							<!-- /ko -->
+							<!-- ko if: isApplied() -->
+								<button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancel">
+									<span><!-- ko i18n: 'Cancel coupon'--><!-- /ko --></span>
+								</button>
+							<!-- /ko -->
+						</div>
+					</div>
+				</form>
+			<!-- /ko -->
+        </div>
+    </div>
+</div>

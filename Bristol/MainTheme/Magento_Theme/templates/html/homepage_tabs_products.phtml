@@ -1,0 +1,61 @@
+<?php 
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+	$cat_ids = [57, 58, 59];
+?>
+
+<div class="homepage_tabs_products_wrapper">
+	<div class="homepage_tabs_products_container">
+		<div class="block_title">
+			<?php echo __('Products'); ?>
+			<span><?php echo __('Products'); ?></span>
+		</div>
+		<div class="homepage_tabs_products_content">
+			<div class="tabs_top_block">
+				<?php foreach($cat_ids as $cat_id): ?>
+					<?php $category = $categoryFactory->create()->load($cat_id); ?>
+					<div class="tab_title_item">
+						<a href="javascript:void(0);" data-cat-block="cat_<?php echo $cat_id; ?>"><?php echo $category->getName(); ?></a>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<div class="tabs_content_block">
+				<?php foreach($cat_ids as $cat_id): ?>
+					<div class="tab_content_item" data-cat-block="cat_<?php echo $cat_id; ?>">
+						<?php echo $this->getLayout()->createBlock('Magento\Catalog\Block\Product\ListProduct')->setTemplate('Magento_Catalog::product/list_tab_products.phtml')->setCategoryId($cat_id)->toHtml(); ?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	require(['jquery', 'owlcarousel'], function ($){
+		$(document).ready(function(){
+			$(".homepage_tabs_products_wrapper .tab_products_list .owl-carousel").owlCarousel({
+				"items" : 5,
+				dots: true,
+				loop:false,
+				margin:30,
+				responsiveClass: true,
+				responsive: {
+					0:{
+						items: 1
+					},
+					480:{
+						items: 2
+					},
+					640: {
+						items: 3
+					},
+					900:{
+						items: 4
+					},
+					1200:{
+						items: 5
+					}
+				}
+			});
+		});
+	})
+</script>

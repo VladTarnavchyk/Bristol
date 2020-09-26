@@ -1,0 +1,45 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+//"swatchRenderer": {
+?>
+<?php /** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */ ?>
+<div class="swatch-opt" data-role="swatch-options"></div>
+<?php
+	$product_swatch_object = json_decode($block->getJsonSwatchConfig(), true);
+?>
+<?php if(count($product_swatch_object[147]) > 0): ?>
+	<?php
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$registry = $objectManager->get('\Magento\Framework\Registry');
+		$currentProduct = $registry->registry('current_product');
+		
+		$price_for_meter = $currentProduct->getResource()->getAttribute('price_for_meter')->getFrontend()->getValue($currentProduct);
+	?>
+	<?php if($price_for_meter != ''): ?>
+		<div class="non-standard-button-container">
+			<a href="javascript:void(0);" class="show_custom_size_form"><?php echo __('No size needed?'); ?></a>
+		</div>
+	<?php endif; ?>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "[data-role=swatch-options]": {
+            "Magento_Swatches/js/swatch-renderer": {
+                "jsonConfig": <?= /* @escapeNotVerified */ $swatchOptions = $block->getJsonConfig() ?>,
+                "jsonSwatchConfig": <?php /* @escapeNotVerified */
+                    echo $swatchOptions = $block->getJsonSwatchConfig(); ?>,
+                "mediaCallback": "<?= /* @escapeNotVerified */ $block->getMediaCallback() ?>",
+                "gallerySwitchStrategy": "<?php /* @escapeNotVerified */ echo $block->getVar('gallery_switch_strategy',
+                    'Magento_ConfigurableProduct') ?: 'replace'; ?>",
+                "jsonSwatchImageSizeConfig": <?php /* @noEscape */ echo $block->getJsonSwatchSizeConfig() ?>
+            }
+        },
+        "*" : {
+            "Magento_Swatches/js/catalog-add-to-cart": {}
+        }
+    }
+</script>

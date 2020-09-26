@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Template for displaying grouped product price
+ */
+?>
+<?php
+	$_helper = $this->helper('Magento\Catalog\Helper\Output');
+	$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$registry = $objectManager->get('\Magento\Framework\Registry');
+	$currentProduct = $registry->registry('current_product');
+	$childProductCollection = $currentProduct->getTypeInstance()->getAssociatedProducts($currentProduct);
+	$priceForAll = 0;
+	foreach ($childProductCollection as $child) {
+		if($child->getQty() * 1 > 0) {
+			$priceForAll += $child->getFinalPrice();
+		}
+	}
+?>
+<?php if($priceForAll != 0): ?>
+	<div class="price-box" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<p class="minimal-price">
+			<span class="grouped-price-label"><?php echo $priceHelper->currency($priceForAll, true, false); ?></span>
+		</p>
+	</div>
+<?php endif; ?>

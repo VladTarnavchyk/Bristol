@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @var $block \Magento\Theme\Block\Html\Topmenu
+ */
+?>
+<?php $columnsLimit = $block->getColumnsLimit() ?: 0; ?>
+<?php $_menu = $block->getHtml('level-top', 'submenu', $columnsLimit) ?>
+
+<nav class="navigation">
+	<div class="mobile_menu_close_btn_wrap">
+		<a href="#" class="mobile_menu_close_btn">
+			<?php echo __('Menu'); ?>
+			<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.8681 9.31192L23.3865 7.83036L16.3491 14.8678L9.31173 7.83036L7.83017 9.31192L14.8676 16.3493L7.83017 23.3867L9.31173 24.8683L16.3491 17.8309L23.3865 24.8683L24.8681 23.3867L17.8307 16.3493L24.8681 9.31192Z" fill="white"/></svg>
+		</a>
+	</div>
+	<div class="mobile_menu_languages"></div>
+    <ul>
+        <?= /* @escapeNotVerified */ $_menu ?>
+        <?= /* @escapeNotVerified */ $block->getChildHtml() ?>
+    </ul>
+</nav>

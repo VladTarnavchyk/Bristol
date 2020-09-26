@@ -1,0 +1,135 @@
+<?php
+	$_product = $block->getProduct();
+	$specialPriceToDate = $_product->getSpecialToDate();
+	$current_timestamp = time();
+?>
+<br>
+<?php if($specialPriceToDate): ?>
+	<?php
+		$action_timespamp = strtotime($specialPriceToDate);
+	?>
+	<?php if($action_timespamp > $current_timestamp): ?>
+		<div id="timer_block" class="timer_container">
+			<p class="label"><?php echo __('Action! Remaining time to expire:'); ?></p>
+			<div class="timer">
+				<div class="day">
+					<div class="numbers" id="dday"></div>
+					<div class="descr"><?php echo __('Days'); ?></div>
+				</div>
+				<div class="hour">
+					<div class="numbers" id="dhour"></div>
+					<div class="descr"><?php echo __('Hours'); ?></div>
+				</div>
+				<div class="minutes" style="display: none;">
+					<div class="numbers" id="dmin"></div>
+					<div class="descr"><?php echo __('Min'); ?></div>
+				</div>
+				<div class="seconds" style="display: none;">
+					<div class="numbers" id="dsec"></div>
+					<div class="descr"><?php echo __('Sec'); ?></div>
+				</div>
+			</div>
+		</div>
+		<script>
+			require(['jquery', 'countdown'],
+				function($) {
+					var year = <?php echo date('Y', strtotime($specialPriceToDate)) ?>; //YEAR
+					var day = <?php echo date('d', strtotime($specialPriceToDate)) ?>; //day
+					var month = <?php echo date('m', strtotime($specialPriceToDate)) ?>; //MONTH
+					var hour = <?php echo date('H', strtotime($specialPriceToDate)) ?>; //HOUR
+					var minute = <?php echo date('i', strtotime($specialPriceToDate)) ?>; //MINUTE
+					var tz = 3;
+					var montharray = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+
+					function countdown(yr,m,d,hr,min){
+						theyear = yr; themonth = m; theday = d; thehour = hr; theminute = min;
+						var today = new Date();
+						var todayy = today.getYear();
+						if (todayy < 1000) {
+							todayy += 1900;
+						}
+						var todaym = today.getMonth();
+						var todayd = today.getDate();
+						var todayh = today.getHours();
+						var todaymin = today.getMinutes();
+						var todaysec = today.getSeconds();
+						var todaystring1 = montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec;
+						var todaystring = Date.parse(todaystring1)+(tz*1000*60*60);
+						var futurestring1 = (montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min);
+						var futurestring = Date.parse(futurestring1)-(today.getTimezoneOffset()*(1000*60));
+						var dd = futurestring - todaystring;
+						var dday = Math.floor(dd/(60*60*1000*24)*1);
+						var dhour = Math.floor((dd%(60*60*1000*24))/(60*60*1000)*1);
+						var dmin = Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
+						var dsec = Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+						if(dday <=0 && dhour <= 0 && dmin <=0 && dsec <= 0){
+							document.getElementById('timer_block').style.display="none";
+							document.getElementById('dday').style.display="none";
+							document.getElementById('dhour').style.display="none";
+							document.getElementById('dmin').style.display="none";
+							document.getElementById('dsec').style.display="none";
+							document.getElementById('days').style.display="none";
+							document.getElementById('hours').style.display="none";
+							document.getElementById('minutes').style.display="none";
+							document.getElementById('seconds').style.display="none";
+							return;
+						}
+						else {
+							if(dday < 10){
+								document.getElementById('dday').innerHTML="0"+dday;
+							} else{
+								document.getElementById('dday').innerHTML=dday;
+							}
+							
+							var last_day = dday.toString().slice(-1);
+							
+							if(dday == 11 || dday == 12 || dday == 13 || dday == 14) {
+								$('#timer_block').find('.day').find('.descr').html('<?php echo __('Days'); ?>');
+							} else if(last_day == 2 || last_day == 3 || last_day == 4) {
+								$('#timer_block').find('.day').find('.descr').html('<?php echo __('days'); ?>');
+							} else if(last_day == 1) {
+								$('#timer_block').find('.day').find('.descr').html('<?php echo __('Day'); ?>');
+							} else {
+								$('#timer_block').find('.day').find('.descr').html('<?php echo __('Days'); ?>');
+							}
+							
+							
+							if(dhour < 10){
+								document.getElementById('dhour').innerHTML="0"+dhour;
+							}else{
+								document.getElementById('dhour').innerHTML=dhour;
+							}
+							
+							var last_hour = dhour.toString().slice(-1);
+							
+							if(dday == 11 || dday == 12 || dday == 13 || dday == 14) {
+								$('#timer_block').find('.hour').find('.descr').html('<?php echo __('Hours'); ?>');
+							} else if(last_day == 2 || last_day == 3 || last_day == 4) {
+								$('#timer_block').find('.hour').find('.descr').html('<?php echo __('hours'); ?>');
+							} else if(last_day == 1) {
+								$('#timer_block').find('.hour').find('.descr').html('<?php echo __('Hour'); ?>');
+							} else {
+								$('#timer_block').find('.hour').find('.descr').html('<?php echo __('Hours'); ?>');
+							}
+							
+							if(dmin < 10){
+								document.getElementById('dmin').innerHTML="0"+dmin;
+							}else{
+								document.getElementById('dmin').innerHTML=dmin;
+							}
+							if(dsec < 10){
+								document.getElementById('dsec').innerHTML="0"+dsec;
+							}else{
+								document.getElementById('dsec').innerHTML=dsec;
+							}
+							setTimeout(function(){
+								countdown(theyear,themonth,theday,thehour,theminute);
+							}, 1000);
+						}
+					}
+					countdown(year,month,day,hour,minute);
+				}
+			);
+		</script>
+	<?php endif; ?>
+<?php endif; ?>

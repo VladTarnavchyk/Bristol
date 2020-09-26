@@ -1,0 +1,9 @@
+<?php
+	$_product = $block->getProduct();
+	$video = $_product->getProductVideos();
+?>
+<?php if($video): ?>
+	<div class="product_video_wrap">
+		<?php echo $video; ?>
+	</div>
+<?php endif; ?>

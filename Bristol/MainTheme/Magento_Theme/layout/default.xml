@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ bristol themes
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="default_head_blocks"/>
+    <body>
+		<move element="store_language" destination="header_top_part" before="header_operations" />
+		<move element="minicart" destination="header_operations" after="wish-list-link"/>
+		<move element="top.search" destination="header_operations" before="wish-list-link" />
+		<move element="authorization-link-login" destination="header_operations" after="top.search"/>
+		<referenceBlock name="logo" remove="true" />
+		<referenceBlock name='header.links' remove='true'></referenceBlock>
+		<referenceBlock name='skip_to_content' remove='true'></referenceBlock>
+		<referenceBlock name='navigation.sections' remove='true'></referenceBlock>
+		<!--referenceBlock name='page.main.title' remove='true'></referenceBlock-->
+		<referenceContainer name="header-wrapper">
+			<container name='header_top_part' before="-" htmlClass="header_top_part" htmlTag="div">
+				<container name="header_logo_wrap" before="-" htmlClass="header_logo" htmlTag="div">
+					<block class="Magento\Theme\Block\Html\Header\Logo" name="header__logo">
+                    	<arguments>
+                        	<argument name="logo_img_width" xsi:type="number">189</argument>
+	                        <argument name="logo_img_height" xsi:type="number">64</argument>
+                    	</arguments>
+	                </block>
+				</container>
+				<container name='header_menu' htmlTag='div' htmlClass='header_menu' after="header_logo_wrap">
+					<block class="Magento\Cms\Block\Block" name="header_menu_container" before='-'>
+						<arguments>
+							<argument name="block_id" xsi:type="string">header_menu</argument>
+						</arguments>
+					</block>
+				</container>
+				<container name='header_contacts' htmlTag='div' htmlClass='header_contacts' after="header_menu">
+					<block class="Magento\Cms\Block\Block" name="header_contacts_container" before='-'>
+						<arguments>
+							<argument name="block_id" xsi:type="string">header_contacts</argument>
+						</arguments>
+					</block>
+				</container>
+				<container name='header_operations' htmlTag='div' htmlClass='header_icons' after="header_contacts">
+					<block class="Magento\Wishlist\Block\Link" name="wish-list-link">
+                    	<arguments>
+	                        <argument name="sortOrder" xsi:type="number">60</argument>
+                    	</arguments>
+	                </block>
+					<block class="Magento\Framework\View\Element\Template" name="mobile_menu_btn" template="Magento_Theme::html/mobile_menu_btn.phtml" after="-"/>
+				</container>
+			</container>
+			<block class="Magento\Framework\View\Element\Template" name="store.menu" group="navigation-sections" template="Magento_Theme::html/container.phtml">
+                <arguments>
+                	<argument name="title" translate="true" xsi:type="string">Menu</argument>
+                </arguments>
+                <block class="Magento\Theme\Block\Html\Topmenu" name="catalog.topnav" template="Magento_Theme::html/topmenu.phtml" ttl="3600" before="-"/>
+            </block>
+		</referenceContainer>
+		<referenceContainer name="content">
+			<block class="Magento\Cms\Block\Block" name="vertical_socials" before="-">
+				<arguments>
+					<argument name="block_id" xsi:type="string">vertical_socials</argument>
+				</arguments>
+			</block>
+		</referenceContainer>
+        <referenceContainer name="footer-container">
+            <container name="footer" as="footer" label="Page Footer" htmlTag="div" htmlClass="footer footer-wrapper">
+                <block class="Magento\Theme\Block\Html\Footer" name="footer.content" template="html/footer.phtml"/>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

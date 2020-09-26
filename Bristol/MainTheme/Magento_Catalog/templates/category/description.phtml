@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+?>
+<?php if ($_description = $block->getCurrentCategory()->getDescription()): ?>
+	<div class="black_block_container">
+		<div class="black_block_left">
+			<?= /* @escapeNotVerified */ $this->helper('Magento\Catalog\Helper\Output')->categoryAttribute($block->getCurrentCategory(), $_description, 'description') ?>
+		</div>
+		<div class="black_block_right">
+			<?php echo $this->getLayout()->createBlock('Magento\Framework\View\Element\Template')->setTemplate('Magento_Theme::html/description_svg_logo.phtml')->toHtml(); ?>
+		</div>
+    </div>
+<?php endif; ?>

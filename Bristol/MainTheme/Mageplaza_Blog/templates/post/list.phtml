@@ -1,0 +1,159 @@
+<?php
+/**
+ * Mageplaza
+THEME FILE
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Blog
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var \Mageplaza\Blog\Block\Frontend $block */
+?>
+<div class="page-title-wrapper">
+    <div class="page-title">
+		<?php echo $this->getLayout()->createBlock("Magento\Theme\Block\Html\Title")->setTemplate("Magento_Theme::html/blog-title.phtml")->toHtml(); ?>
+    </div>
+	<?php echo $this->getLayout()->createBlock("Mageplaza\Blog\Block\Sidebar\Search")->setTemplate("Mageplaza_Blog::sidebar/search.phtml")->toHtml(); ?>
+</div>
+<div class="blog_page_content_container">
+    <div class="blog_category_list_container">
+        <?= $this->getLayout()->createBlock("Mageplaza\Blog\Block\Category\Widget")->setTemplate("Mageplaza_Blog::category/widget.phtml")->toHtml(); ?>
+    </div>
+    <div class="post-list-content" id="mpblog-list-container">
+        <?php $postCollection = $block->getPostCollection(); ?>
+        <?php if ($postCollection && $postCollection->getSize()) : ?>
+            <div class="post-list-body">
+                <?php $i = 1 ?>
+                <?php /** @var \Mageplaza\Blog\Model\Post $post */
+                foreach ($postCollection as $post) : ?>
+                    <div class="post-list-item col-mp<?= $block->isGridView() ? ' post-item-grid mp-6 mp-xs-12' : ' post-item-list mp-12'; ?>">
+                        <div class="post-item-wraper">
+                            <?php if ($post->getImage()) : ?>
+                                <div class="post-image">
+                                    <a href="<?= $post->getUrl() ?>">
+                                        <img class="img-responsive"
+                                             src="<?= $block->resizeImage($post->getImage(), '270x'); ?>"
+                                             alt="<?= $block->escapeHtml($post->getName()); ?>"/>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <div class="post-info-wraper">
+                                <div class="mp-post-title">
+                                    <a class="post-link-title" title="<?= $block->escapeHtml($post->getName()); ?>"
+                                       href="<?= $post->getUrl() ?>">
+                                        <?= $post->getName(); ?>
+                                    </a>
+                                </div>
+                                <div class="mp-post-info">
+                                    <?php 
+                                        $time = strtotime($post->getPublishDate());
+                                        echo date('d.m.Y', $time);
+                                    ?>
+                                </div>
+                                <div class="post-short-description">
+                                    <p><?php echo $block->maxShortDescription($post->getShortDescription()); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+				<?php
+					$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+					$current_url = $urlInterface->getCurrentUrl();
+					
+					$pos_get_param = strpos($current_url, '?');
+					
+					if($pos_get_param) {
+						$current_url = substr($current_url, 0, $pos_get_param);
+					}
+				?>
+                <div class="load_more_posts post-list-item col-mp<?= $block->isGridView() ? ' post-item-grid mp-6 mp-xs-12' : ' post-item-list mp-12'; ?>" data-page-url="<?php echo $current_url; ?>">
+					<a href="javascript:void(0);" class="load_more_posts_btn">
+						<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.1 3.9C19.825 1.4625 16.575 0 13 0C5.85 0 0 5.85 0 13C0 20.15 5.85 26 13 26C19.0125 26 24.05 21.775 25.5125 16.25H22.1C20.8 19.9875 17.225 22.75 13 22.75C7.6375 22.75 3.25 18.3625 3.25 13C3.25 7.6375 7.6375 3.25 13 3.25C15.7625 3.25 18.0375 4.3875 19.825 6.175L14.625 11.375H26V0L22.1 3.9Z" fill="#F24956"/></svg>
+						<?php echo __('Show 11 more news'); ?>
+					</a>
+                </div>
+            </div>
+			
+			<script>
+				require(['jquery'],
+					function($) {
+						if(!$('#mpblog-list-container').find('div').hasClass('pages')) {
+							$('.load_more_posts').remove();
+						}
+						if(!$('#mpblog-list-container').find('.pages-items').find('li').hasClass('pages-item-next')) {
+							$('.load_more_posts').remove();
+						}
+						
+						$(document).on('click','.load_more_posts_btn',function() {
+							var current_page = $('#mpblog-list-container .pages li.item.current');
+							var current_page_text = parseInt($('#mpblog-list-container .pages li.item.current').find('.label').next().text());
+							var next_page = current_page_text + 1;
+							
+							var cat_id = parseInt($('.blog_category_list_container ul.active').attr('data-cat-id'));
+							
+							event.preventDefault();
+							$.ajax({
+								showLoader: false,
+								url: "<?php echo $block->getAjaxUrl(); ?>",
+								data: {page: next_page, id: cat_id},
+								type: "POST",
+								beforeSend: function(){
+									$('.ajax_loader_wrap').show();
+									$('.load_more_posts').hide();
+								},
+								success: function(data) {
+									if(!current_page.next().next().hasClass('pages-item-next')) {
+										current_page.next().addClass('current');
+										current_page.removeClass('current');
+										
+										$('.load_more_posts').show();
+									} else {
+										$('.load_more_posts').hide();
+										current_page.next().addClass('current');
+										current_page.removeClass('current');
+									}
+									
+									var new_current_page = $('#mpblog-list-container .pages li.item.current');
+									new_current_page.empty().html('<strong class="page"><span class="label">You\'re currently reading page</span><span>'+next_page+'</span></strong>');
+										
+									var prev_page_url = $('.load_more_posts').attr('data-page-url');
+										
+									new_current_page.prev().empty().html('<a href="'+prev_page_url+'?p='+current_page_text+'" class="page"><span class="label">Page</span><span>'+current_page_text+'</span></a>');
+									
+									$('.ajax_loader_wrap').hide();
+									var result = data.html
+									$(result).insertBefore('.load_more_posts');
+								},
+								error: function() {
+									$('.ajax_loader_wrap').hide();
+								}
+							});
+						});
+					}
+				);
+			</script>
+			
+            <?= $block->getPagerHtml() ?>
+        <?php else : ?>
+            <?= __('There are no posts at this moment'); ?>
+        <?php endif; ?>
+        <?= $this->getChildHtml('additional'); ?>
+    </div>
+</div>
+<div class="ajax_loader_wrap">
+	<div class="ajax_loader"></div>
+</div>

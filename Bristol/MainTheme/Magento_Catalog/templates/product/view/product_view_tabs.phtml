@@ -1,0 +1,68 @@
+<?php
+	$_product = $block->getProduct();
+	$video = $_product->getProductVideos();
+	$pdf_file = $_product->getData('pdf_file');
+?>
+<div class="product_view_tabs_links_wrap">
+	<div class="product_view_tabs_links_container">
+		<div class="tab_item active" data-tab="about_product">
+			<a href="javascript:void(0);"><?php echo __('About product'); ?></a>
+		</div>
+		<div class="tab_item" data-tab="characteristics">
+			<a href="javascript:void(0);"><?php echo __('Characteristics'); ?></a>
+		</div>
+		<div class="tab_item" data-tab="reviews">
+			<a href="javascript:void(0);"><?php echo __('Reviews'); ?></a>
+		</div>
+		<div class="tab_item" data-tab="photo">
+			<a href="javascript:void(0);"><?php echo __('Photo'); ?></a>
+		</div>
+		<?php if($video): ?>
+		<div class="tab_item" data-tab="video">
+			<a href="javascript:void(0);"><?php echo __('Video'); ?></a>
+		</div>
+		<?php endif; ?>
+		<div class="tab_item" data-tab="delivery">
+			<a href="javascript:void(0);"><?php echo __('Delivery'); ?></a>
+		</div>
+		<?php if($pdf_file): ?>
+		<div class="tab_item" data-tab="assembly_instructions">
+			<a href="javascript:void(0);"><?php echo __('Furniture assembly instructions'); ?></a>
+		</div>
+		<?php endif; ?>
+	</div>
+</div>
+
+<div class="product_view_mobile_tabs_links_wrap">
+	<div class="product_view_mobile_tabs_links_container">
+		<select name="mobile_tabs" class="product_view_mobile_tabs_select">
+			<option value="about_product"><?php echo __('About product'); ?></option>
+			<option value="characteristics"><?php echo __('Characteristics'); ?></option>
+			<option value="reviews"><?php echo __('Reviews'); ?></option>
+			<option value="photo"><?php echo __('Photo'); ?></option>
+			<?php if($video): ?>
+			<option value="video"><?php echo __('Video'); ?></option>
+			<?php endif; ?>
+			<option value="delivery"><?php echo __('Delivery'); ?></option>
+			<?php if($pdf_file): ?>
+			<option value="assembly_instructions"><?php echo __('Furniture assembly instructions'); ?></option>
+			<?php endif; ?>
+		</select>
+	</div>
+</div>
+<script>
+	require(['jquery'],
+		function($) {
+			var hash = window.location.hash;
+			if(hash == '#reviews') {
+				$('.product_view_tabs_links_container .tab_item').removeClass('active');
+				$('.product_main_info_wrapper .product_view_tab_content').removeClass('active');
+				
+				$('.product_view_tabs_links_container .tab_item[data-tab="reviews"]').addClass('active');
+				$('.product_main_info_wrapper #reviews.product_view_tab_content').addClass('active');
+				
+				$('.product_view_mobile_tabs_select').val('reviews');
+			}
+		}
+	);
+</script>

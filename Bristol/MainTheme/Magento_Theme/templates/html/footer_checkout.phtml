@@ -1,0 +1,22 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/choosing_help.phtml")->toHtml();?>
+<div class="menu_overlay"></div>
+<div class="footer-checkout-container">
+    <div class="footer">
+        <div class="copyright_container">
+			<div class="copyright">
+				<span><?= /* @escapeNotVerified */ $block->getCopyright() ?></span>
+			</div>
+		</div>
+    </div>
+</div>
+<?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/filters_scripts.phtml")->toHtml();?>
+<div class="main_menu_overlay"></div>

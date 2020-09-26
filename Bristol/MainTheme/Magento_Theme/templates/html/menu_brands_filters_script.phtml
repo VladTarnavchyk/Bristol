@@ -1,0 +1,23 @@
+<script>
+	require(['jquery'],
+		function($){
+			$('.subcategories_list_item').each(function(){
+				var cat_link = $(this).find('a');
+				cat_link.click(function(e){
+					e.preventDefault();
+					var link_href_attr = $(this).attr('data-link');
+					$('.brands_list').show().attr('data-link', link_href_attr);
+				});
+			});
+			$('.menu_brand_link').each(function(){
+				$(this).click(function(e){
+					e.preventDefault();
+					var brand_href_attr = $(this).attr('data-link');
+					var main_link_href = $('.brands_list').attr('data-link');
+					$('.brands_list').attr('data-link', main_link_href+'?'+brand_href_attr);
+					window.location.href = main_link_href+'?'+brand_href_attr;
+				});
+			});
+		}
+	);
+</script>

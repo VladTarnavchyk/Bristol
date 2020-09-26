@@ -1,0 +1,17 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Shopby
+ */
+?>
+<?php
+/** @var \Amasty\Shopby\Model\FilterSetting $filterSetting */
+/** @var \Amasty\Shopby\Block\Navigation\FilterRenderer $block */
+?>
+<?php $filter_item_label = $filterSetting->getFilterItemLabel(); ?>
+<?php if($filter_item_label): ?>
+	<span class="filter_item_label">
+		(<?php echo $filter_item_label; ?>)
+	</span>
+<?php endif; ?>

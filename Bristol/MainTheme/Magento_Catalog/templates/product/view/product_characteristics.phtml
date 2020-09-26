@@ -1,0 +1,26 @@
+<?php
+	$_product = $block->getProduct();
+	$product_factory = $_product->getResource()->getAttribute('manufacturer')->getFrontend()->getValue($_product);
+	$facade_color = $_product->getResource()->getAttribute('facade_color')->getFrontend()->getValue($_product);
+	$casing_color = $_product->getResource()->getAttribute('casing_color')->getFrontend()->getValue($_product);
+?>
+<div class="characteristics_list">
+	<?php if($product_factory): ?>
+		<div class="characteristic_item">
+			<span class="label"><?php echo __('Factory:'); ?></span>
+			<span class="value"><?php echo $product_factory; ?></span>
+		</div>
+	<?php endif; ?>
+	<?php if($facade_color): ?>
+		<div class="characteristic_item">
+			<span class="label"><?php echo __('Color (Facade):'); ?></span>
+			<span class="value"><?php echo $facade_color; ?></span>
+		</div>
+	<?php endif; ?>
+	<?php if($casing_color): ?>
+		<div class="characteristic_item">
+			<span class="label"><?php echo __('Color (Casing):'); ?></span>
+			<span class="value"><?php echo $casing_color; ?></span>
+		</div>
+	<?php endif; ?>
+</div>

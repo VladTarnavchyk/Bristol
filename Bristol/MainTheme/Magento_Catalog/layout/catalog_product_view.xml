@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+		<referenceBlock name="product.info.stock.sku" remove="true" />
+		<referenceBlock name="product.info.mailto" remove="true" />
+		<referenceBlock name="view.addto.compare" remove="true" />
+		<referenceBlock name="view.addto.wishlist" remove="true" />
+		<referenceBlock name="product.info.addto" remove="true" />
+		<referenceBlock name="product.info.overview" remove="true" />
+		<referenceBlock name="product.info.details" remove="true" />
+		<referenceBlock name="catalog.product.related" remove="true" />
+		<move element="page.main.title" destination="product_top_block" before="-"/>
+		<move element="product.info.review" destination="product_summary_info" before="-"/>
+		<move element="product.info.media" destination="product_view_tab_content_product" before="-"/>
+		<move element="product.info.description" destination="product_view_tab_content_characteristics" before="-"/>
+		
+        <referenceContainer name="content">
+			<container name="product_top_block_wrap" htmlTag="div" htmlClass="product_top_block_wrap" before="-">
+				<container name="product_top_block" htmlTag="div" htmlClass="product_top_block" before="-">
+					<block class="Magento\Catalog\Block\Product\View\Description" name="product_sku" template="Magento_Catalog::product/view/product_sku.phtml" before="-"/>
+				</container>
+				<container name="product_summary_info" htmlTag="div" htmlClass="product_summary_info_wrap" after="-">
+					<block class="Magento\Cms\Block\Block" name="product_socials" after="-">
+						<arguments>
+							<argument name="block_id" xsi:type="string">product_socials</argument>
+						</arguments>
+					</block>
+				</container>
+			</container>
+			
+			<block class="Magento\Catalog\Block\Product\View\Description" name="product_view_tabs" template="Magento_Catalog::product/view/product_view_tabs.phtml" after="product_top_block_wrap"/>
+			
+			<container name="product_main_info_wrapper" htmlTag="div" htmlClass="product_main_info_wrapper" after="product_view_tabs">
+				<container name="product_main_info_left" htmlTag="div" htmlClass="product_main_info_left" before="-">
+					<container name="product_view_tab_content_product" htmlTag="div" htmlClass="product_view_tab_content about_product active" before="-" />
+					
+					<container name="product_view_tab_content_characteristics" htmlTag="div" htmlClass="product_view_tab_content characteristics" after="product_view_tab_content_product">
+						<block class="Magento\Catalog\Block\Product\View\Description" name="product_characteristics" template="Magento_Catalog::product/view/product_characteristics.phtml" before="-"/>
+					</container>
+					
+					<container name="product_view_tab_content_reviews" htmlTag="div" htmlClass="product_view_tab_content reviews" htmlId="reviews" after="product_view_tab_content_characteristics">
+						<block class="Magento\Review\Block\Product\View\ListView" name="reviews_list" template="RLTSquare_ProductReviewImages::product/view/list.phtml" before="-"/>
+						<block class="Magento\Review\Block\Form" name="product_review_form" template="RLTSquare_ProductReviewImages::form.phtml" after="-"/>
+					</container>
+					
+					<container name="product_view_tab_content_photo" htmlTag="div" htmlClass="product_view_tab_content photo" after="product_view_tab_content_reviews">
+						<block class="Magento\Catalog\Block\Product\View\Description" name="product_photos" template="Magento_Catalog::product/view/product_photos.phtml" before="-"/>
+					</container>
+					
+					<container name="product_view_tab_content_video" htmlTag="div" htmlClass="product_view_tab_content video" after="product_view_tab_content_photo">
+						<block class="Magento\Catalog\Block\Product\View\Description" name="product_video" template="Magento_Catalog::product/view/product_video.phtml" before="-"/>
+					</container>
+					
+					<container name="product_view_tab_content_delivery" htmlTag="div" htmlClass="product_view_tab_content delivery" after="product_view_tab_content_video">
+						<block class="Magento\Cms\Block\Block" name="product_delivery_block" after="-">
+							<arguments>
+								<argument name="block_id" xsi:type="string">product_delivery_block</argument>
+							</arguments>
+						</block>
+					</container>
+					
+					<container name="product_view_tab_content_instruction" htmlTag="div" htmlClass="product_view_tab_content assembly_instructions" after="-">
+						<block class="Magento\Catalog\Block\Product\View\Description" name="product_instruction" template="Magento_Catalog::product/view/product_instruction.phtml" before="-"/>
+					</container>
+				</container>
+				<container name="product_main_info_right" htmlTag="div" htmlClass="product_main_info_right" after="-">
+					<container name="product_main_info_right_top_block" htmlTag="div" htmlClass="product_main_info_right_top_block" before="-"/>
+					
+					<container name="product.info.main" htmlTag="div" htmlClass="product-info-main" after="-">
+						<block class="Magento\Catalog\Block\Product\View" name="product.timer" template="Magento_Catalog::product/view/timer.phtml" before="-"/>
+						<block class="Magento\Catalog\Block\Product\View" name="product.info" template="Magento_Catalog::product/view/form.phtml" after="alert.urls">
+							<container name="product.info.form.content" as="product_info_form_content" htmlTag="div" htmlClass="product_to_cart_content">
+								<container name="product__info__form__content" htmlTag="div" htmlClass="product_to_cart_wrap">
+									<container name="product_info_price" label="Product info auxiliary container" htmlTag="div" htmlClass="product-info-price">
+										<block class="Magento\Catalog\Pricing\Render" name="product_price_final">
+											<arguments>
+												<argument name="price_render" xsi:type="string">product.price.render.default</argument>
+												<argument name="price_type_code" xsi:type="string">final_price</argument>
+												<argument name="zone" xsi:type="string">item_view</argument>
+											</arguments>
+										</block>
+									</container>
+									<block class="Magento\Catalog\Pricing\Render" name="product_price_tier" after="product_info_price">
+										<arguments>
+											<argument name="price_render" xsi:type="string">product.price.render.default</argument>
+											<argument name="price_type_code" xsi:type="string">tier_price</argument>
+											<argument name="zone" xsi:type="string">item_view</argument>
+										</arguments>
+									</block>
+									<container name="alert.urls" as="alert_urls" label="Alert Urls" after="product_price_tier"/>
+									<container name="product__to__cart_wrap" htmlTag="div" htmlClass="product__to__cart_wrap" after="-">
+										<block class="Magento\Catalog\Block\Product\View" name="product.info.addtocart" as="addtocart" template="Magento_Catalog::product/view/addtocart.phtml" after="-"/>
+										<block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="view__addto__wishlist" template="Magento_Wishlist::catalog/product/view/addto/wishlist.phtml" after="-" />
+									</container>
+								</container>
+								<block class="Magento\Catalog\Block\Product\View\Description" name="product__info__characteristics" template="Magento_Catalog::product/view/product_info_characteristics.phtml" after="-"/>
+								<block class="Magento\Catalog\Block\Product\View\Description" name="product__info__colors" template="Magento_Catalog::product/view/product_info_colors.phtml" after="-"/>
+							</container>
+							
+							<block class="Magento\Framework\View\Element\Template" name="product.info.form.options" as="options_container">
+								<block class="Magento\Catalog\Block\Product\View" name="product.info.options.wrapper" as="product_options_wrapper" template="Magento_Catalog::product/view/options/wrapper.phtml">
+									<block class="Magento\Catalog\Block\Product\View\Options" name="product.info.options" as="product_options" template="Magento_Catalog::product/view/options.phtml" after="-">
+										<block class="Magento\Catalog\Block\Product\View\Options\Type\DefaultType" name="product.info.options.default" as="default" template="Magento_Catalog::product/view/options/type/default.phtml"/>
+										<block class="Magento\Catalog\Block\Product\View\Options\Type\Text" name="product.info.options.text" as="text" template="Magento_Catalog::product/view/options/type/text.phtml"/>
+										<block class="Magento\Catalog\Block\Product\View\Options\Type\File" name="product.info.options.file" as="file" template="Magento_Catalog::product/view/options/type/file.phtml"/>
+										<block class="Magento\Catalog\Block\Product\View\Options\Type\Select" name="product.info.options.select" as="select" template="Magento_Catalog::product/view/options/type/select.phtml"/>
+										<block class="Magento\Catalog\Block\Product\View\Options\Type\Date" name="product.info.options.date" as="date" template="Magento_Catalog::product/view/options/type/date.phtml"/>
+									</block>
+									<block class="Magento\Framework\View\Element\Html\Calendar" name="html_calendar" as="html_calendar" template="Magento_Theme::js/calendar.phtml"/>
+									<block class="Magento\Catalog\Block\Product\View\Description" name="product_info_characteristics" template="Magento_Catalog::product/view/product_info_characteristics.phtml" before="-"/>
+									<block class="Magento\Catalog\Block\Product\View\Description" name="product_info_colors" template="Magento_Catalog::product/view/product_info_colors.phtml" after="-"/>
+								</block>
+								<block class="Magento\Catalog\Block\Product\View" name="product.info.options.wrapper.bottom" as="product_options_wrapper_bottom" template="Magento_Catalog::product/view/options/wrapper/bottom.phtml" before="-">
+									<container name="product.info.price" label="Product info auxiliary container" htmlTag="div" htmlClass="product-info-price">
+										<block class="Magento\Catalog\Pricing\Render" name="product.price.final">
+											<arguments>
+												<argument name="price_render" xsi:type="string">product.price.render.default</argument>
+												<argument name="price_type_code" xsi:type="string">final_price</argument>
+												<argument name="zone" xsi:type="string">item_view</argument>
+											</arguments>
+										</block>
+									</container>
+									<block class="Magento\Catalog\Pricing\Render" name="product.price.tier" after="product.info.price">
+										<arguments>
+											<argument name="price_render" xsi:type="string">product.price.render.default</argument>
+											<argument name="price_type_code" xsi:type="string">tier_price</argument>
+											<argument name="zone" xsi:type="string">item_view</argument>
+										</arguments>
+									</block>
+									<container name="alert.urls" as="alert_urls" label="Alert Urls" after="product.price.tier"/>
+									<container name="product_to_cart_wrap" htmlTag="div" htmlClass="product__to__cart_wrap" after="-">
+										<block class="Magento\Catalog\Block\Product\View" name="product.info.addtocart.additional" as="product.info.addtocart" template="Magento_Catalog::product/view/addtocart.phtml"/>
+										<block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="view_addto_wishlist" template="Magento_Wishlist::catalog/product/view/addto/wishlist.phtml" />
+									</container>
+								</block>
+							</block>
+						</block>
+					</container>
+				</container>
+			</container>
+			<block class="Magento\Framework\View\Element\Template" name="product_view_tabs_script" template="Magento_Catalog::product/view/product_view_tabs_script.phtml" after="-"/>
+			<block class="Magento\Catalog\Block\Product\ListProduct" name="product_list_complect" template="Magento_Catalog::product/product_list_complect.phtml" after="-"/>
+			<block class="Magento\Catalog\Block\Product\ListProduct" name="product_list_we_recommended" template="Magento_Catalog::product/product_list_we_recommended.phtml" after="-"/>
+        </referenceContainer>
+    </body>
+</page>

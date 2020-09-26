@@ -1,0 +1,85 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ * You may not sell, distribute, sub-license, rent, lease or lend complete or portion of software to anyone.
+ *
+ * DISCLAIMER
+ * Do not edit or add to this file if you wish to upgrade to newer
+ * versions in the future.
+ *
+ * @package   RLTSquare_ProductReviewImages
+ * @copyright Copyright (c) 2017 RLTSquare (https://www.rltsquare.com)
+ * @contacts  support@rltsquare.com
+ * @license  See the LICENSE.md file in module root directory
+ */
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+?>
+<?php
+$_items = $block->getReviewsCollection()->getItems();
+$format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$mediaDirectoryPath = $this->getUrl('pub/media/review_images');
+
+?>
+<?php if (count($_items)): ?>
+    <div class="block review-list" id="customer-reviews">
+        <div class="block-content">
+            <ol class="items review-items">
+                <?php foreach ($_items as $_review): ?>
+                    <li class="item review-item" itemscope itemprop="review" itemtype="http://schema.org/Review">
+						<div class="customer_review_img_column">
+							<span class="customer_review_img"></span>
+						</div>
+						<div class="review_content">
+							<?php if (count($_review->getRatingVotes())): ?>
+								<div class="review-ratings">
+									<?php foreach ($_review->getRatingVotes() as $_vote): ?>
+										<div class="rating-summary item" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+											<div class="rating-result" title="<?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%">
+												<meta itemprop="worstRating" content="1"/>
+												<meta itemprop="bestRating" content="100"/>
+												<span style="width:<?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%">
+													<span itemprop="ratingValue"><?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%</span>
+												</span>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							<?php endif; ?>
+							<div class="review_customer_name" itemprop="author"><?php echo $block->escapeHtml($_review->getNickname()) ?></div>
+							
+							<div class="review-content" itemprop="description">
+								<?php echo nl2br($block->escapeHtml($_review->getDetail())) ?>
+							</div>
+							
+							<?php if($_review->getAdvantages()): ?>
+								<div class="advantages_review">
+									<div class="advantages_title">
+										<p><?php echo __('Advantages'); ?></p>
+									</div>
+									<div class="advantages_content"><?php echo $_review->getAdvantages() ?></div>
+								</div>
+							<?php endif; ?>
+							
+							<?php if($_review->getDisadvantages()): ?>
+								<div class="disadvantages_review">
+									<div class="disadvantages_title">
+										<p><?php echo __('Disadvantages'); ?></p>
+									</div>
+									<div class="disadvantages_content"><?php echo $_review->getDisadvantages() ?></div>
+								</div>
+							<?php endif; ?>
+							
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+			<div class="toolbar review-toolbar">
+                <?php echo $block->getChildHtml('toolbar') ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

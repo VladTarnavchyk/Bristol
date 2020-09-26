@@ -1,0 +1,56 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @var $block \Magento\LayeredNavigation\Block\Navigation
+ */
+?>
+
+<?php if ($block->canShowBlock()): ?>
+    <div class="block filter">
+        <div class="block-title filter-title">
+            <strong><?= /* @escapeNotVerified */ __('Shop By') ?></strong>
+        </div>
+
+        <div class="block-content filter-content">
+            <?= $block->getChildHtml('state') ?>
+
+            <?php if ($block->getLayer()->getState()->getFilters()): ?>
+                <div class="block-actions filter-actions">
+                    <a href="<?= /* @escapeNotVerified */ $block->getClearUrl() ?>" class="action clear filter-clear"><span><?= /* @escapeNotVerified */ __('Clear All') ?></span></a>
+                </div>
+            <?php endif; ?>
+            <?php $wrapOptions = false; ?>
+            <?php foreach ($block->getFilters() as $filter): ?>
+                <?php if (!$wrapOptions): ?>
+                    <dl class="filter-options" id="narrow-by-list">
+                <?php $wrapOptions = true; endif; ?>
+                    <?php if ($filter->getItemsCount()): ?>
+						<?php if($filter->getName() != __('Category')): ?>
+							<dt role="heading" aria-level="3" class="filter-options-title <?php if($block->getChildBlock('renderer')->filterLabel($filter)): echo 'filter_slider_item'; endif; ?>">
+								<span class="filter_name"><?= $block->escapeHtml(__($filter->getName())) ?></span>
+								<?= /* @escapeNotVerified */ $block->getChildBlock('renderer')->filterLabel($filter) ?>
+							</dt>
+							<dd class="filter-options-content">
+								<div class="fiter_item_content">
+									<?= /* @escapeNotVerified */ $block->getChildBlock('renderer')->render($filter) ?>
+								</div>
+							</dd>
+						<?php endif; ?>
+                    <?php endif; ?>
+            <?php endforeach; ?>
+            <?php if ($wrapOptions): ?>
+                </dl>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>

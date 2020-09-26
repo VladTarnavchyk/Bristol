@@ -1,0 +1,60 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+?>
+<div class="search_form">
+	<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M15.4688 14.5688L11.7875 10.8875C12.7 9.775 13.25 8.35 13.25 6.79688C13.25 3.23438 10.3594 0.34375 6.79688 0.34375C3.23125 0.34375 0.34375 3.23438 0.34375 6.79688C0.34375 10.3594 3.23125 13.25 6.79688 13.25C8.35 13.25 9.77187 12.7031 10.8844 11.7906L14.5656 15.4688C14.8156 15.7188 15.2188 15.7188 15.4688 15.4688C15.7188 15.2219 15.7188 14.8156 15.4688 14.5688ZM6.79688 11.9656C3.94375 11.9656 1.625 9.64688 1.625 6.79688C1.625 3.94688 3.94375 1.625 6.79688 1.625C9.64688 1.625 11.9688 3.94688 11.9688 6.79688C11.9688 9.64688 9.64688 11.9656 6.79688 11.9656Z" fill="black"/>
+	</svg>	
+</div>
+
+<div class="header_search_form_wrap">
+	<div class="block block-search">
+		<div class="block block-title"><strong><?= /* @escapeNotVerified */ __('Search') ?></strong></div>
+		<div class="block block-content">
+			<form class="form minisearch" id="search_mini_form" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get">
+				<div class="field search">
+					<label class="label" for="search" data-role="minisearch-label">
+						<span><?= /* @escapeNotVerified */ __('Search') ?></span>
+					</label>
+					<div class="control">
+						<input id="search"
+							   data-mage-init='{"quickSearch":{
+									"formSelector":"#search_mini_form",
+									"url":"<?= /* @escapeNotVerified */ $helper->getSuggestUrl()?>",
+									"destinationSelector":"#search_autocomplete"}
+							   }'
+							   type="text"
+							   name="<?= /* @escapeNotVerified */ $helper->getQueryParamName() ?>"
+							   value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText() ?>"
+							   placeholder="<?= /* @escapeNotVerified */ __('Search...') ?>"
+							   class="input-text"
+							   maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength() ?>"
+							   role="combobox"
+							   aria-haspopup="false"
+							   aria-autocomplete="both"
+							   autocomplete="off"/>
+						<div id="search_autocomplete" class="search-autocomplete"></div>
+						<?= $block->getChildHtml() ?>
+					</div>
+				</div>
+				<div class="actions">
+					<button type="submit"
+							title="<?= $block->escapeHtml(__('Search')) ?>"
+							class="action search">
+						<span><?= /* @escapeNotVerified */ __('Search') ?></span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

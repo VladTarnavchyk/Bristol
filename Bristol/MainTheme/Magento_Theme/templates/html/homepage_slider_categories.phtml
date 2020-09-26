@@ -1,0 +1,69 @@
+<?php
+$catId = 2;
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$subcategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subcats = $subcategory->getChildrenCategories()->addAttributeToFilter('include_in_menu', 1);
+
+    echo "<div class='category_slider owl-carousel'>";
+foreach ($subcats as $subcat) {
+    if ($subcat->getIsActive()) {
+        $subcat_url = $subcat->getUrl();
+        $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+        $categoryImage = $_category->getImageUrl();
+        $subcat_name = $subcat->getName();
+        echo "<div class='item'>
+        	<img src='$categoryImage' class='bg_image'>
+        	<div class='over_image_container'>
+				<span class='opacity_part_one'>" . $subcat_name . "</span>
+				<div class='opacity_part_two'>";
+				
+				$subcats_2 = $subcat->getChildrenCategories()->addAttributeToFilter('include_in_menu', 1)->setPageSize(4);
+				echo "<div class='subcat_container'>";
+				foreach ($subcats_2 as $subcat_2) {
+					echo "<div><a href='" . $subcat_2->getUrl() . "'>" . $subcat_2->getName() . "</a></div>";
+				}
+				echo "</div>";
+				echo "<div class='cat_button'>
+					<a href='" . $subcat_url . "'>" . __('More') . "</a>
+					<svg width='14' height='13' viewBox='0 0 14 13' fill='none' xmlns='http://www.w3.org/2000/svg'>
+						<path d='M7.92781 0.569199C7.6865 0.318242 7.28487 0.318242 7.03512 0.569199C6.79381 0.811677 6.79381 1.21524 7.03512 1.45716L11.5616 6.00546H0.624937C0.27675 6.00602 0.00842285 6.14832 0.00842285 6.49819C0.00842285 6.84806 0.27675 6.99856 0.624937 6.99856H11.5616L7.03512 11.8108C6.79381 12.0618 6.79381 12.4659 7.03512 12.7078C7.28487 12.9588 7.68706 12.9588 7.92781 12.7078L13.5258 7.08276C13.7756 6.84029 13.7756 6.43672 13.5258 6.19481L7.92781 0.569199Z' fill='white'/>
+					</svg>
+				</div>";
+
+				echo "</div>
+        	</div>
+        </div>";
+	}
+}
+echo "</div>";
+?>
+<script>
+	require(['jquery', 'owlcarousel'], function ($){
+		$(document).ready(function(){
+			$(".category_slider.owl-carousel").owlCarousel({
+				"items" : 4,
+				dots: true,
+				loop:true,
+				margin:30,
+				responsiveClass: true,
+				responsive: {
+					0:{
+						items: 1
+					},
+					480:{
+						items: 2
+					},
+					640: {
+						items: 2
+					},
+					900:{
+						items: 3
+					},
+					1200:{
+						items: 4
+					}
+				}
+			});
+		});
+	})
+</script>

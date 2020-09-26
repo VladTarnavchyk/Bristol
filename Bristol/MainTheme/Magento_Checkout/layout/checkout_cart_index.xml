@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="checkout.cart.coupon" remove="true" />
+    <referenceBlock name="checkout.cart.summary.title" remove="true" />
+	<referenceBlock name="page.main.title" remove="true" />
+	<move element="checkout.cart.form" destination="checkout.cart.container" before="cart.summary"/>
+    <body>
+		<referenceContainer name="columns.top">
+            <block class="Magento\Theme\Block\Html\Title" name="cart_title" template="Magento_Checkout::cart/cart_title.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" translate="true" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" translate="true" xsi:type="string">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">Shopping Cart</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Shopping Cart</item>
+                    <item name="label" xsi:type="string" translate="true">Shopping Cart</item>
+                </argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

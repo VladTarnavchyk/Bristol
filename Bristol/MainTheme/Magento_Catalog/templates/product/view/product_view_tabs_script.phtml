@@ -1,0 +1,30 @@
+<script>
+	require(['jquery'],
+		function($) {
+			$('.product_view_tabs_links_container .tab_item').each(function(){
+				$(this).find('a').click(function(e){
+					e.preventDefault();
+					if(!$(this).parent().hasClass('active')) {
+						var data_tab = $(this).parent().attr('data-tab');
+						$('.product_view_tabs_links_container .tab_item').removeClass('active');
+						$(this).parent().addClass('active');
+						
+						$('.product_main_info_wrapper .product_view_tab_content').removeClass('active');
+						$('.product_main_info_wrapper').find('.product_view_tab_content.'+data_tab).addClass('active');
+						
+						$('.product_view_mobile_tabs_select').val(data_tab);
+					}
+				});
+			});
+			
+			$('.product_view_mobile_tabs_select').on('change', function() {
+				var data_tab = $(this).val();
+				$('.product_view_tabs_links_container .tab_item').removeClass('active');
+				$('.product_view_tabs_links_container .tab_item[data-tab="'+data_tab+'"]').addClass('active');
+				
+				$('.product_main_info_wrapper .product_view_tab_content').removeClass('active');
+				$('.product_main_info_wrapper').find('.product_view_tab_content.'+data_tab).addClass('active');
+			});
+		}
+	);
+</script>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <title>Contacts</title>
+    </head>
+    <body>
+		<referenceBlock name="page.main.title" remove="true" />
+		<referenceContainer name="columns.top">
+            <block class="Magento\Theme\Block\Html\Title" name="page_main_title" template="Magento_Theme::html/category-title.phtml"/>
+        </referenceContainer>
+		<referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Contacts</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Contacts</item>
+                    <item name="label" xsi:type="string" translate="true">Contacts</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+			<container name="contact_page_info_wrap" htmlTag="div" htmlClass="contact_page_info_wrapper" before="-">
+				<block class="Magento\Cms\Block\Block" name="contact_page_info" before="-">
+					<arguments>
+						<argument name="block_id" xsi:type="string">contact_page_info</argument>
+					</arguments>
+				</block>
+			</container>
+        </referenceContainer>
+    </body>
+</page>

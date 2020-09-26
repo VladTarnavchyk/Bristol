@@ -1,0 +1,6 @@
+<?php
+	$cat_id = $block->getCurrentCategory()->getId();
+	if($cat_id != 104) {
+		echo $this->getLayout()->createBlock('Magento\Framework\View\Element\Template')->setTemplate('Magento_Theme::html/homepage_tabs_products.phtml')->toHtml();
+	}
+?>
